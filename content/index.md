@@ -1,0 +1,110 @@
+---
+title: oauth2-server-php
+---
+
+An OAuth2.0 Server in PHP! [View the Full Working Demo](http://brentertainment.com/oauth2) ([code](https://github.com/bshaffer/oauth2-demo-php))
+
+Requirements
+------------
+
+PHP 5.3.9+ is required for this library.  However, we have a [stable release](https://github.com/bshaffer/oauth2-server-php/tree/v0.9) and [developerment branch](https://github.com/bshaffer/oauth2-server-php/tree/php5.2-develop) for PHP <5.3.8 and PHP 5.2.x as well.
+
+Documentation Index
+-------------------
+
+In addition to this README page, the following documentation is available:
+
+  1. [Grant Types](docs/grant_types.md)
+  2. [Server Methods](docs/methods.md)
+  3. [Scope](docs/scope.md)
+  4. [Response Object](docs/response.md)
+  5. Cookbook examples:
+   * [Step-by-Step walkthrough](docs/cookbook/walkthrough.md)
+   * [Integrating with Doctrine](docs/cookbook/doctrine.md)
+   * [Testing with Google OAuth2 Playground](docs/cookbook/google-playground.md)
+
+Installation
+------------
+
+This library follows the zend [PSR-0](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md) standards.  A number of
+autoloaders exist which can autoload this library for that reason, but if you are not using one, you can register the `OAuth2\Autoloader`:
+
+```php
+require_once('/path/to/oauth2-server-php/src/OAuth2/Autoloader.php');
+OAuth2\Autoloader::register();
+```
+
+Using [Composer](http://getcomposer.php)? Add the following to `composer.json`:
+
+```
+{
+    "require": {
+        "bshaffer/oauth2-server-php": "dev-develop",
+        ...
+    },
+    ...
+}
+```
+
+And then run `composer.phar install`
+
+> It is highly recommended you check out the [`v0.9`](https://github.com/bshaffer/oauth2-server-php/tree/v0.9) tag to
+> ensure your application doesn't break from backwards-compatibility issues, but also this means you
+> will not receive the latest changes.
+
+Learning the OAuth2.0 Standard
+------------------------------
+
+If you are new to OAuth2, take a little time first to look at the [Oauth2 Demo Application](http://brentertainment.com/oauth2) and the [source code](https://github.com/bshaffer/oauth2-demo-php), and read up on [OAuth2 Flows](http://drupal.org/node/1958718).  For everything else, consult the [OAuth2.0 Specification](http://tools.ietf.org/html/rfc6749)
+
+Get Started With oauth2-server-php
+----------------------------------
+
+Here is an example of a bare-bones OAuth2 Server implementation:
+
+```php
+$storage = new OAuth2\Storage\Pdo(array('dsn' => $dsn, 'username' => $username, 'password' => $password));
+$server = new OAuth2\Server($storage);
+$server->addGrantType(new OAuth2\GrantType\AuthorizationCode($storage)); // or any grant type you like!
+$server->handleTokenRequest(OAuth2\Request::createFromGlobals())->send();
+```
+
+This library requires you to define a `Storage` object, containing instrutions on how to interact with objects in your storage
+layer such as [OAuth Clients](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/ClientInterface.php) and
+[Authorization Codes](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/AuthorizationCodeInterface.php).
+Built-in storage classes include [PDO](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/Pdo.php),
+[Redis](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/Redis.php), and
+[Mongo](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/Mongo.php).  The interfaces allow (and encourage)
+the use of your own Storage objects to fit your application's implementation.
+
+Once you've created a storage object, pass it to the server object and define which Grant Types your server is to support.  See
+the list of supported [Grant Types](docs/grant_types.md) below.
+
+The final step, once the Server object is set up, is to handle the incoming request.  Consult the [Server Methods](docs/methods.md), or
+see the Step-by-Step walkthrough below to familiarize yourself with the types of requests involved in OAuth2.0 workflows.
+
+You might also want to learn about the [Scope](docs/scope.md) of an application or read more about the [Response Object](docs/response.md)
+
+### Walkthrough Example
+
+To get started quickly with some real code try out the [Step-by-Step Walkthrough](docs/cookbook/walkthrough.md).
+
+Contact
+-------
+
+The best way to get help and ask questions is to [file an issue](https://github.com/bshaffer/oauth2-server-php/issues/new).  This will
+help answer questions for others as well.
+
+If for whatever reason filing an issue does not make sense, contact Brent Shaffer (bshafs <at> gmail <dot> com)
+
+
+# OAuth2 Server PHP
+
+This documents the OAuth2.0 Server library for PHP. If
+you have any problems or requests please contact
+[bshaffer](mailto:bshafs@gmail.com.com?subject=OAuth2 Server PHP)
+
+View the [Changelog](#changes) for information on existing and
+planned changes to the library.
+
+## Current Version
