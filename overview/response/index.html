@@ -20,8 +20,7 @@
       <div id="header">
         <div>
           <a class="logo" href="/oauth2-server-php-docs/">
-            <img src="/oauth2-server-php-docs/images/OAuth2.png" style="height:107px;float:left"/>
-            <strong>OAuth2 Server PHP</strong>
+            <img src="/oauth2-server-php-docs/images/oauth2-banner.png"/>
           </a>
           <ul class="nav">
             <li><a href="/oauth2-server-php-docs/changes/">Changes</a></li>
@@ -35,37 +34,59 @@
 
     <div id="wrapper">
       <div class="content">
-    <h3 id="associating-local-users-with-access-tokens">Associating local users with access tokens</h3>
+    <h2 id="the-response-object">The Response Object</h2>
 
-<p>Once you’ve authenticated a user and issued an access token (such as with an Authorize Controller),
-you’ll probably want to know which user an access token applies to when it is used.</p>
-
-<p>You can do this by using the optional user_id parameter of <code>handleAuthorizeRequest</code>:</p>
-
-<p><code>php
-$userid = 1234; // A value on your server that identifies the user
-$server-&gt;handleAuthorizeRequest($request, $response, $is_authorized, $userid);
-</code></p>
-
-<p>That will save the user ID into the database with the access token. When the token is used by a client, you
-can retrieve the associated ID:</p>
+<p>The response object serves the purpose of making your server OAuth2 compliant.  It will set the appropriate status codes, headers,
+and response body for a valid or invalid oauth request.  To use it as it’s simplest level, just send the output and exit:</p>
 
 <p>```php
-if (!$server-&gt;verifyResourceRequest(OAuth2_Request::createFromGlobals(), new OAuth2_Response())) {
-    $server-&gt;getResponse()-&gt;send();
-    die;
-}</p>
+$request = OAuth2\Request::createFromGlobals();
+$response = new OAuth2\Response();</p>
 
-<p>$token = $server-&gt;getAccessTokenData(OAuth2_Request::createFromGlobals(), new OAuth2_Response());
-echo “User ID associated with this token is {$token[‘user_id’]}”;
+<p>// will set headers, status code, and json response appropriately for success or failure
+$server-&gt;grantAccessToken($request, $response);
+$response-&gt;send();
 ```</p>
+
+<p>The response object can also be used to customize output. Below, if the request is NOT valid, the error is sent to the browser:</p>
+
+<p><code>php
+if (!$token = $server-&gt;grantAccessToken($request, $response)) {
+    $response-&gt;send();
+    die();
+}
+echo sprintf('Your token is %s!!', $token);
+</code></p>
+
+<p>This will populate the appropriate error headers, and return a json error response.  If you do not want to send a JSON response,
+the response object can be used to display the information in any other format:</p>
+
+<p><code>php
+if (!$token = $server-&gt;grantAccessToken($request, $response)) {
+    $parameters = $response-&gt;getParameters();
+    // format as XML
+    header("HTTP/1.1 " . $response-&gt;getStatusCode());
+    header("Content-Type: text/xml");
+    echo "&lt;error&gt;&lt;name&gt;".$parameters['error']."&lt;/name&gt;&lt;message&gt;".$parameters['error_description']."&lt;/message&gt;&lt;/error&gt;";
+}
+</code></p>
+
+<p>This is very useful when working in a framework or existing codebase, where this library will not have full control of the response.</p>
       </div>
 
     <div id="js-sidebar" class="sidebar-shell">
       <div class="js-toggle-list sidebar-module expandable">
         <ul>
           <li class="js-topic">
-            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/pages/oauth2-server-php-docs/cookbook/">Cookbook</a></h3>
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php/overview/methods/">Overview</a></h3>
+              <li><a href="/oauth2-server-php-docs/overview/methods/">Methods</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/grant-types/">Grant Types</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/response/">Response</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/scope/">Scope</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/userid/">User ID</a></li>
+          </li>
+          <li class="js-topic">
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/cookbook/">Cookbook</a></h3>
             <ul class="js-guides">
               <li><a href="/oauth2-server-php-docs/cookbook/">Step-By-Step Walkthrough</a></li>
               <li><a href="/oauth2-server-php-docs/cookbook/silex/">Silex</a></li>
@@ -77,21 +98,6 @@ echo “User ID associated with this token is {$token[‘user_id’]}”;
               <li><a href="/oauth2-server-php-docs/cookbook/symfony/">Symfony 1.4</a></li>
               <li><a href="/oauth2-server-php-docs/cookbook/laravel/">Laravel</a></li>
             </ul>
-          </li>
-          <li class="js-topic">
-            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/pages/oauth2-server-php/methods/">Methods</a></h3>
-          </li>
-          <li class="js-topic">
-            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/pages/oauth2-server-php/grant-types/">Grant Types</a></h3>
-          </li>
-          <li class="js-topic">
-            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/pages/oauth2-server-php/response/">Response</a></h3>
-          </li>
-          <li class="js-topic">
-            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/pages/oauth2-server-php/scope/">Scope</a></h3>
-          </li>
-          <li class="js-topic">
-            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/pages/oauth2-server-php/userid/">User ID</a></h3>
           </li>
         </ul>
       </div> <!-- /sidebar-module -->
