@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Content-Language" content="en-us" />
+  <meta http-equiv="imagetoolbar" content="false" />
+  <meta name="MSSmartTagsPreventParsing" content="true" />
+  <title>oauth2-server-php</title>
+  <link rel="alternate" type="application/atom+xml" title="API Changes" href="changes.atom" />
+  <link href="file://localhost/Library/WebServer/oauth2-server-php-docs/output/css/reset.css" rel="stylesheet" type="text/css" />
+  <link href="file://localhost/Library/WebServer/oauth2-server-php-docs/output/css/960.css" rel="stylesheet" type="text/css" />
+  <link href="file://localhost/Library/WebServer/oauth2-server-php-docs/output/css/uv_active4d.css" rel="stylesheet" type="text/css" />
+  <link href="file://localhost/Library/WebServer/oauth2-server-php-docs/output/shared/css/documentation.css" media="screen" rel="stylesheet" type="text/css">
+  <link href="file://localhost/Library/WebServer/oauth2-server-php-docs/output/shared/css/pygments.css" media="screen" rel="stylesheet" type="text/css">
+  <script src="file://localhost/Library/WebServer/oauth2-server-php-docs/output/shared/js/jquery.js" type="text/javascript"></script>
+  <script src="file://localhost/Library/WebServer/oauth2-server-php-docs/output/shared/js/documentation.js" type="text/javascript"></script>
+</head>
+<body class="api">
+    <div id="header-wrapper">
+      <div id="header">
+        <div>
+          <a class="logo" href="file://localhost/Library/WebServer/oauth2-server-php-docs/output/">
+            <img src="file://localhost/Library/WebServer/oauth2-server-php-docs/output/images/oauth2-banner.png" />
+          </a>
+          <ul class="nav">
+            <li><a href="file://localhost/Library/WebServer/oauth2-server-php-docs/output/changes/">Changes</a></li>
+            <li><a href="file://localhost/Library/WebServer/oauth2-server-php-docs/output/changes.atom">
+              <img src="file://localhost/Library/WebServer/oauth2-server-php-docs/output/images/feed-icon-28x28.png" width="16" height="16" alt="GitHub API Changes Feed" />
+            </a></li>
+          </ul>
+        </div>
+      </div><!-- #header -->
+    </div><!-- #header-wrapper -->
+
+    <div id="wrapper">
+      <div class="content">
+    <p>An OAuth2.0 Server in PHP! <a href="http://brentertainment.com/oauth2">View the Full Working Demo</a> (<a href="https://github.com/bshaffer/oauth2-demo-php">code</a>)</p>
+
+<h2 id="requirements">Requirements</h2>
+
+<p>PHP 5.3.9+ is required for this library.  However, we have a <a href="https://github.com/bshaffer/oauth2-server-php/tree/v0.9">stable release</a> and <a href="https://github.com/bshaffer/oauth2-server-php/tree/php5.2-develop">developerment branch</a> for PHP &lt;5.3.8 and PHP 5.2.x as well.</p>
+
+<h2 id="documentation-index">Documentation Index</h2>
+
+<p>In addition to this README page, the following documentation is available:</p>
+
+<ol>
+<li><a href="docs/grant_types.md">Grant Types</a></li>
+  <li><a href="docs/methods.md">Server Methods</a></li>
+  <li><a href="docs/scope.md">Scope</a></li>
+  <li><a href="docs/response.md">Response Object</a></li>
+  <li>Cookbook examples:
+    <ul>
+<li><a href="docs/cookbook/walkthrough.md">Step-by-Step walkthrough</a></li>
+      <li><a href="docs/cookbook/doctrine.md">Integrating with Doctrine</a></li>
+      <li><a href="docs/cookbook/google-playground.md">Testing with Google OAuth2 Playground</a></li>
+    </ul>
+</li>
+</ol><h2 id="installation">Installation</h2>
+
+<p>This library follows the zend <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md">PSR-0</a> standards.  A number of
+autoloaders exist which can autoload this library for that reason, but if you are not using one, you can register the <code>OAuth2\Autoloader</code>:</p>
+
+<p><code>php
+require_once('/path/to/oauth2-server-php/src/OAuth2/Autoloader.php');
+OAuth2\Autoloader::register();
+</code></p>
+
+<p>Using <a href="http://getcomposer.php">Composer</a>? Add the following to <code>composer.json</code>:</p>
+
+<p><code>
+{
+    "require": {
+        "bshaffer/oauth2-server-php": "dev-develop",
+        ...
+    },
+    ...
+}
+</code></p>
+
+<p>And then run <code>composer.phar install</code></p>
+
+<blockquote>
+  <p>It is highly recommended you check out the <a href="https://github.com/bshaffer/oauth2-server-php/tree/v0.9"><code>v0.9</code></a> tag to
+ensure your application doesn’t break from backwards-compatibility issues, but also this means you
+will not receive the latest changes.</p>
+</blockquote>
+
+<h2 id="learning-the-oauth20-standard">Learning the OAuth2.0 Standard</h2>
+
+<p>If you are new to OAuth2, take a little time first to look at the <a href="http://brentertainment.com/oauth2">Oauth2 Demo Application</a> and the <a href="https://github.com/bshaffer/oauth2-demo-php">source code</a>, and read up on <a href="http://drupal.org/node/1958718">OAuth2 Flows</a>.  For everything else, consult the <a href="http://tools.ietf.org/html/rfc6749">OAuth2.0 Specification</a></p>
+
+<h2 id="get-started-with-oauth2-server-php">Get Started With oauth2-server-php</h2>
+
+<p>Here is an example of a bare-bones OAuth2 Server implementation:</p>
+
+<p><code>php
+$storage = new OAuth2\Storage\Pdo(array('dsn' =&gt; $dsn, 'username' =&gt; $username, 'password' =&gt; $password));
+$server = new OAuth2\Server($storage);
+$server-&gt;addGrantType(new OAuth2\GrantType\AuthorizationCode($storage)); // or any grant type you like!
+$server-&gt;handleTokenRequest(OAuth2\Request::createFromGlobals())-&gt;send();
+</code></p>
+
+<p>This library requires you to define a <code>Storage</code> object, containing instrutions on how to interact with objects in your storage
+layer such as <a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/ClientInterface.php">OAuth Clients</a> and
+<a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/AuthorizationCodeInterface.php">Authorization Codes</a>.
+Built-in storage classes include <a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/Pdo.php">PDO</a>,
+<a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/Redis.php">Redis</a>, and
+<a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/Mongo.php">Mongo</a>.  The interfaces allow (and encourage)
+the use of your own Storage objects to fit your application’s implementation.</p>
+
+<p>Once you’ve created a storage object, pass it to the server object and define which Grant Types your server is to support.  See
+the list of supported <a href="docs/grant_types.md">Grant Types</a> below.</p>
+
+<p>The final step, once the Server object is set up, is to handle the incoming request.  Consult the <a href="docs/methods.md">Server Methods</a>, or
+see the Step-by-Step walkthrough below to familiarize yourself with the types of requests involved in OAuth2.0 workflows.</p>
+
+<p>You might also want to learn about the <a href="docs/scope.md">Scope</a> of an application or read more about the <a href="docs/response.md">Response Object</a></p>
+
+<h3 id="walkthrough-example">Walkthrough Example</h3>
+
+<p>To get started quickly with some real code try out the <a href="docs/cookbook/walkthrough.md">Step-by-Step Walkthrough</a>.</p>
+
+<h2 id="contact">Contact</h2>
+
+<p>The best way to get help and ask questions is to <a href="https://github.com/bshaffer/oauth2-server-php/issues/new">file an issue</a>.  This will
+help answer questions for others as well.</p>
+
+<p>If for whatever reason filing an issue does not make sense, contact Brent Shaffer (bshafs <at> gmail <dot> com)</dot></at></p>
+
+<h1 id="oauth2-server-php">OAuth2 Server PHP</h1>
+
+<p>This documents the OAuth2.0 Server library for PHP. If
+you have any problems or requests please contact
+<a href="mailto:bshafs@gmail.com.com?subject=OAuth2%20Server%20PHP">bshaffer</a></p>
+
+<p>View the <a href="#changes">Changelog</a> for information on existing and
+planned changes to the library.</p>
+
+<h2 id="current-version">Current Version</h2>
+      </div>
+
+    <div id="js-sidebar" class="sidebar-shell">
+      <div class="js-toggle-list sidebar-module expandable">
+        <ul>
+          <li class="js-topic">
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/pages/oauth2-server-php-docs/cookbook/">Cookbook</a></h3>
+            <ul class="js-guides">
+              <li><a href="file://localhost/Library/WebServer/oauth2-server-php-docs/output/cookbook/">Step-By-Step Walkthrough</a></li>
+              <li><a href="file://localhost/Library/WebServer/oauth2-server-php-docs/output/cookbook/silex/">Silex</a></li>
+              <li><a href="file://localhost/Library/WebServer/oauth2-server-php-docs/output/cookbook/doctrine/">Doctrine</a></li>
+              <li><a href="file://localhost/Library/WebServer/oauth2-server-php-docs/output/cookbook/drupal/">Drupal</a></li>
+              <li><a href="file://localhost/Library/WebServer/oauth2-server-php-docs/output/cookbook/google-playground/">Google Playground</a></li>
+              <li><a href="file://localhost/Library/WebServer/oauth2-server-php-docs/output/cookbook/symfony2/">Symfony2</a></li>
+              <li><a href="file://localhost/Library/WebServer/oauth2-server-php-docs/output/cookbook/doctrine2/">Doctrine2</a></li>
+              <li><a href="file://localhost/Library/WebServer/oauth2-server-php-docs/output/cookbook/symfony/">Symfony 1.4</a></li>
+              <li><a href="file://localhost/Library/WebServer/oauth2-server-php-docs/output/cookbook/laravel/">Laravel</a></li>
+            </ul>
+          </li>
+          <li class="js-topic">
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/pages/oauth2-server-php/methods/">Methods</a></h3>
+          </li>
+          <li class="js-topic">
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/pages/oauth2-server-php/grant-types/">Grant Types</a></h3>
+          </li>
+          <li class="js-topic">
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/pages/oauth2-server-php/response/">Response</a></h3>
+          </li>
+          <li class="js-topic">
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/pages/oauth2-server-php/scope/">Scope</a></h3>
+          </li>
+          <li class="js-topic">
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/pages/oauth2-server-php/userid/">User ID</a></h3>
+          </li>
+        </ul>
+      </div> <!-- /sidebar-module -->
+      <div class="sidebar-module">
+        <p>This project is open source. Please help us by forking the project and adding to it.</p>
+      </div>
+    </div><!-- /sidebar-shell -->
+
+    </div><!-- #wrapper -->
+
+    <div id="footer" >
+      <div class="upper_footer">
+        <div class="footer_inner clearfix">
+
+        </div><!-- /.site -->
+      </div><!-- /.upper_footer -->
+
+      <div class="lower_footer">
+        <div class="footer_inner clearfix">
+            <div id="legal">
+              <p>&copy; <span id="year">year</span> Brent Shaffer. All rights reserved.</p>
+            </div><!-- /#legal or /#legal_ie-->
+        </div><!-- /.site -->
+      </div><!-- /.lower_footer -->
+    </div><!-- /#footer -->
+</body>
+</html>

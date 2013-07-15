@@ -1,5 +1,0 @@
----
-title: Symfony
----
-
-Coming Soon!
