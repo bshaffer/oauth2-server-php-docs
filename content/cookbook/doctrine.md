@@ -5,7 +5,7 @@ title: Doctrine
 # Doctrine
 
 Create Client and Access Token Storage
-------------------------------------------
+---------------------------------------
 
 To integrate doctrine into your project, first set up your models.  Let's start with just the Client and Access Token models:
 

@@ -8,7 +8,7 @@ The following instructions provide a detailed walkthrough to help you get an OAu
 up and running.  To see the codebase of an existing OAuth2 server implementing this library,
 check out the [OAuth2 Demo](https://github.com/bshaffer/oauth2-demo-php).
 
-### Initialize your Project
+## Initialize your Project
 
 Create a directory for your project and pull in this library
 
@@ -18,11 +18,11 @@ cd my-oauth2-walkthrough
 git clone https://github.com/bshaffer/oauth2-server-php.git
 ```
 
-### Define your Schema
+## Define your Schema
 
 Now use the following schema to create the default database:
 
-##### MySQL / SQLite / PostgreSQL / MS SQL Server
+#### MySQL / SQLite / PostgreSQL / MS SQL Server
 ```sql
 CREATE TABLE oauth_clients (client_id VARCHAR(80) NOT NULL, client_secret VARCHAR(80) NOT NULL, redirect_uri VARCHAR(2000) NOT NULL, CONSTRAINT client_id_pk PRIMARY KEY (client_id));
 CREATE TABLE oauth_access_tokens (access_token VARCHAR(40) NOT NULL, client_id VARCHAR(80) NOT NULL, user_id VARCHAR(255), expires TIMESTAMP NOT NULL, scope VARCHAR(2000), CONSTRAINT access_token_pk PRIMARY KEY (access_token));
@@ -31,7 +31,7 @@ CREATE TABLE oauth_refresh_tokens (refresh_token VARCHAR(40) NOT NULL, client_id
 CREATE TABLE oauth_users (username VARCHAR(255) NOT NULL, password VARCHAR(2000), first_name VARCHAR(255), last_name VARCHAR(255), CONSTRAINT username_pk PRIMARY KEY (username));
 ```
 
-### Bootstrap your OAuth2 Server
+## Bootstrap your OAuth2 Server
 
 We need to create and configure our OAuth2 Server object.  This will be used
 by all the endpoints in our application.  Name this file `server.php`:
@@ -99,7 +99,7 @@ If everything works, you should receive a response like this:
 {"access_token":"03807cb390319329bdf6c777d4dfae9c0d3b3c35","expires_in":3600,"token_type":"bearer","scope":null}
 ```
 
-### Create a Resource Controller
+## Create a Resource Controller
 
 Now that you are creating tokens, you'll want to validate them in your APIs.  Here is an
 example of a resource controller in the file `resource.php`:
@@ -130,7 +130,7 @@ If all goes well, you should receive a response like this:
 {"success":true,"message":"You accessed my APIs!"}
 ```
 
-### Create an Authorize Controller
+## Create an Authorize Controller
 
 Authorize Controllers are the "killer feature" of OAuth2, and allow for your users to authorize
 third party applications.  Instead of issuing an Access Token straightaway as happened in
@@ -193,13 +193,13 @@ And just as before, you will receive an access token:
 
 > Note: Be sure to do this quickly, because Authorization Codes expire in 30 seconds!
 
-### Associating local users with access tokens
+## Associating local users with access tokens
 
 Once you've authenticated a user and issued an access token (such as with the above Authorize Controller example),
 you'll probably want to know which user an access token applies to when it is used. Have a look at the
-[User ID documentation](../userid.md) for information on how to do this.
+[User ID documentation](../overview/userid) for information on how to do this.
 
-### Testing your Authorize Controller with an external client
+## Testing your Authorize Controller with an external client
 
 If you want to test the authorize controller using a "real" client, check out the
-[Google OAuth2 Playground example](google-playground.md)
+[Google OAuth2 Playground example](google-playground)
