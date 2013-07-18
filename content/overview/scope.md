@@ -41,7 +41,7 @@ This example assumes the class being used implements `OAuth2\Storage\ScopeInterf
 ```php
 class OAuth2ScopeTable extends Doctrine_Table implements OAuth2\Storage\ScopeInterface
 {
-    public function getDefaultScope()
+    public function getDefaultScope($client_id = null)
     {
         //...
     }
