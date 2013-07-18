@@ -40,6 +40,8 @@
       <div class="content">
     <h1>OAuth2 Server PHP</h1>
 
+<p><a href="https://github.com/bshaffer/oauth2-server-php">Download the Code</a> from GitHub to get started.</p>
+
 <h2>Requirements</h2>
 
 <p><strong>PHP 5.3.9+</strong> is required for this library.  However, there is a <a href="https://github.com/bshaffer/oauth2-server-php/tree/v0.9">stable release</a> and <a href="https://github.com/bshaffer/oauth2-server-php/tree/php5.2-develop">developerment branch</a> for <strong>PHP 5.2.x-5.3.8</strong> as well.</p>
@@ -80,7 +82,8 @@ will not receive the latest changes.</p></blockquote>
 
 <h2>Get Started With This Library</h2>
 
-<p>Here is an example of a bare-bones OAuth2 Server implementation:</p>
+<p>Looking through the <a href="cookbook">cookbook</a> examples is the best way to get started.  For those who just skim the docs for
+code samples, here is an example of a bare-bones OAuth2 Server implementation:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
@@ -90,7 +93,7 @@ will not receive the latest changes.</p></blockquote>
 <span class="local-variable">$server</span>-&gt;handleTokenRequest(<span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals())-&gt;send();</code></pre></div></div>
 </div>
 
-<p>This library requires you to define a <code>Storage</code> object, containing instrutions on how to interact with objects in your storage
+<p>All implementations require a <code>Storage</code> object.  This allows the server to interact with data in your storage
 layer such as <a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/ClientInterface.php">OAuth Clients</a> and
 <a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/AuthorizationCodeInterface.php">Authorization Codes</a>.
 Built-in storage classes include <a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/Pdo.php">PDO</a>,
@@ -104,7 +107,8 @@ the list of supported <a href="overview/grant_types">Grant Types</a>.</p>
 <p>The final step, once the Server object is set up, is to handle the incoming request.  Consult the <a href="overview/methods">Server Methods</a>, or
 see the Step-by-Step walkthrough below to familiarize yourself with the types of requests involved in OAuth2.0 workflows.</p>
 
-<p>You might also want to learn about the <a href="overview/scope">Scope</a> of an application or read more about the <a href="overview/response">Response Object</a></p>
+<p>You might also want to learn about the <a href="overview/scope">Scope</a>, how to integrate <a href="overview/userid">User IDs</a>, or read more about
+the <a href="overview/response">Response Object</a></p>
 
 <h3>Walkthrough Example</h3>
 
