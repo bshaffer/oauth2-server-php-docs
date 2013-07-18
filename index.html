@@ -61,23 +61,23 @@
 <p>This library follows the zend <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md">PSR-0</a> standards.  A number of
 autoloaders exist which can autoload this library for that reason, but if you are not using one, you can register the <code>OAuth2\Autoloader</code>:</p>
 
-<p><code>php
-require_once('/path/to/oauth2-server-php/src/OAuth2/Autoloader.php');
-OAuth2\Autoloader::register();
-</code></p>
-
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="predefined">require_once</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/oauth2-server-php/src/OAuth2/Autoloader.php</span><span class="delimiter">'</span></span>);
+<span class="constant">OAuth2</span>\<span class="constant">Autoloader</span>::register();</code></pre></div></div>
+</div>
 <p>Using <a href="http://getcomposer.php">Composer</a>? Add the following to <code>composer.json</code>:</p>
 
-<p><code>
-{
-    "require": {
-        "bshaffer/oauth2-server-php": "dev-develop",
-        ...
+<div class="code-container">
+<div class="langspec">Json</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-json">{
+    <span class="key"><span class="delimiter">"</span><span class="content">require</span><span class="delimiter">"</span></span>: {
+        <span class="key"><span class="delimiter">"</span><span class="content">bshaffer/oauth2-server-php</span><span class="delimiter">"</span></span>: <span class="string"><span class="delimiter">"</span><span class="content">dev-develop</span><span class="delimiter">"</span></span>,
+        <span class="error">.</span><span class="error">.</span><span class="error">.</span>
     },
-    ...
-}
-</code></p>
-
+    <span class="error">.</span><span class="error">.</span><span class="error">.</span>
+}</code></pre></div></div>
+</div>
 <p>And then run <code>composer.phar install</code></p>
 
 <blockquote>
@@ -94,13 +94,13 @@ will not receive the latest changes.</p>
 
 <p>Here is an example of a bare-bones OAuth2 Server implementation:</p>
 
-<p><code>php
-$storage = new OAuth2\Storage\Pdo(array('dsn' =&gt; $dsn, 'username' =&gt; $username, 'password' =&gt; $password));
-$server = new OAuth2\Server($storage);
-$server-&gt;addGrantType(new OAuth2\GrantType\AuthorizationCode($storage)); // or any grant type you like!
-$server-&gt;handleTokenRequest(OAuth2\Request::createFromGlobals())-&gt;send();
-</code></p>
-
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$storage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Pdo</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">dsn</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$dsn</span>, <span class="string"><span class="delimiter">'</span><span class="content">username</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$username</span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$password</span>));
+<span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>(<span class="local-variable">$storage</span>);
+<span class="local-variable">$server</span>-&gt;addGrantType(<span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">AuthorizationCode</span>(<span class="local-variable">$storage</span>)); <span class="comment">// or any grant type you like!</span>
+<span class="local-variable">$server</span>-&gt;handleTokenRequest(<span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals())-&gt;send();</code></pre></div></div>
+</div>
 <p>This library requires you to define a <code>Storage</code> object, containing instrutions on how to interact with objects in your storage
 layer such as <a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/ClientInterface.php">OAuth Clients</a> and
 <a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/AuthorizationCodeInterface.php">Authorization Codes</a>.

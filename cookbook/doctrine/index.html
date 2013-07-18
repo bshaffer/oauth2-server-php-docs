@@ -38,330 +38,335 @@
 
 <p>To integrate doctrine into your project, first set up your models.  Let’s start with just the Client and Access Token models:</p>
 
-<p>```yaml
-OAuthClient:
-  tableName:      oauth_client
-  columns:
-    client_identifier:
-      type:       string(50)
-      notnull:    true
-    client_secret:
-      type:       char(20)
-      notnull:    true
-    redirect_uri:
-      type:       string(255)
-      notnull:    true
-      default:    “”</p>
+<div class="code-container">
+<div class="langspec">Yaml</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-yaml"><span class="key">OAuthClient</span>:
+  <span class="key">tableName</span>:      <span class="string"><span class="content">oauth_client</span></span>
+  <span class="key">columns</span>:
+    <span class="key">client_identifier</span>:
+      <span class="key">type</span>:       <span class="string"><span class="content">string(50)</span></span>
+      <span class="key">notnull</span>:    <span class="string"><span class="content">true</span></span>
+    <span class="key">client_secret</span>:
+      <span class="key">type</span>:       <span class="string"><span class="content">char(20)</span></span>
+      <span class="key">notnull</span>:    <span class="string"><span class="content">true</span></span>
+    <span class="key">redirect_uri</span>:
+      <span class="key">type</span>:       <span class="string"><span class="content">string(255)</span></span>
+      <span class="key">notnull</span>:    <span class="string"><span class="content">true</span></span>
+      <span class="key">default</span>:    <span class="string"><span class="delimiter">"</span><span class="content"></span><span class="delimiter">"</span></span>
 
-<p>OAuthAccessToken:
-  tableName:      oauth_access_token
-  columns:
-    token:
-      type:       char(40)
-      notnull:    true
-      unique:     true
-    client_identifier:
-      type:       string(50)
-      notnull:    true
-    user_identifier:
-      type:       string(100)
-      notnull:    true
-    expires:
-      type:       timestamp
-      notnull:    true
-    scope:
-      type:       string(50)
-      notnull:    false
-  relations:
-    Client:
-      local:        client_identifier
-      foreign:      client_identifier
-      class:        OAuthClient
-      foreignAlias: AccessTokens
-      onDelete:     CASCADE
-      onUpdate:     CASCADE
-```</p>
-
+<span class="key">OAuthAccessToken</span>:
+  <span class="key">tableName</span>:      <span class="string"><span class="content">oauth_access_token</span></span>
+  <span class="key">columns</span>:
+    <span class="key">token</span>:
+      <span class="key">type</span>:       <span class="string"><span class="content">char(40)</span></span>
+      <span class="key">notnull</span>:    <span class="string"><span class="content">true</span></span>
+      <span class="key">unique</span>:     <span class="string"><span class="content">true</span></span>
+    <span class="key">client_identifier</span>:
+      <span class="key">type</span>:       <span class="string"><span class="content">string(50)</span></span>
+      <span class="key">notnull</span>:    <span class="string"><span class="content">true</span></span>
+    <span class="key">user_identifier</span>:
+      <span class="key">type</span>:       <span class="string"><span class="content">string(100)</span></span>
+      <span class="key">notnull</span>:    <span class="string"><span class="content">true</span></span>
+    <span class="key">expires</span>:
+      <span class="key">type</span>:       <span class="string"><span class="content">timestamp</span></span>
+      <span class="key">notnull</span>:    <span class="string"><span class="content">true</span></span>
+    <span class="key">scope</span>:
+      <span class="key">type</span>:       <span class="string"><span class="content">string(50)</span></span>
+      <span class="key">notnull</span>:    <span class="string"><span class="content">false</span></span>
+  <span class="key">relations</span>:
+    <span class="key">Client</span>:
+      <span class="key">local</span>:        <span class="string"><span class="content">client_identifier</span></span>
+      <span class="key">foreign</span>:      <span class="string"><span class="content">client_identifier</span></span>
+      <span class="key">class</span>:        <span class="string"><span class="content">OAuthClient</span></span>
+      <span class="key">foreignAlias</span>: <span class="string"><span class="content">AccessTokens</span></span>
+      <span class="key">onDelete</span>:     <span class="string"><span class="content">CASCADE</span></span>
+      <span class="key">onUpdate</span>:     <span class="string"><span class="content">CASCADE</span></span></code></pre></div></div>
+</div>
 <p>Once you’ve generated the models off this schema, you will have an <code>OAuthClient</code> and <code>OAuthCleintTable</code> class
 file, as well as an <code>OAuthAccessToken</code> and <code>OAuthAccessTokenTable</code> object.</p>
 
 <p>Implement <code>OAuth2\Storage\ClientCredentialsInterface</code> on the <code>OAuthClientTable</code> class:</p>
 
-<p>```php
-class OAuthClientTable extends PluginOAuthClientTable implements OAuth2\Storage\ClientCredentialsInterface
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">class</span> <span class="class">OAuthClientTable</span> <span class="keyword">extends</span> <span class="constant">PluginOAuthClientTable</span> <span class="keyword">implements</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">ClientCredentialsInterface</span>
 {
-    public function getClientDetails($client_id)
+    <span class="keyword">public</span> <span class="keyword">function</span> <span class="function">getClientDetails</span>(<span class="local-variable">$client_id</span>)
     {
-        $client = $this-&gt;createQuery()
-            -&gt;where(‘client_identifier = ?’, $client_id)
-            -&gt;fetchOne(array(), Doctrine::HYDRATE_ARRAY);</p>
+        <span class="local-variable">$client</span> = <span class="local-variable">$this</span>-&gt;createQuery()
+            -&gt;where(<span class="string"><span class="delimiter">'</span><span class="content">client_identifier = ?</span><span class="delimiter">'</span></span>, <span class="local-variable">$client_id</span>)
+            -&gt;fetchOne(<span class="predefined">array</span>(), <span class="constant">Doctrine</span>::<span class="constant">HYDRATE_ARRAY</span>);
 
-<pre><code>    return $client;
-}
-
-public function checkClientCredentials($client_id, $client_secret = NULL)
-{
-    $client = $this-&gt;getClientDetails($client_id);
-
-    if ($client) {
-        return $client['client_secret'] === sha1($client_secret);
+        <span class="keyword">return</span> <span class="local-variable">$client</span>;
     }
-    return false;
-}
 
-public function checkRestrictedGrantType($client_id, $grant_type)
-{
-    // we do not support different grant types per client in this example
-    return true;
-} } ```
-</code></pre>
+    <span class="keyword">public</span> <span class="keyword">function</span> <span class="function">checkClientCredentials</span>(<span class="local-variable">$client_id</span>, <span class="local-variable">$client_secret</span> = <span class="predefined-constant">NULL</span>)
+    {
+        <span class="local-variable">$client</span> = <span class="local-variable">$this</span>-&gt;getClientDetails(<span class="local-variable">$client_id</span>);
 
+        <span class="keyword">if</span> (<span class="local-variable">$client</span>) {
+            <span class="keyword">return</span> <span class="local-variable">$client</span>[<span class="string"><span class="delimiter">'</span><span class="content">client_secret</span><span class="delimiter">'</span></span>] === <span class="predefined">sha1</span>(<span class="local-variable">$client_secret</span>);
+        }
+        <span class="keyword">return</span> <span class="predefined-constant">false</span>;
+    }
+
+    <span class="keyword">public</span> <span class="keyword">function</span> <span class="function">checkRestrictedGrantType</span>(<span class="local-variable">$client_id</span>, <span class="local-variable">$grant_type</span>)
+    {
+        <span class="comment">// we do not support different grant types per client in this example</span>
+        <span class="keyword">return</span> <span class="predefined-constant">true</span>;
+    }
+}</code></pre></div></div>
+</div>
 <p>Now implement <code>OAuth2\Storage\AccessTokenInterface</code> on the <code>OAuthAccessTokenTable</code> class:</p>
 
-<p>```php
-class OAuthAccessTokenTable extends PluginOAuthAccessTokenTable implements OAuth2\Storage\AccessTokenInterface
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">class</span> <span class="class">OAuthAccessTokenTable</span> <span class="keyword">extends</span> <span class="constant">PluginOAuthAccessTokenTable</span> <span class="keyword">implements</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">AccessTokenInterface</span>
 {
-    public function getAccessToken($oauth_token)
+    <span class="keyword">public</span> <span class="keyword">function</span> <span class="function">getAccessToken</span>(<span class="local-variable">$oauth_token</span>)
     {
-        $token = $this-&gt;createQuery()
-            -&gt;where(‘token = ?’, $oauth_token)
-            -&gt;fetchOne(array(), Doctrine_Core::HYDRATE_ARRAY);</p>
+        <span class="local-variable">$token</span> = <span class="local-variable">$this</span>-&gt;createQuery()
+            -&gt;where(<span class="string"><span class="delimiter">'</span><span class="content">token = ?</span><span class="delimiter">'</span></span>, <span class="local-variable">$oauth_token</span>)
+            -&gt;fetchOne(<span class="predefined">array</span>(), <span class="constant">Doctrine_Core</span>::<span class="constant">HYDRATE_ARRAY</span>);
 
-<pre><code>    if ($token) {
-        return array(
-           'token'     =&gt; $token['token'],
-           'client_id' =&gt; $token['client_identifier'],
-           'expires'   =&gt; strtotime($token['expires']),
-           'scope'     =&gt; $token['scope'],
-           'user_id'   =&gt; $token['user_identifier'],
-        );
+        <span class="keyword">if</span> (<span class="local-variable">$token</span>) {
+            <span class="keyword">return</span> <span class="predefined">array</span>(
+               <span class="string"><span class="delimiter">'</span><span class="content">token</span><span class="delimiter">'</span></span>     =&gt; <span class="local-variable">$token</span>[<span class="string"><span class="delimiter">'</span><span class="content">token</span><span class="delimiter">'</span></span>],
+               <span class="string"><span class="delimiter">'</span><span class="content">client_id</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$token</span>[<span class="string"><span class="delimiter">'</span><span class="content">client_identifier</span><span class="delimiter">'</span></span>],
+               <span class="string"><span class="delimiter">'</span><span class="content">expires</span><span class="delimiter">'</span></span>   =&gt; <span class="predefined">strtotime</span>(<span class="local-variable">$token</span>[<span class="string"><span class="delimiter">'</span><span class="content">expires</span><span class="delimiter">'</span></span>]),
+               <span class="string"><span class="delimiter">'</span><span class="content">scope</span><span class="delimiter">'</span></span>     =&gt; <span class="local-variable">$token</span>[<span class="string"><span class="delimiter">'</span><span class="content">scope</span><span class="delimiter">'</span></span>],
+               <span class="string"><span class="delimiter">'</span><span class="content">user_id</span><span class="delimiter">'</span></span>   =&gt; <span class="local-variable">$token</span>[<span class="string"><span class="delimiter">'</span><span class="content">user_identifier</span><span class="delimiter">'</span></span>],
+            );
+        }
     }
-}
 
-public function setAccessToken($oauth_token, $client_id, $user_id, $expires, $scope = null)
-{
-    $token = new OAuthAccessToken();
-    $token-&gt;fromArray(array(
-       'token'              =&gt; $oauth_token,
-       'client_identifier'  =&gt; $client_id,
-       'user_identifier'    =&gt; $user_id,
-       'expires'            =&gt; date('Y-m-d H:i:s', $expires),
-       'scope'              =&gt; $scope,
-    ));
+    <span class="keyword">public</span> <span class="keyword">function</span> <span class="function">setAccessToken</span>(<span class="local-variable">$oauth_token</span>, <span class="local-variable">$client_id</span>, <span class="local-variable">$user_id</span>, <span class="local-variable">$expires</span>, <span class="local-variable">$scope</span> = <span class="predefined-constant">null</span>)
+    {
+        <span class="local-variable">$token</span> = <span class="keyword">new</span> <span class="constant">OAuthAccessToken</span>();
+        <span class="local-variable">$token</span>-&gt;fromArray(<span class="predefined">array</span>(
+           <span class="string"><span class="delimiter">'</span><span class="content">token</span><span class="delimiter">'</span></span>              =&gt; <span class="local-variable">$oauth_token</span>,
+           <span class="string"><span class="delimiter">'</span><span class="content">client_identifier</span><span class="delimiter">'</span></span>  =&gt; <span class="local-variable">$client_id</span>,
+           <span class="string"><span class="delimiter">'</span><span class="content">user_identifier</span><span class="delimiter">'</span></span>    =&gt; <span class="local-variable">$user_id</span>,
+           <span class="string"><span class="delimiter">'</span><span class="content">expires</span><span class="delimiter">'</span></span>            =&gt; <span class="predefined">date</span>(<span class="string"><span class="delimiter">'</span><span class="content">Y-m-d H:i:s</span><span class="delimiter">'</span></span>, <span class="local-variable">$expires</span>),
+           <span class="string"><span class="delimiter">'</span><span class="content">scope</span><span class="delimiter">'</span></span>              =&gt; <span class="local-variable">$scope</span>,
+        ));
 
-    $token-&gt;save();
-} } ```
-</code></pre>
-
+        <span class="local-variable">$token</span>-&gt;save();
+    }
+}</code></pre></div></div>
+</div>
 <p>Good job!  Now, when you create your <code>OAuth\Server</code> object, pass these tables in:</p>
 
-<p>```php
-$clientStore = Doctrine::getTable(‘OAuthClient’);
-$tokenStore  = Doctrine::getTable(‘OAuthAccessToken’);</p>
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$clientStore</span> = <span class="constant">Doctrine</span>::getTable(<span class="string"><span class="delimiter">'</span><span class="content">OAuthClient</span><span class="delimiter">'</span></span>);
+<span class="local-variable">$tokenStore</span>  = <span class="constant">Doctrine</span>::getTable(<span class="string"><span class="delimiter">'</span><span class="content">OAuthAccessToken</span><span class="delimiter">'</span></span>);
 
-<p>// Pass the doctrine storage objects to the OAuth2 server class
-$server = new OAuth2\Server(array(‘client_credentials’ =&gt; $clientStore, ‘access_token’ =&gt; $tokenStore));
-```</p>
-
+<span class="comment">// Pass the doctrine storage objects to the OAuth2 server class</span>
+<span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">client_credentials</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$clientStore</span>, <span class="string"><span class="delimiter">'</span><span class="content">access_token</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$tokenStore</span>));</code></pre></div></div>
+</div>
 <p>You’ve done it!  You’ve integrated your server with Doctrine!  You can go to town using it, but
 since you’ve only passed it a <code>client_credentials</code> and <code>access_token</code> storage object, you can only
 use the <code>client_credentials</code> grant type:</p>
 
-<p>```php
-// will only be able to handle token requests when “grant_type=client_credentials”.
-$server-&gt;addGrantType(new OAuth2\GrantType\ClientCredentials($clientStorage));</p>
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// will only be able to handle token requests when "grant_type=client_credentials".</span>
+<span class="local-variable">$server</span>-&gt;addGrantType(<span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">ClientCredentials</span>(<span class="local-variable">$clientStorage</span>));
 
-<p>// handle the request
-$server-&gt;handleTokenRequest(OAuth2\Request::createFromGlobals())-&gt;send();
-```</p>
-
-<h2 id="add-authorization-code-and-refresh-token-storage">Add Authorization Code and Refresh Token Storage</h2>
+<span class="comment">// handle the request</span>
+<span class="local-variable">$server</span>-&gt;handleTokenRequest(<span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals())-&gt;send();</code></pre></div></div>
+</div>
+<p>Add Authorization Code and Refresh Token Storage
+————————————————</p>
 
 <p>So lets make our application a little more exciting.  Add the following to your schema and
 generate the class files:</p>
 
-<p>```yaml
-OAuthAuthorizationCode:
-  tableName:      oauth_authorization_code
-  columns:
-    code:
-      type:       char(40)
-      notnull:    true
-      unique:     true
-    client_identifier:
-      type:       string(50)
-      notnull:    true
-    expires:
-      type:       timestamp
-      notnull:    true
-    user_identifier:
-      type:       string(100)
-      notnull:    true
-    redirect_uri:
-      type:       string(200)
-      notnull:    true
-    scope:
-      type:       string(50)
-      notnull:    false
-  relations:
-    Client:
-      local:        client_identifier
-      foreign:      client_identifier
-      class:        OAuthClient
-      foreignAlias: AuthorizationCodes
-      onDelete:     CASCADE
-      onUpdate:     CASCADE</p>
+<div class="code-container">
+<div class="langspec">Yaml</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-yaml"><span class="key">OAuthAuthorizationCode</span>:
+  <span class="key">tableName</span>:      <span class="string"><span class="content">oauth_authorization_code</span></span>
+  <span class="key">columns</span>:
+    <span class="key">code</span>:
+      <span class="key">type</span>:       <span class="string"><span class="content">char(40)</span></span>
+      <span class="key">notnull</span>:    <span class="string"><span class="content">true</span></span>
+      <span class="key">unique</span>:     <span class="string"><span class="content">true</span></span>
+    <span class="key">client_identifier</span>:
+      <span class="key">type</span>:       <span class="string"><span class="content">string(50)</span></span>
+      <span class="key">notnull</span>:    <span class="string"><span class="content">true</span></span>
+    <span class="key">expires</span>:
+      <span class="key">type</span>:       <span class="string"><span class="content">timestamp</span></span>
+      <span class="key">notnull</span>:    <span class="string"><span class="content">true</span></span>
+    <span class="key">user_identifier</span>:
+      <span class="key">type</span>:       <span class="string"><span class="content">string(100)</span></span>
+      <span class="key">notnull</span>:    <span class="string"><span class="content">true</span></span>
+    <span class="key">redirect_uri</span>:
+      <span class="key">type</span>:       <span class="string"><span class="content">string(200)</span></span>
+      <span class="key">notnull</span>:    <span class="string"><span class="content">true</span></span>
+    <span class="key">scope</span>:
+      <span class="key">type</span>:       <span class="string"><span class="content">string(50)</span></span>
+      <span class="key">notnull</span>:    <span class="string"><span class="content">false</span></span>
+  <span class="key">relations</span>:
+    <span class="key">Client</span>:
+      <span class="key">local</span>:        <span class="string"><span class="content">client_identifier</span></span>
+      <span class="key">foreign</span>:      <span class="string"><span class="content">client_identifier</span></span>
+      <span class="key">class</span>:        <span class="string"><span class="content">OAuthClient</span></span>
+      <span class="key">foreignAlias</span>: <span class="string"><span class="content">AuthorizationCodes</span></span>
+      <span class="key">onDelete</span>:     <span class="string"><span class="content">CASCADE</span></span>
+      <span class="key">onUpdate</span>:     <span class="string"><span class="content">CASCADE</span></span>
 
-<p>OAuthRefreshToken:
-  tableName:      oauth_refresh_token
-  columns:
-    refresh_token:
-      type:       char(40)
-      notnull:    true
-      unique:     true
-    client_identifier:
-      type:       string(50)
-      notnull:    true
-    user_identifier:
-      type:       string(100)
-      notnull:    true
-    expires:
-      type:       timestamp
-      notnull:    true
-    scope:
-      type:       string(50)
-      notnull:    false
-  relations:
-    Client:
-      local:        client_identifier
-      foreign:      client_identifier
-      class:        OAuthClient
-      foreignAlias: RefreshTokens
-      onDelete:     CASCADE
-      onUpdate:     CASCADE
-```</p>
-
+<span class="key">OAuthRefreshToken</span>:
+  <span class="key">tableName</span>:      <span class="string"><span class="content">oauth_refresh_token</span></span>
+  <span class="key">columns</span>:
+    <span class="key">refresh_token</span>:
+      <span class="key">type</span>:       <span class="string"><span class="content">char(40)</span></span>
+      <span class="key">notnull</span>:    <span class="string"><span class="content">true</span></span>
+      <span class="key">unique</span>:     <span class="string"><span class="content">true</span></span>
+    <span class="key">client_identifier</span>:
+      <span class="key">type</span>:       <span class="string"><span class="content">string(50)</span></span>
+      <span class="key">notnull</span>:    <span class="string"><span class="content">true</span></span>
+    <span class="key">user_identifier</span>:
+      <span class="key">type</span>:       <span class="string"><span class="content">string(100)</span></span>
+      <span class="key">notnull</span>:    <span class="string"><span class="content">true</span></span>
+    <span class="key">expires</span>:
+      <span class="key">type</span>:       <span class="string"><span class="content">timestamp</span></span>
+      <span class="key">notnull</span>:    <span class="string"><span class="content">true</span></span>
+    <span class="key">scope</span>:
+      <span class="key">type</span>:       <span class="string"><span class="content">string(50)</span></span>
+      <span class="key">notnull</span>:    <span class="string"><span class="content">false</span></span>
+  <span class="key">relations</span>:
+    <span class="key">Client</span>:
+      <span class="key">local</span>:        <span class="string"><span class="content">client_identifier</span></span>
+      <span class="key">foreign</span>:      <span class="string"><span class="content">client_identifier</span></span>
+      <span class="key">class</span>:        <span class="string"><span class="content">OAuthClient</span></span>
+      <span class="key">foreignAlias</span>: <span class="string"><span class="content">RefreshTokens</span></span>
+      <span class="key">onDelete</span>:     <span class="string"><span class="content">CASCADE</span></span>
+      <span class="key">onUpdate</span>:     <span class="string"><span class="content">CASCADE</span></span></code></pre></div></div>
+</div>
 <p>Now we can implement two more interfaces, <code>OAuth2\Storage\AuthorizationCodeInterface</code> and
 <code>OAuth2\Storage\RefreshTokenInterface</code>.  This will allow us to use their correspoding grant
 types as well.</p>
 
 <p>Implement <code>OAuth2\Storage\AuthorizationCodeInterface</code> on the <code>OAuthAuthorizationCodeTable</code> class:</p>
 
-<p>```php
-class OAuthAuthorizationCodeTable extends PluginOAuthAuthorizationCodeTable implements OAuth2\Storage\AuthorizationCodeInterface
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">class</span> <span class="class">OAuthAuthorizationCodeTable</span> <span class="keyword">extends</span> <span class="constant">PluginOAuthAuthorizationCodeTable</span> <span class="keyword">implements</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">AuthorizationCodeInterface</span>
 {
-    public function getAuthorizationCode($code)
+    <span class="keyword">public</span> <span class="keyword">function</span> <span class="function">getAuthorizationCode</span>(<span class="local-variable">$code</span>)
     {
-        $auth_code = $this-&gt;createQuery()
-            -&gt;where(‘code = ?’, $code)
-            -&gt;fetchOne(array(), Doctrine_Core::HYDRATE_ARRAY);</p>
+        <span class="local-variable">$auth_code</span> = <span class="local-variable">$this</span>-&gt;createQuery()
+            -&gt;where(<span class="string"><span class="delimiter">'</span><span class="content">code = ?</span><span class="delimiter">'</span></span>, <span class="local-variable">$code</span>)
+            -&gt;fetchOne(<span class="predefined">array</span>(), <span class="constant">Doctrine_Core</span>::<span class="constant">HYDRATE_ARRAY</span>);
 
-<pre><code>    if ($auth_code) {
-        return array(
-           'code'         =&gt; $auth_code['code'],
-           'client_id'    =&gt; $auth_code['client_identifier'],
-           'user_id'      =&gt; $auth_code['web_service_username'],
-           'redirect_uri' =&gt; $auth_code['redirect_uri'],
-           'expires'      =&gt; strtotime($auth_code['expires']),
-           'scope'        =&gt; $auth_code['scope'],
-        );
+        <span class="keyword">if</span> (<span class="local-variable">$auth_code</span>) {
+            <span class="keyword">return</span> <span class="predefined">array</span>(
+               <span class="string"><span class="delimiter">'</span><span class="content">code</span><span class="delimiter">'</span></span>         =&gt; <span class="local-variable">$auth_code</span>[<span class="string"><span class="delimiter">'</span><span class="content">code</span><span class="delimiter">'</span></span>],
+               <span class="string"><span class="delimiter">'</span><span class="content">client_id</span><span class="delimiter">'</span></span>    =&gt; <span class="local-variable">$auth_code</span>[<span class="string"><span class="delimiter">'</span><span class="content">client_identifier</span><span class="delimiter">'</span></span>],
+               <span class="string"><span class="delimiter">'</span><span class="content">user_id</span><span class="delimiter">'</span></span>      =&gt; <span class="local-variable">$auth_code</span>[<span class="string"><span class="delimiter">'</span><span class="content">web_service_username</span><span class="delimiter">'</span></span>],
+               <span class="string"><span class="delimiter">'</span><span class="content">redirect_uri</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$auth_code</span>[<span class="string"><span class="delimiter">'</span><span class="content">redirect_uri</span><span class="delimiter">'</span></span>],
+               <span class="string"><span class="delimiter">'</span><span class="content">expires</span><span class="delimiter">'</span></span>      =&gt; <span class="predefined">strtotime</span>(<span class="local-variable">$auth_code</span>[<span class="string"><span class="delimiter">'</span><span class="content">expires</span><span class="delimiter">'</span></span>]),
+               <span class="string"><span class="delimiter">'</span><span class="content">scope</span><span class="delimiter">'</span></span>        =&gt; <span class="local-variable">$auth_code</span>[<span class="string"><span class="delimiter">'</span><span class="content">scope</span><span class="delimiter">'</span></span>],
+            );
+        }
+        <span class="keyword">return</span> <span class="predefined-constant">null</span>;
     }
-    return null;
-}
 
-public function setAuthorizationCode($code, $client_id, $user_id, $redirect_uri, $expires, $scope = null)
-{
-    $auth_code = new OAuthAuthorizationCode();
-    $auth_code-&gt;fromArray(array(
-       'code'                 =&gt; $code,
-       'client_identifier'    =&gt; $client_id,
-       'web_service_username' =&gt; $user_id,
-       'redirect_uri'         =&gt; $redirect_uri,
-       'expires'              =&gt; date('Y-m-d H:i:s', $expires),
-       'scope'                =&gt; $scope,
-    ));
+    <span class="keyword">public</span> <span class="keyword">function</span> <span class="function">setAuthorizationCode</span>(<span class="local-variable">$code</span>, <span class="local-variable">$client_id</span>, <span class="local-variable">$user_id</span>, <span class="local-variable">$redirect_uri</span>, <span class="local-variable">$expires</span>, <span class="local-variable">$scope</span> = <span class="predefined-constant">null</span>)
+    {
+        <span class="local-variable">$auth_code</span> = <span class="keyword">new</span> <span class="constant">OAuthAuthorizationCode</span>();
+        <span class="local-variable">$auth_code</span>-&gt;fromArray(<span class="predefined">array</span>(
+           <span class="string"><span class="delimiter">'</span><span class="content">code</span><span class="delimiter">'</span></span>                 =&gt; <span class="local-variable">$code</span>,
+           <span class="string"><span class="delimiter">'</span><span class="content">client_identifier</span><span class="delimiter">'</span></span>    =&gt; <span class="local-variable">$client_id</span>,
+           <span class="string"><span class="delimiter">'</span><span class="content">web_service_username</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$user_id</span>,
+           <span class="string"><span class="delimiter">'</span><span class="content">redirect_uri</span><span class="delimiter">'</span></span>         =&gt; <span class="local-variable">$redirect_uri</span>,
+           <span class="string"><span class="delimiter">'</span><span class="content">expires</span><span class="delimiter">'</span></span>              =&gt; <span class="predefined">date</span>(<span class="string"><span class="delimiter">'</span><span class="content">Y-m-d H:i:s</span><span class="delimiter">'</span></span>, <span class="local-variable">$expires</span>),
+           <span class="string"><span class="delimiter">'</span><span class="content">scope</span><span class="delimiter">'</span></span>                =&gt; <span class="local-variable">$scope</span>,
+        ));
 
-    $auth_code-&gt;save();
-}
+        <span class="local-variable">$auth_code</span>-&gt;save();
+    }
 
-public function expireAuthorizationCode($code)
-{
-    return $this-&gt;createQuery()
-        -&gt;delete()
-        -&gt;where('code = ?', $code)
-        -&gt;execute();
-} } ```
-</code></pre>
-
+    <span class="keyword">public</span> <span class="keyword">function</span> <span class="function">expireAuthorizationCode</span>(<span class="local-variable">$code</span>)
+    {
+        <span class="keyword">return</span> <span class="local-variable">$this</span>-&gt;createQuery()
+            -&gt;<span class="predefined">delete</span>()
+            -&gt;where(<span class="string"><span class="delimiter">'</span><span class="content">code = ?</span><span class="delimiter">'</span></span>, <span class="local-variable">$code</span>)
+            -&gt;execute();
+    }
+}</code></pre></div></div>
+</div>
 <p>Implement <code>OAuth2\Storage\RefreshTokenInterface</code> on the <code>OAuthRefreshTokenTable</code> class:</p>
 
-<p>```php
-class OAuthRefreshTokenTable extends PluginOAuthRefreshTokenTable implements OAuth2\Storage\RefreshTokenInterface
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">class</span> <span class="class">OAuthRefreshTokenTable</span> <span class="keyword">extends</span> <span class="constant">PluginOAuthRefreshTokenTable</span> <span class="keyword">implements</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">RefreshTokenInterface</span>
 {
-    public function getRefreshToken($refresh_token)
+    <span class="keyword">public</span> <span class="keyword">function</span> <span class="function">getRefreshToken</span>(<span class="local-variable">$refresh_token</span>)
     {
-        $refresh_token = $this-&gt;createQuery()
-            -&gt;where(‘refresh_token = ?’, $refresh_token)
-            -&gt;fetchOne(array(), Doctrine_Core::HYDRATE_ARRAY);</p>
+        <span class="local-variable">$refresh_token</span> = <span class="local-variable">$this</span>-&gt;createQuery()
+            -&gt;where(<span class="string"><span class="delimiter">'</span><span class="content">refresh_token = ?</span><span class="delimiter">'</span></span>, <span class="local-variable">$refresh_token</span>)
+            -&gt;fetchOne(<span class="predefined">array</span>(), <span class="constant">Doctrine_Core</span>::<span class="constant">HYDRATE_ARRAY</span>);
 
-<pre><code>    if ($auth_code) {
-        return array(
-           'refresh_token' =&gt; $refresh_token['refresh_token'],
-           'client_id'     =&gt; $refresh_token['client_identifier'],
-           'user_id'       =&gt; $refresh_token['user_identifier'],
-           'expires'       =&gt; strtotime($refresh_token['expires']),
-           'scope'         =&gt; $refresh_token['scope'],
-        );
+        <span class="keyword">if</span> (<span class="local-variable">$auth_code</span>) {
+            <span class="keyword">return</span> <span class="predefined">array</span>(
+               <span class="string"><span class="delimiter">'</span><span class="content">refresh_token</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$refresh_token</span>[<span class="string"><span class="delimiter">'</span><span class="content">refresh_token</span><span class="delimiter">'</span></span>],
+               <span class="string"><span class="delimiter">'</span><span class="content">client_id</span><span class="delimiter">'</span></span>     =&gt; <span class="local-variable">$refresh_token</span>[<span class="string"><span class="delimiter">'</span><span class="content">client_identifier</span><span class="delimiter">'</span></span>],
+               <span class="string"><span class="delimiter">'</span><span class="content">user_id</span><span class="delimiter">'</span></span>       =&gt; <span class="local-variable">$refresh_token</span>[<span class="string"><span class="delimiter">'</span><span class="content">user_identifier</span><span class="delimiter">'</span></span>],
+               <span class="string"><span class="delimiter">'</span><span class="content">expires</span><span class="delimiter">'</span></span>       =&gt; <span class="predefined">strtotime</span>(<span class="local-variable">$refresh_token</span>[<span class="string"><span class="delimiter">'</span><span class="content">expires</span><span class="delimiter">'</span></span>]),
+               <span class="string"><span class="delimiter">'</span><span class="content">scope</span><span class="delimiter">'</span></span>         =&gt; <span class="local-variable">$refresh_token</span>[<span class="string"><span class="delimiter">'</span><span class="content">scope</span><span class="delimiter">'</span></span>],
+            );
+        }
     }
-}
 
-public function setRefreshToken($refresh_token, $client_id, $user_id, $expires, $scope = null)
-{
-    $refresh_token = new OAuthRefreshToken();
-    $refresh_token-&gt;fromArray(array(
-       'code'              =&gt; $code,
-       'client_identifier' =&gt; $client_id,
-       'user_identifier'   =&gt; $user_id,
-       'expires'           =&gt; date('Y-m-d H:i:s', $expires),
-       'scope'             =&gt; $scope,
-    ));
+    <span class="keyword">public</span> <span class="keyword">function</span> <span class="function">setRefreshToken</span>(<span class="local-variable">$refresh_token</span>, <span class="local-variable">$client_id</span>, <span class="local-variable">$user_id</span>, <span class="local-variable">$expires</span>, <span class="local-variable">$scope</span> = <span class="predefined-constant">null</span>)
+    {
+        <span class="local-variable">$refresh_token</span> = <span class="keyword">new</span> <span class="constant">OAuthRefreshToken</span>();
+        <span class="local-variable">$refresh_token</span>-&gt;fromArray(<span class="predefined">array</span>(
+           <span class="string"><span class="delimiter">'</span><span class="content">code</span><span class="delimiter">'</span></span>              =&gt; <span class="local-variable">$code</span>,
+           <span class="string"><span class="delimiter">'</span><span class="content">client_identifier</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$client_id</span>,
+           <span class="string"><span class="delimiter">'</span><span class="content">user_identifier</span><span class="delimiter">'</span></span>   =&gt; <span class="local-variable">$user_id</span>,
+           <span class="string"><span class="delimiter">'</span><span class="content">expires</span><span class="delimiter">'</span></span>           =&gt; <span class="predefined">date</span>(<span class="string"><span class="delimiter">'</span><span class="content">Y-m-d H:i:s</span><span class="delimiter">'</span></span>, <span class="local-variable">$expires</span>),
+           <span class="string"><span class="delimiter">'</span><span class="content">scope</span><span class="delimiter">'</span></span>             =&gt; <span class="local-variable">$scope</span>,
+        ));
 
-    $refresh_token-&gt;save();
-}
+        <span class="local-variable">$refresh_token</span>-&gt;save();
+    }
 
-public function unsetRefreshToken($refresh_token)
-{
-    return $this-&gt;createQuery()
-        -&gt;delete()
-        -&gt;where('refresh_token = ?', $refresh_token)
-        -&gt;execute();
-} } ```
-</code></pre>
-
+    <span class="keyword">public</span> <span class="keyword">function</span> <span class="function">unsetRefreshToken</span>(<span class="local-variable">$refresh_token</span>)
+    {
+        <span class="keyword">return</span> <span class="local-variable">$this</span>-&gt;createQuery()
+            -&gt;<span class="predefined">delete</span>()
+            -&gt;where(<span class="string"><span class="delimiter">'</span><span class="content">refresh_token = ?</span><span class="delimiter">'</span></span>, <span class="local-variable">$refresh_token</span>)
+            -&gt;execute();
+    }
+}</code></pre></div></div>
+</div>
 <p>Now we can add two more grant types onto our server:</p>
 
-<p>```php
-$clientStore  = Doctrine::getTable(‘OAuthClient’);
-$tokenStore   = Doctrine::getTable(‘OAuthAccessToken’);
-$codeStore    = Doctrine::getTable(‘OAuthAuthorizationCode’);
-$refreshStore = Doctrine::getTable(‘OAuthRefreshToken’);</p>
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$clientStore</span>  = <span class="constant">Doctrine</span>::getTable(<span class="string"><span class="delimiter">'</span><span class="content">OAuthClient</span><span class="delimiter">'</span></span>);
+<span class="local-variable">$tokenStore</span>   = <span class="constant">Doctrine</span>::getTable(<span class="string"><span class="delimiter">'</span><span class="content">OAuthAccessToken</span><span class="delimiter">'</span></span>);
+<span class="local-variable">$codeStore</span>    = <span class="constant">Doctrine</span>::getTable(<span class="string"><span class="delimiter">'</span><span class="content">OAuthAuthorizationCode</span><span class="delimiter">'</span></span>);
+<span class="local-variable">$refreshStore</span> = <span class="constant">Doctrine</span>::getTable(<span class="string"><span class="delimiter">'</span><span class="content">OAuthRefreshToken</span><span class="delimiter">'</span></span>);
 
-<p>// Pass the doctrine storage objects to the OAuth2 server class
-$server = new OAuth2\Server(array(
-    ‘client_credentials’ =&gt; $clientStore,
-    ‘access_token’       =&gt; $tokenStore,
-    ‘authorization_code’ =&gt; $codeStore,
-    ‘refresh_token’      =&gt; $refreshStore,
-));</p>
+<span class="comment">// Pass the doctrine storage objects to the OAuth2 server class</span>
+<span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>(<span class="predefined">array</span>(
+    <span class="string"><span class="delimiter">'</span><span class="content">client_credentials</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$clientStore</span>,
+    <span class="string"><span class="delimiter">'</span><span class="content">access_token</span><span class="delimiter">'</span></span>       =&gt; <span class="local-variable">$tokenStore</span>,
+    <span class="string"><span class="delimiter">'</span><span class="content">authorization_code</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$codeStore</span>,
+    <span class="string"><span class="delimiter">'</span><span class="content">refresh_token</span><span class="delimiter">'</span></span>      =&gt; <span class="local-variable">$refreshStore</span>,
+));
 
-<p>$server-&gt;addGrantType(new OAuth2\GrantType\ClientCredentials($clientStorage));
-$server-&gt;addGrantType(new OAuth2\GrantType\AuthorizationCode($codeStorage));
-$server-&gt;addGrantType(new OAuth2\GrantType\RefreshToken($refreshStorage));</p>
+<span class="local-variable">$server</span>-&gt;addGrantType(<span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">ClientCredentials</span>(<span class="local-variable">$clientStorage</span>));
+<span class="local-variable">$server</span>-&gt;addGrantType(<span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">AuthorizationCode</span>(<span class="local-variable">$codeStorage</span>));
+<span class="local-variable">$server</span>-&gt;addGrantType(<span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">RefreshToken</span>(<span class="local-variable">$refreshStorage</span>));
 
-<p>// handle the request
-$server-&gt;handleTokenRequest(OAuth2\Request::createFromGlobals())-&gt;send();
-```</p>
-
+<span class="comment">// handle the request</span>
+<span class="local-variable">$server</span>-&gt;handleTokenRequest(<span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals())-&gt;send();</code></pre></div></div>
+</div>
 <p>You’ve done it!!! Well, almost all of it.  The only thing left is to add your
 user!  Well, see the symfony documentation for how to integrate with
 <code>sfGuardUser</code>.</p>

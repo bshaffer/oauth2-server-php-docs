@@ -42,55 +42,55 @@ check out the <a href="https://github.com/bshaffer/oauth2-demo-php">OAuth2 Demo<
 
 <p>Create a directory for your project and pull in this library</p>
 
-<p><code>bash
-mkdir my-oauth2-walkthrough
+<div class="code-container">
+<div class="langspec">Bash</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-bash">mkdir my-oauth2-walkthrough
 cd my-oauth2-walkthrough
-git clone https://github.com/bshaffer/oauth2-server-php.git
-</code></p>
-
-<h3 id="define-your-schema">Define your Schema</h3>
+git clone https://github.com/bshaffer/oauth2-server-php.git</code></pre></div></div>
+</div>
+<p>### Define your Schema</p>
 
 <p>Now use the following schema to create the default database:</p>
 
 <h5 id="mysql--sqlite--postgresql--ms-sql-server">MySQL / SQLite / PostgreSQL / MS SQL Server</h5>
-<p><code>sql
-CREATE TABLE oauth_clients (client_id VARCHAR(80) NOT NULL, client_secret VARCHAR(80) NOT NULL, redirect_uri VARCHAR(2000) NOT NULL, CONSTRAINT client_id_pk PRIMARY KEY (client_id));
-CREATE TABLE oauth_access_tokens (access_token VARCHAR(40) NOT NULL, client_id VARCHAR(80) NOT NULL, user_id VARCHAR(255), expires TIMESTAMP NOT NULL, scope VARCHAR(2000), CONSTRAINT access_token_pk PRIMARY KEY (access_token));
-CREATE TABLE oauth_authorization_codes (authorization_code VARCHAR(40) NOT NULL, client_id VARCHAR(80) NOT NULL, user_id VARCHAR(255), redirect_uri VARCHAR(2000), expires TIMESTAMP NOT NULL, scope VARCHAR(2000), CONSTRAINT auth_code_pk PRIMARY KEY (authorization_code));
-CREATE TABLE oauth_refresh_tokens (refresh_token VARCHAR(40) NOT NULL, client_id VARCHAR(80) NOT NULL, user_id VARCHAR(255), expires TIMESTAMP NOT NULL, scope VARCHAR(2000), CONSTRAINT refresh_token_pk PRIMARY KEY (refresh_token));
-CREATE TABLE oauth_users (username VARCHAR(255) NOT NULL, password VARCHAR(2000), first_name VARCHAR(255), last_name VARCHAR(255), CONSTRAINT username_pk PRIMARY KEY (username));
-</code></p>
-
-<h3 id="bootstrap-your-oauth2-server">Bootstrap your OAuth2 Server</h3>
+<div class="code-container">
+<div class="langspec">Sql</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-sql"><span class="class">CREATE</span> <span class="type">TABLE</span> oauth_clients (client_id <span class="predefined-type">VARCHAR</span>(<span class="integer">80</span>) <span class="keyword">NOT</span> <span class="predefined-constant">NULL</span>, client_secret <span class="predefined-type">VARCHAR</span>(<span class="integer">80</span>) <span class="keyword">NOT</span> <span class="predefined-constant">NULL</span>, redirect_uri <span class="predefined-type">VARCHAR</span>(<span class="integer">2000</span>) <span class="keyword">NOT</span> <span class="predefined-constant">NULL</span>, <span class="type">CONSTRAINT</span> client_id_pk <span class="directive">PRIMARY</span> <span class="type">KEY</span> (client_id));
+<span class="class">CREATE</span> <span class="type">TABLE</span> oauth_access_tokens (access_token <span class="predefined-type">VARCHAR</span>(<span class="integer">40</span>) <span class="keyword">NOT</span> <span class="predefined-constant">NULL</span>, client_id <span class="predefined-type">VARCHAR</span>(<span class="integer">80</span>) <span class="keyword">NOT</span> <span class="predefined-constant">NULL</span>, user_id <span class="predefined-type">VARCHAR</span>(<span class="integer">255</span>), expires <span class="predefined-type">TIMESTAMP</span> <span class="keyword">NOT</span> <span class="predefined-constant">NULL</span>, scope <span class="predefined-type">VARCHAR</span>(<span class="integer">2000</span>), <span class="type">CONSTRAINT</span> access_token_pk <span class="directive">PRIMARY</span> <span class="type">KEY</span> (access_token));
+<span class="class">CREATE</span> <span class="type">TABLE</span> oauth_authorization_codes (authorization_code <span class="predefined-type">VARCHAR</span>(<span class="integer">40</span>) <span class="keyword">NOT</span> <span class="predefined-constant">NULL</span>, client_id <span class="predefined-type">VARCHAR</span>(<span class="integer">80</span>) <span class="keyword">NOT</span> <span class="predefined-constant">NULL</span>, user_id <span class="predefined-type">VARCHAR</span>(<span class="integer">255</span>), redirect_uri <span class="predefined-type">VARCHAR</span>(<span class="integer">2000</span>), expires <span class="predefined-type">TIMESTAMP</span> <span class="keyword">NOT</span> <span class="predefined-constant">NULL</span>, scope <span class="predefined-type">VARCHAR</span>(<span class="integer">2000</span>), <span class="type">CONSTRAINT</span> auth_code_pk <span class="directive">PRIMARY</span> <span class="type">KEY</span> (authorization_code));
+<span class="class">CREATE</span> <span class="type">TABLE</span> oauth_refresh_tokens (refresh_token <span class="predefined-type">VARCHAR</span>(<span class="integer">40</span>) <span class="keyword">NOT</span> <span class="predefined-constant">NULL</span>, client_id <span class="predefined-type">VARCHAR</span>(<span class="integer">80</span>) <span class="keyword">NOT</span> <span class="predefined-constant">NULL</span>, user_id <span class="predefined-type">VARCHAR</span>(<span class="integer">255</span>), expires <span class="predefined-type">TIMESTAMP</span> <span class="keyword">NOT</span> <span class="predefined-constant">NULL</span>, scope <span class="predefined-type">VARCHAR</span>(<span class="integer">2000</span>), <span class="type">CONSTRAINT</span> refresh_token_pk <span class="directive">PRIMARY</span> <span class="type">KEY</span> (refresh_token));
+<span class="class">CREATE</span> <span class="type">TABLE</span> oauth_users (username <span class="predefined-type">VARCHAR</span>(<span class="integer">255</span>) <span class="keyword">NOT</span> <span class="predefined-constant">NULL</span>, password <span class="predefined-type">VARCHAR</span>(<span class="integer">2000</span>), first_name <span class="predefined-type">VARCHAR</span>(<span class="integer">255</span>), last_name <span class="predefined-type">VARCHAR</span>(<span class="integer">255</span>), <span class="type">CONSTRAINT</span> username_pk <span class="directive">PRIMARY</span> <span class="type">KEY</span> (username));</code></pre></div></div>
+</div>
+<p>### Bootstrap your OAuth2 Server</p>
 
 <p>We need to create and configure our OAuth2 Server object.  This will be used
 by all the endpoints in our application.  Name this file <code>server.php</code>:</p>
 
-<p>```php
-$dsn      = ‘mysql:dbname=my_oauth2_db;host=localhost’;
-$username = ‘root’;
-$password = ‘’;</p>
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$dsn</span>      = <span class="string"><span class="delimiter">'</span><span class="content">mysql:dbname=my_oauth2_db;host=localhost</span><span class="delimiter">'</span></span>;
+<span class="local-variable">$username</span> = <span class="string"><span class="delimiter">'</span><span class="content">root</span><span class="delimiter">'</span></span>;
+<span class="local-variable">$password</span> = <span class="string"><span class="delimiter">'</span><span class="delimiter">'</span></span>;
 
-<p>// error reporting (this is a demo, after all!)
-ini_set(‘display_errors’,1);error_reporting(E_ALL);</p>
+<span class="comment">// error reporting (this is a demo, after all!)</span>
+ini_set(<span class="string"><span class="delimiter">'</span><span class="content">display_errors</span><span class="delimiter">'</span></span>,<span class="integer">1</span>);<span class="predefined">error_reporting</span>(<span class="exception">E_ALL</span>);
 
-<p>// Autoloading (composer is preferred, but for this example let’s just do this)
-require_once(‘oauth2-server-php/src/OAuth2/Autoloader.php’);
-OAuth2\Autoloader::register();</p>
+<span class="comment">// Autoloading (composer is preferred, but for this example let's just do this)</span>
+<span class="predefined">require_once</span>(<span class="string"><span class="delimiter">'</span><span class="content">oauth2-server-php/src/OAuth2/Autoloader.php</span><span class="delimiter">'</span></span>);
+<span class="constant">OAuth2</span>\<span class="constant">Autoloader</span>::register();
 
-<p>// $dsn is the Data Source Name for your database, for exmaple “mysql:dbname=my_oauth2_db;host=localhost”
-$storage = new OAuth2\Storage\Pdo(array(‘dsn’ =&gt; $dsn, ‘username’ =&gt; $username, ‘password’ =&gt; $password));</p>
+<span class="comment">// $dsn is the Data Source Name for your database, for exmaple "mysql:dbname=my_oauth2_db;host=localhost"</span>
+<span class="local-variable">$storage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Pdo</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">dsn</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$dsn</span>, <span class="string"><span class="delimiter">'</span><span class="content">username</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$username</span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$password</span>));
 
-<p>// Pass a storage object or array of storage objects to the OAuth2 server class
-$server = new OAuth2\Server($storage);</p>
+<span class="comment">// Pass a storage object or array of storage objects to the OAuth2 server class</span>
+<span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>(<span class="local-variable">$storage</span>);
 
-<p>// Add the “Client Credentials” grant type (it is the simplest of the grant types)
-$server-&gt;addGrantType(new OAuth2\GrantType\ClientCredentials($storage));</p>
+<span class="comment">// Add the "Client Credentials" grant type (it is the simplest of the grant types)</span>
+<span class="local-variable">$server</span>-&gt;addGrantType(<span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">ClientCredentials</span>(<span class="local-variable">$storage</span>));
 
-<p>// Add the “Authorization Code” grant type (this is where the oauth magic happens)
-$server-&gt;addGrantType(new OAuth2\GrantType\AuthorizationCode($storage));
-```</p>
-
+<span class="comment">// Add the "Authorization Code" grant type (this is where the oauth magic happens)</span>
+<span class="local-variable">$server</span>-&gt;addGrantType(<span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">AuthorizationCode</span>(<span class="local-variable">$storage</span>));</code></pre></div></div>
+</div>
 <blockquote>
   <p>Note: Be sure to define the <code>$dsn</code>, <code>$username</code>, and <code>$password</code> variables to be the
 appropriate values for your database.</p>
@@ -101,27 +101,27 @@ appropriate values for your database.</p>
 <p>Next, we will create the <strong>Token Controller</strong>. This is the URI which returns an OAuth2.0 Token to the client.
 Here is an example of a token controller in the file <code>token.php</code>:</p>
 
-<p>```php
-// include our OAuth2 Server object
-require_once <strong>DIR</strong>.’/server.php’;</p>
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// include our OAuth2 Server object</span>
+<span class="predefined">require_once</span> <span class="predefined-constant">__DIR__</span>.<span class="string"><span class="delimiter">'</span><span class="content">/server.php</span><span class="delimiter">'</span></span>;
 
-<p>// Handle a request for an OAuth2.0 Access Token and send the response to the client
-$server-&gt;handleTokenRequest(OAuth2\Request::createFromGlobals())-&gt;send();
-```</p>
-
+<span class="comment">// Handle a request for an OAuth2.0 Access Token and send the response to the client</span>
+<span class="local-variable">$server</span>-&gt;handleTokenRequest(<span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals())-&gt;send();</code></pre></div></div>
+</div>
 <p>Congratulatons!  You have created a <strong>Token Controller</strong>!  Do you want to see it in action? Run the following SQL to
 create an OAuth Client:</p>
 
-<p><code>sql
-INSERT INTO oauth_clients (client_id, client_secret, redirect_uri) VALUES ("testclient", "testpass", "http://fake/");
-</code></p>
-
+<div class="code-container">
+<div class="langspec">Sql</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-sql"><span class="class">INSERT</span> <span class="class">INTO</span> oauth_clients (client_id, client_secret, redirect_uri) <span class="keyword">VALUES</span> (<span class="string"><span class="delimiter">"</span><span class="content">testclient</span><span class="delimiter">"</span></span>, <span class="string"><span class="delimiter">"</span><span class="content">testpass</span><span class="delimiter">"</span></span>, <span class="string"><span class="delimiter">"</span><span class="content">http://fake/</span><span class="delimiter">"</span></span>);</code></pre></div></div>
+</div>
 <p>Now run the following from the command line:</p>
 
-<p><code>bash
-curl -u testclient:testpass http://localhost/token.php -d 'grant_type=client_credentials'
-</code></p>
-
+<div class="code-container">
+<div class="langspec">Bash</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-bash">curl -u testclient:testpass http://localhost/token.php -d 'grant_type=client_credentials'</code></pre></div></div>
+</div>
 <blockquote>
   <p>Note: http://localhost/token.php assumes you have the file <code>token.php</code> on your local machine, and you have
 set up the “localhost” webhost to point to it.  This may vary for your application.</p>
@@ -129,101 +129,102 @@ set up the “localhost” webhost to point to it.  This may vary for your appli
 
 <p>If everything works, you should receive a response like this:</p>
 
-<p><code>json
-{"access_token":"03807cb390319329bdf6c777d4dfae9c0d3b3c35","expires_in":3600,"token_type":"bearer","scope":null}
-</code></p>
-
-<h3 id="create-a-resource-controller">Create a Resource Controller</h3>
+<div class="code-container">
+<div class="langspec">Json</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-json">{<span class="key"><span class="delimiter">"</span><span class="content">access_token</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">03807cb390319329bdf6c777d4dfae9c0d3b3c35</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">expires_in</span><span class="delimiter">"</span></span>:<span class="integer">3600</span>,<span class="key"><span class="delimiter">"</span><span class="content">token_type</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">bearer</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">scope</span><span class="delimiter">"</span></span>:<span class="value">null</span>}</code></pre></div></div>
+</div>
+<p>### Create a Resource Controller</p>
 
 <p>Now that you are creating tokens, you’ll want to validate them in your APIs.  Here is an
 example of a resource controller in the file <code>resource.php</code>:</p>
 
-<p>```php
-// include our OAuth2 Server object
-require_once <strong>DIR</strong>.’/server.php’;</p>
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// include our OAuth2 Server object</span>
+<span class="predefined">require_once</span> <span class="predefined-constant">__DIR__</span>.<span class="string"><span class="delimiter">'</span><span class="content">/server.php</span><span class="delimiter">'</span></span>;
 
-<p>// Handle a request for an OAuth2.0 Access Token and send the response to the client
-if (!$server-&gt;verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
-    $server-&gt;getResponse()-&gt;send();
-    die;
+<span class="comment">// Handle a request for an OAuth2.0 Access Token and send the response to the client</span>
+<span class="keyword">if</span> (!<span class="local-variable">$server</span>-&gt;verifyResourceRequest(<span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals())) {
+    <span class="local-variable">$server</span>-&gt;getResponse()-&gt;send();
+    <span class="predefined">die</span>;
 }
-echo json_encode(array(‘success’ =&gt; true, ‘message’ =&gt; ‘You accessed my APIs!’));
-```</p>
-
+<span class="predefined">echo</span> json_encode(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">success</span><span class="delimiter">'</span></span> =&gt; <span class="predefined-constant">true</span>, <span class="string"><span class="delimiter">'</span><span class="content">message</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">You accessed my APIs!</span><span class="delimiter">'</span></span>));</code></pre></div></div>
+</div>
 <p>Now run the following from the command line:</p>
 
-<p><code>bash
-curl http://localhost/resource.php -d 'access_token=YOUR_TOKEN'
-</code></p>
-
+<div class="code-container">
+<div class="langspec">Bash</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-bash">curl http://localhost/resource.php -d 'access_token=YOUR_TOKEN'</code></pre></div></div>
+</div>
 <blockquote>
   <p>Note: Use the value returned in “access_token” from the previous step in place of YOUR_TOKEN</p>
 </blockquote>
 
 <p>If all goes well, you should receive a response like this:</p>
 
-<p><code>json
-{"success":true,"message":"You accessed my APIs!"}
-</code></p>
-
-<h3 id="create-an-authorize-controller">Create an Authorize Controller</h3>
+<div class="code-container">
+<div class="langspec">Json</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-json">{<span class="key"><span class="delimiter">"</span><span class="content">success</span><span class="delimiter">"</span></span>:<span class="value">true</span>,<span class="key"><span class="delimiter">"</span><span class="content">message</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">You accessed my APIs!</span><span class="delimiter">"</span></span>}</code></pre></div></div>
+</div>
+<p>### Create an Authorize Controller</p>
 
 <p>Authorize Controllers are the “killer feature” of OAuth2, and allow for your users to authorize
 third party applications.  Instead of issuing an Access Token straightaway as happened in
 the first token controller example, in this example an authorize controller is used to only issue
 a token once the user has authorized the request. Create <code>authorize.php</code>:</p>
 
-<p>```php
-// include our OAuth2 Server object
-require_once <strong>DIR</strong>.’/server.php’;</p>
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// include our OAuth2 Server object</span>
+<span class="predefined">require_once</span> <span class="predefined-constant">__DIR__</span>.<span class="string"><span class="delimiter">'</span><span class="content">/server.php</span><span class="delimiter">'</span></span>;
 
-<p>$request = OAuth2\Request::createFromGlobals();
-$response = new OAuth2\Response();</p>
+<span class="local-variable">$request</span> = <span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals();
+<span class="local-variable">$response</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Response</span>();
 
-<p>// validate the authorize request
-if (!$server-&gt;validateAuthorizeRequest($request, $response)) {
-    $response-&gt;send();
-    die;
+<span class="comment">// validate the authorize request</span>
+<span class="keyword">if</span> (!<span class="local-variable">$server</span>-&gt;validateAuthorizeRequest(<span class="local-variable">$request</span>, <span class="local-variable">$response</span>)) {
+    <span class="local-variable">$response</span>-&gt;send();
+    <span class="predefined">die</span>;
 }
-// display an authorization form
-if (empty($_POST)) {
-  exit(‘
+<span class="comment">// display an authorization form</span>
+<span class="keyword">if</span> (<span class="predefined">empty</span>(<span class="predefined">$_POST</span>)) {
+  <span class="predefined">exit</span>(<span class="string"><span class="delimiter">'</span><span class="content">
 &lt;form method="post"&gt;
-  <label>Do You Authorize TestClient?</label><br><input type="submit" name="authorized" value="yes"><input type="submit" name="authorized" value="no">
-&lt;/form&gt;’);
-}</p>
-
-<p>// print the authorization code if the user has authorized your client
-$is_authorized = ($_POST[‘authorized’] === ‘yes’);
-$server-&gt;handleAuthorizeRequest($request, $response, $is_authorized);
-if ($is_authorized) {
-  // this is only here so that you get to see your code in the cURL request. Otherwise, we’d redirect back to the client
-  $code = substr($response-&gt;getHttpHeader(‘Location’), strpos($response-&gt;getHttpHeader(‘Location’), ‘code=’)+5, 40);
-  exit(“SUCCESS! Authorization Code: $code”);
+  &lt;label&gt;Do You Authorize TestClient?&lt;/label&gt;&lt;br /&gt;
+  &lt;input type="submit" name="authorized" value="yes"&gt;
+  &lt;input type="submit" name="authorized" value="no"&gt;
+&lt;/form&gt;</span><span class="delimiter">'</span></span>);
 }
-$response-&gt;send();
-```</p>
 
+<span class="comment">// print the authorization code if the user has authorized your client</span>
+<span class="local-variable">$is_authorized</span> = (<span class="predefined">$_POST</span>[<span class="string"><span class="delimiter">'</span><span class="content">authorized</span><span class="delimiter">'</span></span>] === <span class="string"><span class="delimiter">'</span><span class="content">yes</span><span class="delimiter">'</span></span>);
+<span class="local-variable">$server</span>-&gt;handleAuthorizeRequest(<span class="local-variable">$request</span>, <span class="local-variable">$response</span>, <span class="local-variable">$is_authorized</span>);
+<span class="keyword">if</span> (<span class="local-variable">$is_authorized</span>) {
+  <span class="comment">// this is only here so that you get to see your code in the cURL request. Otherwise, we'd redirect back to the client</span>
+  <span class="local-variable">$code</span> = <span class="predefined">substr</span>(<span class="local-variable">$response</span>-&gt;getHttpHeader(<span class="string"><span class="delimiter">'</span><span class="content">Location</span><span class="delimiter">'</span></span>), <span class="predefined">strpos</span>(<span class="local-variable">$response</span>-&gt;getHttpHeader(<span class="string"><span class="delimiter">'</span><span class="content">Location</span><span class="delimiter">'</span></span>), <span class="string"><span class="delimiter">'</span><span class="content">code=</span><span class="delimiter">'</span></span>)+<span class="integer">5</span>, <span class="integer">40</span>);
+  <span class="predefined">exit</span>(<span class="string"><span class="delimiter">"</span><span class="content">SUCCESS! Authorization Code: </span><span class="local-variable">$code</span><span class="delimiter">"</span></span>);
+}
+<span class="local-variable">$response</span>-&gt;send();</code></pre></div></div>
+</div>
 <p>Now paste the following URL in your browser</p>
 
-<p><code>
-http://localhost/authorize.php?response_type=code&amp;client_id=testclient&amp;state=xyz
-</code></p>
-
+<div class="code-container">
+<div class="langspec">Text</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text">http://localhost/authorize.php?response_type=code&amp;client_id=testclient&amp;state=xyz</code></pre></div></div>
+</div>
 <p>You will be prompted with an authorization form, and receive an authorization code upon clicking “yes”</p>
 
 <p>The Authorization Code can now be used to receive an access token from your previously
 created <code>token.php</code> endpoint.  Just call this endpoint using the returned authorization code:
-<code>bash
+&lt;div class="code-container"&gt;&lt;div class="langspec"&gt;Bash&lt;/div&gt;&lt;pre class="highlight"&gt;<code class="language-bash">
 curl -u testclient:testpass http://localhost/token.php -d 'grant_type=authorization_code&amp;code=YOUR_CODE'
-</code></p>
+</code>&lt;/pre&gt;&lt;/div&gt;
+And just as before, you will receive an access token:</p>
 
-<p>And just as before, you will receive an access token:</p>
-
-<p><code>json
-{"access_token":"6f05ad622a3d32a5a81aee5d73a5826adb8cbf63","expires_in":3600,"token_type":"bearer","scope":null}
-</code></p>
-
+<div class="code-container">
+<div class="langspec">Json</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-json">{<span class="key"><span class="delimiter">"</span><span class="content">access_token</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">6f05ad622a3d32a5a81aee5d73a5826adb8cbf63</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">expires_in</span><span class="delimiter">"</span></span>:<span class="integer">3600</span>,<span class="key"><span class="delimiter">"</span><span class="content">token_type</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">bearer</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">scope</span><span class="delimiter">"</span></span>:<span class="value">null</span>}</code></pre></div></div>
+</div>
 <blockquote>
   <p>Note: Be sure to do this quickly, because Authorization Codes expire in 30 seconds!</p>
 </blockquote>

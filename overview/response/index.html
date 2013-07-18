@@ -39,38 +39,38 @@
 <p>The response object serves the purpose of making your server OAuth2 compliant.  It will set the appropriate status codes, headers,
 and response body for a valid or invalid oauth request.  To use it as it’s simplest level, just send the output and exit:</p>
 
-<p>```php
-$request = OAuth2\Request::createFromGlobals();
-$response = new OAuth2\Response();</p>
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$request</span> = <span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals();
+<span class="local-variable">$response</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Response</span>();
 
-<p>// will set headers, status code, and json response appropriately for success or failure
-$server-&gt;grantAccessToken($request, $response);
-$response-&gt;send();
-```</p>
-
+<span class="comment">// will set headers, status code, and json response appropriately for success or failure</span>
+<span class="local-variable">$server</span>-&gt;grantAccessToken(<span class="local-variable">$request</span>, <span class="local-variable">$response</span>);
+<span class="local-variable">$response</span>-&gt;send();</code></pre></div></div>
+</div>
 <p>The response object can also be used to customize output. Below, if the request is NOT valid, the error is sent to the browser:</p>
 
-<p><code>php
-if (!$token = $server-&gt;grantAccessToken($request, $response)) {
-    $response-&gt;send();
-    die();
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">if</span> (!<span class="local-variable">$token</span> = <span class="local-variable">$server</span>-&gt;grantAccessToken(<span class="local-variable">$request</span>, <span class="local-variable">$response</span>)) {
+    <span class="local-variable">$response</span>-&gt;send();
+    <span class="predefined">die</span>();
 }
-echo sprintf('Your token is %s!!', $token);
-</code></p>
-
+<span class="predefined">echo</span> <span class="predefined">sprintf</span>(<span class="string"><span class="delimiter">'</span><span class="content">Your token is %s!!</span><span class="delimiter">'</span></span>, <span class="local-variable">$token</span>);</code></pre></div></div>
+</div>
 <p>This will populate the appropriate error headers, and return a json error response.  If you do not want to send a JSON response,
 the response object can be used to display the information in any other format:</p>
 
-<p><code>php
-if (!$token = $server-&gt;grantAccessToken($request, $response)) {
-    $parameters = $response-&gt;getParameters();
-    // format as XML
-    header("HTTP/1.1 " . $response-&gt;getStatusCode());
-    header("Content-Type: text/xml");
-    echo "&lt;error&gt;&lt;name&gt;".$parameters['error']."&lt;/name&gt;&lt;message&gt;".$parameters['error_description']."&lt;/message&gt;&lt;/error&gt;";
-}
-</code></p>
-
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">if</span> (!<span class="local-variable">$token</span> = <span class="local-variable">$server</span>-&gt;grantAccessToken(<span class="local-variable">$request</span>, <span class="local-variable">$response</span>)) {
+    <span class="local-variable">$parameters</span> = <span class="local-variable">$response</span>-&gt;getParameters();
+    <span class="comment">// format as XML</span>
+    <span class="predefined">header</span>(<span class="string"><span class="delimiter">"</span><span class="content">HTTP/1.1 </span><span class="delimiter">"</span></span> . <span class="local-variable">$response</span>-&gt;getStatusCode());
+    <span class="predefined">header</span>(<span class="string"><span class="delimiter">"</span><span class="content">Content-Type: text/xml</span><span class="delimiter">"</span></span>);
+    <span class="predefined">echo</span> <span class="string"><span class="delimiter">"</span><span class="content">&lt;error&gt;&lt;name&gt;</span><span class="delimiter">"</span></span>.<span class="local-variable">$parameters</span>[<span class="string"><span class="delimiter">'</span><span class="content">error</span><span class="delimiter">'</span></span>].<span class="string"><span class="delimiter">"</span><span class="content">&lt;/name&gt;&lt;message&gt;</span><span class="delimiter">"</span></span>.<span class="local-variable">$parameters</span>[<span class="string"><span class="delimiter">'</span><span class="content">error_description</span><span class="delimiter">'</span></span>].<span class="string"><span class="delimiter">"</span><span class="content">&lt;/message&gt;&lt;/error&gt;</span><span class="delimiter">"</span></span>;
+}</code></pre></div></div>
+</div>
 <p>This is very useful when working in a framework or existing codebase, where this library will not have full control of the response.</p>
       </div>
 

@@ -86,11 +86,12 @@ issued, but you can easily configure this to do so by setting <code>'always_issu
 
 <p>If you want to support more than one grant type it is possible to add more when the Server object is created:</p>
 
-<p><code>php
-$server-&gt;addGrantType(new OAuth2\GrantType\UserCredentials($storage));
-$server-&gt;addGrantType(new OAuth2\GrantType\RefreshToken($storage));
-$server-&gt;addGrantType(new OAuth2\GrantType\AuthorizationCode($storage));
-</code></p>
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$server</span>-&gt;addGrantType(<span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">UserCredentials</span>(<span class="local-variable">$storage</span>));
+<span class="local-variable">$server</span>-&gt;addGrantType(<span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">RefreshToken</span>(<span class="local-variable">$storage</span>));
+<span class="local-variable">$server</span>-&gt;addGrantType(<span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">AuthorizationCode</span>(<span class="local-variable">$storage</span>));</code></pre></div></div>
+</div>
       </div>
 
     <div id="js-sidebar" class="sidebar-shell">

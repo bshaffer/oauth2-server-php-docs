@@ -45,50 +45,51 @@ a variety of different functions to the client (“access basic information”, 
 <p>In this library, scope is handled by implementing <code>OAuth2\Storage\ScopeInterface</code>. This can be done using your own
 implementation, or by taking advantage of the existing <code>OAuth2\Storage\Memory</code> class:</p>
 
-<p>```php
-// configure your available scopes
-$defaultScope = ‘basic’;
-$supportedScopes = array(
-  ‘basic’,
-  ‘postonwall’,
-  ‘accessphonenumber’
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// configure your available scopes</span>
+<span class="local-variable">$defaultScope</span> = <span class="string"><span class="delimiter">'</span><span class="content">basic</span><span class="delimiter">'</span></span>;
+<span class="local-variable">$supportedScopes</span> = <span class="predefined">array</span>(
+  <span class="string"><span class="delimiter">'</span><span class="content">basic</span><span class="delimiter">'</span></span>,
+  <span class="string"><span class="delimiter">'</span><span class="content">postonwall</span><span class="delimiter">'</span></span>,
+  <span class="string"><span class="delimiter">'</span><span class="content">accessphonenumber</span><span class="delimiter">'</span></span>
 );
-$memory = new OAuth2\Storage\Memory(array(
-  ‘default_scope’ =&gt; $defaultScope,
-  ‘supported_scopes’ =&gt; $supportedScopes
+<span class="local-variable">$memory</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Memory</span>(<span class="predefined">array</span>(
+  <span class="string"><span class="delimiter">'</span><span class="content">default_scope</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$defaultScope</span>,
+  <span class="string"><span class="delimiter">'</span><span class="content">supported_scopes</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$supportedScopes</span>
 ));
-$scopeUtil = new OAuth2\Scope($memory);</p>
+<span class="local-variable">$scopeUtil</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Scope</span>(<span class="local-variable">$memory</span>);
 
-<p>$server-&gt;setScopeUtil($scopeUtil);
-```</p>
-
+<span class="local-variable">$server</span>-&gt;setScopeUtil(<span class="local-variable">$scopeUtil</span>);</code></pre></div></div>
+</div>
 <p>This is the simplest way, but scope can by dynamically configured as well:</p>
 
-<p>```php
-// configure your available scopes
-$doctrine = Doctrine_Core::getTable(‘OAuth2Scope’);
-$scopeUtil = new OAuth2\Scope($doctrine);</p>
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// configure your available scopes</span>
+<span class="local-variable">$doctrine</span> = <span class="constant">Doctrine_Core</span>::getTable(<span class="string"><span class="delimiter">'</span><span class="content">OAuth2Scope</span><span class="delimiter">'</span></span>);
+<span class="local-variable">$scopeUtil</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Scope</span>(<span class="local-variable">$doctrine</span>);
 
-<p>$server-&gt;setScopeUtil($scopeUtil);
-```</p>
-
+<span class="local-variable">$server</span>-&gt;setScopeUtil(<span class="local-variable">$scopeUtil</span>);</code></pre></div></div>
+</div>
 <p>This example assumes the class being used implements <code>OAuth2\Storage\ScopeInterface</code>:</p>
 
-<p>```php
-class OAuth2ScopeTable extends Doctrine_Table implements OAuth2\Storage\ScopeInterface
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">class</span> <span class="class">OAuth2ScopeTable</span> <span class="keyword">extends</span> <span class="constant">Doctrine_Table</span> <span class="keyword">implements</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">ScopeInterface</span>
 {
-    public function getDefaultScope()
+    <span class="keyword">public</span> <span class="keyword">function</span> <span class="function">getDefaultScope</span>()
     {
-        //…
-    }</p>
+        <span class="comment">//...</span>
+    }
 
-<pre><code>public function scopeExists($scope, $client_id = null)
-{
-    //...
-} } ```
-</code></pre>
-
-<h4 id="validate-your-scope">Validate your scope</h4>
+    <span class="keyword">public</span> <span class="keyword">function</span> <span class="function">scopeExists</span>(<span class="local-variable">$scope</span>, <span class="local-variable">$client_id</span> = <span class="predefined-constant">null</span>)
+    {
+        <span class="comment">//...</span>
+    }
+}</code></pre></div></div>
+</div>
+<p>####Validate your scope</p>
 
 <p>Configuring your scope in the server class will ensure requested scopes by the client are valid.  However, there are two
 steps required to ensure the proper validation of your scope.  First, the requested scope must be exposed to the resource
@@ -96,18 +97,18 @@ owner upon authorization.  In this library, this is left 100% to the implementat
 the scope of the authorization being granted.  Second, the resource request itself must specify what scope is required to
 access it:</p>
 
-<p><code>php
-// https://api.example.com/resource-requiring-postonwall-scope
-$request = OAuth2\Request::createFromGlobals();
-$response = new OAuth2\Response();
-$scopeRequired = 'postonwall'; // this resource requires "postonwall" scope
-if (!$server-&gt;verifyResourceRequest($request, $response, $scopeRequired)) {
-  // if the scope required is different from what the token allows, this will send a "401 insufficient_scope" error
-  $response-&gt;send();
-}
-</code></p>
-
-<h4 id="customizing-your-scope">Customizing your scope</h4>
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// https://api.example.com/resource-requiring-postonwall-scope</span>
+<span class="local-variable">$request</span> = <span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals();
+<span class="local-variable">$response</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Response</span>();
+<span class="local-variable">$scopeRequired</span> = <span class="string"><span class="delimiter">'</span><span class="content">postonwall</span><span class="delimiter">'</span></span>; <span class="comment">// this resource requires "postonwall" scope</span>
+<span class="keyword">if</span> (!<span class="local-variable">$server</span>-&gt;verifyResourceRequest(<span class="local-variable">$request</span>, <span class="local-variable">$response</span>, <span class="local-variable">$scopeRequired</span>)) {
+  <span class="comment">// if the scope required is different from what the token allows, this will send a "401 insufficient_scope" error</span>
+  <span class="local-variable">$response</span>-&gt;send();
+}</code></pre></div></div>
+</div>
+<p>####Customizing your scope</p>
 
 <p>As the implementation of “scope” can be significantly different for each application, providing a different class other than
 OAuth2\Scope can be beneficial.  Implement <code>OAuth2\ScopeInterface</code> in a custom class to fully customize.</p>
@@ -120,14 +121,15 @@ for more information on state.</p>
 
 <p>This is enabled by default for security purposes, but you can remove this requirement when you configure your server:</p>
 
-<p>```php
-// on creation
-$server = new OAuth2\Server($storage, array(‘enforce_state’ =&gt; false));</p>
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// on creation</span>
+<span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>(<span class="local-variable">$storage</span>, <span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">enforce_state</span><span class="delimiter">'</span></span> =&gt; <span class="predefined-constant">false</span>));
 
-<p>// or after creation
-$server = new OAuth2\Server();
-$server-&gt;setConfig(‘enforce_state’, false);
-```</p>
+<span class="comment">// or after creation</span>
+<span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>();
+<span class="local-variable">$server</span>-&gt;setConfig(<span class="string"><span class="delimiter">'</span><span class="content">enforce_state</span><span class="delimiter">'</span></span>, <span class="predefined-constant">false</span>);</code></pre></div></div>
+</div>
       </div>
 
     <div id="js-sidebar" class="sidebar-shell">

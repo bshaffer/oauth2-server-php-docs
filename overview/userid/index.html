@@ -41,23 +41,24 @@ you’ll probably want to know which user an access token applies to when it is 
 
 <p>You can do this by using the optional user_id parameter of <code>handleAuthorizeRequest</code>:</p>
 
-<p><code>php
-$userid = 1234; // A value on your server that identifies the user
-$server-&gt;handleAuthorizeRequest($request, $response, $is_authorized, $userid);
-</code></p>
-
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$userid</span> = <span class="integer">1234</span>; <span class="comment">// A value on your server that identifies the user</span>
+<span class="local-variable">$server</span>-&gt;handleAuthorizeRequest(<span class="local-variable">$request</span>, <span class="local-variable">$response</span>, <span class="local-variable">$is_authorized</span>, <span class="local-variable">$userid</span>);</code></pre></div></div>
+</div>
 <p>That will save the user ID into the database with the access token. When the token is used by a client, you
 can retrieve the associated ID:</p>
 
-<p>```php
-if (!$server-&gt;verifyResourceRequest(OAuth2_Request::createFromGlobals(), new OAuth2_Response())) {
-    $server-&gt;getResponse()-&gt;send();
-    die;
-}</p>
-
-<p>$token = $server-&gt;getAccessTokenData(OAuth2_Request::createFromGlobals(), new OAuth2_Response());
-echo “User ID associated with this token is {$token[‘user_id’]}”;
-```</p>
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">if</span> (!<span class="local-variable">$server</span>-&gt;verifyResourceRequest(<span class="constant">OAuth2_Request</span>::createFromGlobals(), <span class="keyword">new</span> <span class="constant">OAuth2_Response</span>())) {
+    <span class="local-variable">$server</span>-&gt;getResponse()-&gt;send();
+    <span class="predefined">die</span>;
+}
+ 
+<span class="local-variable">$token</span> = <span class="local-variable">$server</span>-&gt;getAccessTokenData(<span class="constant">OAuth2_Request</span>::createFromGlobals(), <span class="keyword">new</span> <span class="constant">OAuth2_Response</span>());
+<span class="predefined">echo</span> <span class="string"><span class="delimiter">"</span><span class="content">User ID associated with this token is </span><span class="inline"><span class="delimiter">{</span><span class="local-variable">$token</span>[<span class="string"><span class="delimiter">'</span><span class="content">user_id</span><span class="delimiter">'</span></span>]<span class="delimiter">}</span></span><span class="delimiter">"</span></span>;</code></pre></div></div>
+</div>
       </div>
 
     <div id="js-sidebar" class="sidebar-shell">
