@@ -138,6 +138,33 @@ for more information on state.</p>
 <span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>();
 <span class="local-variable">$server</span>-&gt;setConfig(<span class="string"><span class="delimiter">'</span><span class="content">enforce_state</span><span class="delimiter">'</span></span>, <span class="predefined-constant">false</span>);</code></pre></div></div>
 </div>
+
+<h2>Using Multiple Scopes</h2>
+
+<p>You can request multiple scopes by supplying a space-delimited (but url-safe) list of scopes in your authorize request.
+It will look like this:</p>
+
+<div class="code-container">
+<div class="langspec">Text</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text">https://mydomain.com/authorize
+   ?client_id=MY_CLIENT
+   &amp;response_type=code
+   &amp;scope=onescope%20twoscope%20redscope%20bluescope</code></pre></div></div>
+</div>
+
+<blockquote><p>Note: Extra linebreaks are for readability only</p></blockquote>
+
+<p>This will create an authorization code with the following four scopes: "onescope", "twoscope", "redscope", and "bluescope"</p>
+
+<p>These four scopes will then be validated against the available scopes using the <code>OAuth2\ScopeUtil</code> class to ensure they
+exist. If you receive the error <code>invalid_scope: An unsupported scope was requested</code>, this is because you need to set your
+available scopes on your server object, like so:</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$scope</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Scope</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">onescope</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">twoscope</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">redscope</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">bluescope</span><span class="delimiter">'</span></span>));
+<span class="local-variable">$server</span>-&gt;setScopeUtil(<span class="local-variable">$scope</span>);</code></pre></div></div>
+</div>
       </div>
 
     <div id="js-sidebar" class="sidebar-shell">
