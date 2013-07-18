@@ -94,3 +94,29 @@ $server = new OAuth2\Server($storage, array('enforce_state' => false));
 $server = new OAuth2\Server();
 $server->setConfig('enforce_state', false);
 ```
+
+## Using Multiple Scopes
+
+You can request multiple scopes by supplying a space-delimited (but url-safe) list of scopes in your authorize request.
+It will look like this:
+
+```text
+https://mydomain.com/authorize
+   ?client_id=MY_CLIENT
+   &response_type=code
+   &scope=onescope%20twoscope%20redscope%20bluescope
+
+```
+
+> Note: Extra linebreaks are for readability only
+
+This will create an authorization code with the following four scopes: "onescope", "twoscope", "redscope", and "bluescope"
+
+These four scopes will then be validated against the available scopes using the `OAuth2\ScopeUtil` class to ensure they
+exist. If you receive the error `invalid_scope: An unsupported scope was requested`, this is because you need to set your
+available scopes on your server object, like so:
+
+```php
+$scope = new OAuth2\Scope(array('onescope', 'twoscope', 'redscope', 'bluescope'));
+$server->setScopeUtil($scope);
+```
