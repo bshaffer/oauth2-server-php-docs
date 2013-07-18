@@ -1,10 +1,10 @@
 ---
-title: oauth2-server-php
+title: OAuth2 Server PHP
 ---
 
-# OAuth2 Server PHP
+# An OAuth2 Server Library for PHP
 
-[Download the Code](https://github.com/bshaffer/oauth2-server-php) from GitHub to get started.
+Implement OAuth2.0 cleanly into your PHP application.  [Download the Code](https://github.com/bshaffer/oauth2-server-php) from GitHub to get started.
 
 Requirements
 ------------
@@ -64,7 +64,7 @@ layer such as [OAuth Clients](https://github.com/bshaffer/oauth2-server-php/blob
 Built-in storage classes include [PDO](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/Pdo.php),
 [Redis](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/Redis.php), and
 [Mongo](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/Mongo.php).  The interfaces allow (and encourage)
-the use of your own Storage objects to fit your application's implementation.
+the use of your own Storage objects to fit your application's implementation (see the [Doctrine Storage](cookbook/doctrine) example).
 
 Once you've created a storage object, pass it to the server object and define which Grant Types your server is to support.  See
 the list of supported [Grant Types](overview/grant_types).
