@@ -6,7 +6,7 @@
   <meta http-equiv="imagetoolbar" content="false" />
   <meta name="MSSmartTagsPreventParsing" content="true" />
 
-  <title>Symfony2</title>
+  <title>Restler</title>
 
   <link rel="alternate" type="application/atom+xml" title="API Changes" href="changes.atom" />
   <link href="/oauth2-server-php-docs/css/reset.css" rel="stylesheet" type="text/css" />
@@ -38,10 +38,41 @@
 
     <div id="wrapper">
       <div class="content">
-    <h1>Symfony2</h1>
+    <h1>Restler</h1>
 
-<p>See the <a href="https://github.com/bshaffer/oauth2-server-bundle">OAuth2 Server Bundle</a> on how to integrate with
-symfony2 and the dependency injection container.</p>
+<ol>
+<li>
+<p>Download the latest copy from <a href="https://github.com/Luracast/Restler.git">features\html</a></p>
+
+<pre><code> $ git clone -b features/html https://github.com/Luracast/Restler.git
+</code></pre>
+</li>
+<li>
+<p>Run <code>composer.phar install</code> to make sure you have:</p>
+
+<ul>
+<li>twig template library</li>
+<li>bshaffer's oauth2 libaray</li>
+</ul>
+</li>
+<li>
+<p>Make sure the following directories have write permissions to create the compiled template files:</p>
+
+<ul>
+<li><code>public/examples/_014_oauth2_client/cache</code></li>
+<li><code>public/examples/_015_oauth2_server/cache</code></li>
+</ul>
+</li>
+<li>
+<p>Make sure the following directory has write permissions. This is where <code>oauth.sqlite</code> file be created at run time:</p>
+
+<ul>
+<li><code>public/examples/_015_oauth2_server/OAuth2/db</code></li>
+</ul>
+</li>
+<li><p>Set up a virtual host for <code>/path/to/Restler/public</code>.</p></li>
+<li><p>Point your browser to <code>http://yourhost/examples/_014_oauth2_client</code> to play around.</p></li>
+</ol>
       </div>
 
     <div id="js-sidebar" class="sidebar-shell">
