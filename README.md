@@ -1,6 +1,6 @@
 # OAuth2 Server PHP Documentation
 
-This resository hosts the [documentation](http://bshaffer.github.io/oauth2-server-php-docs/) for the
+This repository hosts the [documentation](http://bshaffer.github.io/oauth2-server-php-docs/) for the
 [oauth2-server-php](https://github.com/bshaffer/oauth2-server-php) library.
 
 All submissions are welcome! To submit a change, fork this repo and send us a [pull request](http://help.github.com/send-pull-requests/).
