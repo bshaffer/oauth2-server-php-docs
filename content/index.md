@@ -2,12 +2,12 @@
 title: oauth2-server-php
 ---
 
-An OAuth2.0 Server in PHP! [View the Full Working Demo](http://brentertainment.com/oauth2) ([code](https://github.com/bshaffer/oauth2-demo-php))
+# OAuth2 Server PHP
 
 Requirements
 ------------
 
-PHP 5.3.9+ is required for this library.  However, we have a [stable release](https://github.com/bshaffer/oauth2-server-php/tree/v0.9) and [developerment branch](https://github.com/bshaffer/oauth2-server-php/tree/php5.2-develop) for PHP <5.3.8 and PHP 5.2.x as well.
+**PHP 5.3.9+** is required for this library.  However, there is a [stable release](https://github.com/bshaffer/oauth2-server-php/tree/v0.9) and [developerment branch](https://github.com/bshaffer/oauth2-server-php/tree/php5.2-develop) for **PHP 5.2.x-5.3.8** as well.
 
 Installation
 ------------
@@ -41,10 +41,10 @@ And then run `composer.phar install`
 Learning the OAuth2.0 Standard
 ------------------------------
 
-If you are new to OAuth2, take a little time first to look at the [Oauth2 Demo Application](http://brentertainment.com/oauth2) and the [source code](https://github.com/bshaffer/oauth2-demo-php), and read up on [OAuth2 Flows](http://drupal.org/node/1958718).  For everything else, consult the [OAuth2.0 Specification](http://tools.ietf.org/html/rfc6749)
+If you are new to OAuth2, take a little time first to look at the [OAuth2 Demo Application](http://brentertainment.com/oauth2) and the [source code](https://github.com/bshaffer/oauth2-demo-php), and read up on [OAuth2 Flows](http://drupal.org/node/1958718).  For everything else, consult the [OAuth2.0 Specification](http://tools.ietf.org/html/rfc6749)
 
-Get Started With oauth2-server-php
-----------------------------------
+Get Started With This Library
+-----------------------------
 
 Here is an example of a bare-bones OAuth2 Server implementation:
 
@@ -82,15 +82,3 @@ The best way to get help and ask questions is to [file an issue](https://github.
 help answer questions for others as well.
 
 If for whatever reason filing an issue does not make sense, contact Brent Shaffer (bshafs <at> gmail <dot> com)
-
-
-# OAuth2 Server PHP
-
-This documents the OAuth2.0 Server library for PHP. If
-you have any problems or requests please contact
-[bshaffer](mailto:bshafs@gmail.com.com?subject=OAuth2 Server PHP)
-
-View the [Changelog](#changes) for information on existing and
-planned changes to the library.
-
-## Current Version
