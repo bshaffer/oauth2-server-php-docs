@@ -1,5 +1,4 @@
-Grant Types
------------
+# Grant Types
 
 There are many supported grant types in the OAuth2 specification, and this library allows for the addition of custom grant types as well.
 Supported grant types are as follows:

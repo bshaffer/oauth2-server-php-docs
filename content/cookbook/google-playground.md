@@ -2,6 +2,8 @@
 title: Google OAuth 2.0 Playground
 ---
 
+# Google Playground
+
 Test your server with Google OAuth 2.0 Playground
 -------------------------------------------------
 

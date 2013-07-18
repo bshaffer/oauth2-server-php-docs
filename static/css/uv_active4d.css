@@ -122,6 +122,9 @@ pre.active4d .DateTimeLiteral {
 .code-container .langspec {
   display: inline;
   position: absolute;
-  top: 6px;
-  right: 10px;
+  top: 0;
+  right: 5px;
+  text-transform: lowercase;
+  font-size: 9px;
+  color: #999;
 }

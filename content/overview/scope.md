@@ -1,7 +1,6 @@
-Scope
------
+# Scope
 
-####Configure your Scope
+## Configure your Scope
 
 The use of Scope in an OAuth2 application is often key to proper permissioning. Scope is used to limit the authorization
 granted to the client by the resource owner. The most popular use of this is Facebook's ability for users to authorize
@@ -54,7 +53,7 @@ class OAuth2ScopeTable extends Doctrine_Table implements OAuth2\Storage\ScopeInt
 }
 ```
 
-####Validate your scope
+## Validate your scope
 
 Configuring your scope in the server class will ensure requested scopes by the client are valid.  However, there are two
 steps required to ensure the proper validation of your scope.  First, the requested scope must be exposed to the resource
@@ -73,7 +72,7 @@ if (!$server->verifyResourceRequest($request, $response, $scopeRequired)) {
 }
 ```
 
-####Customizing your scope
+## Customizing your scope
 
 As the implementation of "scope" can be significantly different for each application, providing a different class other than
 OAuth2\Scope can be beneficial.  Implement `OAuth2\ScopeInterface` in a custom class to fully customize.

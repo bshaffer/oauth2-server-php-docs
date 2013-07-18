@@ -1,5 +1,4 @@
-The Response Object
--------------------
+# The Response Object
 
 The response object serves the purpose of making your server OAuth2 compliant.  It will set the appropriate status codes, headers,
 and response body for a valid or invalid oauth request.  To use it as it's simplest level, just send the output and exit:

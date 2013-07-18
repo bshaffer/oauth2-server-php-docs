@@ -11,6 +11,7 @@ gem 'rake', '~> 0.9.2'
 gem 'thin'
 gem 'yajl-ruby', '~> 0.8.2'
 gem "htmlentities", "~> 4.3.1"
+gem 'rdiscount'
 
 group :development do
   gem 'adsf'

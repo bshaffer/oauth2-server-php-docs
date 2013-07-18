@@ -2,6 +2,8 @@
 title: Step-By-Step Walkthrough
 ---
 
+# Step-By-Step Walkthrough
+
 The following instructions provide a detailed walkthrough to help you get an OAuth2 server
 up and running.  To see the codebase of an existing OAuth2 server implementing this library,
 check out the [OAuth2 Demo](https://github.com/bshaffer/oauth2-demo-php).
@@ -178,6 +180,7 @@ You will be prompted with an authorization form, and receive an authorization co
 
 The Authorization Code can now be used to receive an access token from your previously
 created `token.php` endpoint.  Just call this endpoint using the returned authorization code:
+
 ```bash
 curl -u testclient:testpass http://localhost/token.php -d 'grant_type=authorization_code&code=YOUR_CODE'
 ```
