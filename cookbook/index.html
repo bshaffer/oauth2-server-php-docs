@@ -44,7 +44,7 @@
 up and running.  To see the codebase of an existing OAuth2 server implementing this library,
 check out the <a href="https://github.com/bshaffer/oauth2-demo-php">OAuth2 Demo</a>.</p>
 
-<h3>Initialize your Project</h3>
+<h2>Initialize your Project</h2>
 
 <p>Create a directory for your project and pull in this library</p>
 
@@ -55,11 +55,11 @@ cd my-oauth2-walkthrough
 git clone https://github.com/bshaffer/oauth2-server-php.git</code></pre></div></div>
 </div>
 
-<h3>Define your Schema</h3>
+<h2>Define your Schema</h2>
 
 <p>Now use the following schema to create the default database:</p>
 
-<h5>MySQL / SQLite / PostgreSQL / MS SQL Server</h5>
+<h4>MySQL / SQLite / PostgreSQL / MS SQL Server</h4>
 
 <div class="code-container">
 <div class="langspec">Sql</div>
@@ -70,7 +70,7 @@ git clone https://github.com/bshaffer/oauth2-server-php.git</code></pre></div></
 <span class="class">CREATE</span> <span class="type">TABLE</span> oauth_users (username <span class="predefined-type">VARCHAR</span>(<span class="integer">255</span>) <span class="keyword">NOT</span> <span class="predefined-constant">NULL</span>, password <span class="predefined-type">VARCHAR</span>(<span class="integer">2000</span>), first_name <span class="predefined-type">VARCHAR</span>(<span class="integer">255</span>), last_name <span class="predefined-type">VARCHAR</span>(<span class="integer">255</span>), <span class="type">CONSTRAINT</span> username_pk <span class="directive">PRIMARY</span> <span class="type">KEY</span> (username));</code></pre></div></div>
 </div>
 
-<h3>Bootstrap your OAuth2 Server</h3>
+<h2>Bootstrap your OAuth2 Server</h2>
 
 <p>We need to create and configure our OAuth2 Server object.  This will be used
 by all the endpoints in our application.  Name this file <code>server.php</code>:</p>
@@ -143,7 +143,7 @@ set up the "localhost" webhost to point to it.  This may vary for your applicati
 <div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-json">{<span class="key"><span class="delimiter">"</span><span class="content">access_token</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">03807cb390319329bdf6c777d4dfae9c0d3b3c35</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">expires_in</span><span class="delimiter">"</span></span>:<span class="integer">3600</span>,<span class="key"><span class="delimiter">"</span><span class="content">token_type</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">bearer</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">scope</span><span class="delimiter">"</span></span>:<span class="value">null</span>}</code></pre></div></div>
 </div>
 
-<h3>Create a Resource Controller</h3>
+<h2>Create a Resource Controller</h2>
 
 <p>Now that you are creating tokens, you'll want to validate them in your APIs.  Here is an
 example of a resource controller in the file <code>resource.php</code>:</p>
@@ -177,7 +177,7 @@ example of a resource controller in the file <code>resource.php</code>:</p>
 <div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-json">{<span class="key"><span class="delimiter">"</span><span class="content">success</span><span class="delimiter">"</span></span>:<span class="value">true</span>,<span class="key"><span class="delimiter">"</span><span class="content">message</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">You accessed my APIs!</span><span class="delimiter">"</span></span>}</code></pre></div></div>
 </div>
 
-<h3>Create an Authorize Controller</h3>
+<h2>Create an Authorize Controller</h2>
 
 <p>Authorize Controllers are the "killer feature" of OAuth2, and allow for your users to authorize
 third party applications.  Instead of issuing an Access Token straightaway as happened in
@@ -244,16 +244,16 @@ created <code>token.php</code> endpoint.  Just call this endpoint using the retu
 
 <blockquote><p>Note: Be sure to do this quickly, because Authorization Codes expire in 30 seconds!</p></blockquote>
 
-<h3>Associating local users with access tokens</h3>
+<h2>Associating local users with access tokens</h2>
 
 <p>Once you've authenticated a user and issued an access token (such as with the above Authorize Controller example),
 you'll probably want to know which user an access token applies to when it is used. Have a look at the
-<a href="../userid.md">User ID documentation</a> for information on how to do this.</p>
+<a href="../overview/userid">User ID documentation</a> for information on how to do this.</p>
 
-<h3>Testing your Authorize Controller with an external client</h3>
+<h2>Testing your Authorize Controller with an external client</h2>
 
 <p>If you want to test the authorize controller using a "real" client, check out the
-<a href="google-playground.md">Google OAuth2 Playground example</a></p>
+<a href="google-playground">Google OAuth2 Playground example</a></p>
       </div>
 
     <div id="js-sidebar" class="sidebar-shell">
