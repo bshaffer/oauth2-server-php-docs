@@ -6,7 +6,7 @@
   <meta http-equiv="imagetoolbar" content="false" />
   <meta name="MSSmartTagsPreventParsing" content="true" />
 
-  <title>oauth2-server-php</title>
+  <title>OAuth2 Server PHP</title>
 
   <link rel="alternate" type="application/atom+xml" title="API Changes" href="changes.atom" />
   <link href="/oauth2-server-php-docs/css/reset.css" rel="stylesheet" type="text/css" />
@@ -38,9 +38,9 @@
 
     <div id="wrapper">
       <div class="content">
-    <h1>OAuth2 Server PHP</h1>
+    <h1>An OAuth2 Server Library for PHP</h1>
 
-<p><a href="https://github.com/bshaffer/oauth2-server-php">Download the Code</a> from GitHub to get started.</p>
+<p>Implement OAuth2.0 cleanly into your PHP application.  <a href="https://github.com/bshaffer/oauth2-server-php">Download the Code</a> from GitHub to get started.</p>
 
 <h2>Requirements</h2>
 
@@ -99,7 +99,7 @@ layer such as <a href="https://github.com/bshaffer/oauth2-server-php/blob/develo
 Built-in storage classes include <a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/Pdo.php">PDO</a>,
 <a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/Redis.php">Redis</a>, and
 <a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/Mongo.php">Mongo</a>.  The interfaces allow (and encourage)
-the use of your own Storage objects to fit your application's implementation.</p>
+the use of your own Storage objects to fit your application's implementation (see the <a href="cookbook/doctrine">Doctrine Storage</a> example).</p>
 
 <p>Once you've created a storage object, pass it to the server object and define which Grant Types your server is to support.  See
 the list of supported <a href="overview/grant_types">Grant Types</a>.</p>
