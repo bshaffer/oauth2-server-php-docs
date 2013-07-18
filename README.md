@@ -1,8 +1,7 @@
 # OAuth2 Server PHP Documentation
 
-The Documentation can be seen at [http://bshaffer.github.io/oauth2-server-php-docs/](http://bshaffer.github.io/oauth2-server-php-docs/)
-
-This is an API resource built with [nanoc](http://nanoc.ws/) and based on GitHub's API resource.
+This resository hosts the [documentation](http://bshaffer.github.io/oauth2-server-php-docs/) for the
+[oauth2-server-php](https://github.com/bshaffer/oauth2-server-php) library.
 
 All submissions are welcome! To submit a change, fork this repo and send us a [pull request](http://help.github.com/send-pull-requests/).
 

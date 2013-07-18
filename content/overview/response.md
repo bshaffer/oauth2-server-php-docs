@@ -36,3 +36,6 @@ if (!$token = $server->grantAccessToken($request, $response)) {
 ```
 
 This is very useful when working in a framework or existing codebase, where this library will not have full control of the response.
+
+See the [HttpFoundation Bridge](https://github.com/bshaffer/oauth2-server-httpfoundation-bridge) library for plugging your request/response
+into frameworks using the [HttpFoundation](https://github.com/symfony/HttpFoundation) library.

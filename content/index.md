@@ -4,6 +4,8 @@ title: oauth2-server-php
 
 # OAuth2 Server PHP
 
+[Download the Code](https://github.com/bshaffer/oauth2-server-php) from GitHub to get started.
+
 Requirements
 ------------
 
@@ -46,7 +48,8 @@ If you are new to OAuth2, take a little time first to look at the [OAuth2 Demo A
 Get Started With This Library
 -----------------------------
 
-Here is an example of a bare-bones OAuth2 Server implementation:
+Looking through the [cookbook](cookbook) examples is the best way to get started.  For those who just skim the docs for
+code samples, here is an example of a bare-bones OAuth2 Server implementation:
 
 ```php
 $storage = new OAuth2\Storage\Pdo(array('dsn' => $dsn, 'username' => $username, 'password' => $password));
@@ -55,7 +58,7 @@ $server->addGrantType(new OAuth2\GrantType\AuthorizationCode($storage)); // or a
 $server->handleTokenRequest(OAuth2\Request::createFromGlobals())->send();
 ```
 
-This library requires you to define a `Storage` object, containing instrutions on how to interact with objects in your storage
+All implementations require a `Storage` object.  This allows the server to interact with data in your storage
 layer such as [OAuth Clients](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/ClientInterface.php) and
 [Authorization Codes](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/AuthorizationCodeInterface.php).
 Built-in storage classes include [PDO](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/Pdo.php),
@@ -69,7 +72,8 @@ the list of supported [Grant Types](overview/grant_types).
 The final step, once the Server object is set up, is to handle the incoming request.  Consult the [Server Methods](overview/methods), or
 see the Step-by-Step walkthrough below to familiarize yourself with the types of requests involved in OAuth2.0 workflows.
 
-You might also want to learn about the [Scope](overview/scope) of an application or read more about the [Response Object](overview/response)
+You might also want to learn about the [Scope](overview/scope), how to integrate [User IDs](overview/userid), or read more about
+the [Response Object](overview/response)
 
 ### Walkthrough Example
 
