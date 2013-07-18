@@ -36,7 +36,7 @@ OAuth2\Autoloader::register();
 
 Using [Composer](http://getcomposer.php)? Add the following to `composer.json`:
 
-```
+```json
 {
     "require": {
         "bshaffer/oauth2-server-php": "dev-develop",

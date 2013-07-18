@@ -50,7 +50,5 @@ base_url: http://developer.github.com
 # Array of [version, released_at] Array tuples.
 api_versions:
   -
-    - beta
-    - 2011-4-27
-  -
-    - v3
+    - v0.9
+    - 2013-06-08

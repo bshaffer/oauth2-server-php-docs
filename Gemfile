@@ -10,6 +10,7 @@ gem 'pygments.rb'
 gem 'rake', '~> 0.9.2'
 gem 'thin'
 gem 'yajl-ruby', '~> 0.8.2'
+gem "htmlentities", "~> 4.3.1"
 
 group :development do
   gem 'adsf'

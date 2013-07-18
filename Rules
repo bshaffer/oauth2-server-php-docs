@@ -34,6 +34,7 @@ end
 
 compile '*' do
   filter :erb
+  filter :fenced_code_block                 # the Fenced Code Block filter
   filter :kramdown, :toc_levels => [2]
   filter :colorize_syntax,
     :colorizers => {:javascript => :pygmentsrb}

@@ -170,7 +170,7 @@ $response->send();
 
 Now paste the following URL in your browser
 
-```
+```text
 http://localhost/authorize.php?response_type=code&client_id=testclient&state=xyz
 ```
 
