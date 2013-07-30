@@ -117,6 +117,8 @@ exist. If you receive the error `invalid_scope: An unsupported scope was request
 available scopes on your server object, like so:
 
 ```php
-$scope = new OAuth2\Scope(array('onescope', 'twoscope', 'redscope', 'bluescope'));
+$scope = new OAuth2\Scope(array(
+  'supported_scopes' => array('onescope', 'twoscope', 'redscope', 'bluescope')
+));
 $server->setScopeUtil($scope);
 ```
