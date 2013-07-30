@@ -162,7 +162,9 @@ available scopes on your server object, like so:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$scope</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Scope</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">onescope</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">twoscope</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">redscope</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">bluescope</span><span class="delimiter">'</span></span>));
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$scope</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Scope</span>(<span class="predefined">array</span>(
+  <span class="string"><span class="delimiter">'</span><span class="content">supported_scopes</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">onescope</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">twoscope</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">redscope</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">bluescope</span><span class="delimiter">'</span></span>)
+));
 <span class="local-variable">$server</span>-&gt;setScopeUtil(<span class="local-variable">$scope</span>);</code></pre></div></div>
 </div>
       </div>
