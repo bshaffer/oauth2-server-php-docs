@@ -5,14 +5,9 @@ Supported grant types are as follows:
 
 ### [Authorization Code](http://tools.ietf.org/html/rfc6749#section-4.1)
 
-An authorization code obtained by user authorization is exchanged for a token.  This is the most common OAuth2.0 flow, as it implements
-**3-Legged OAuth**. Click the [Live Demo](http://brentertainment.com/oauth2/) to see this grant type in action.
-
-### [Implicit](http://tools.ietf.org/html/rfc6749#section-4.2)
-
-This is similar to the `Authorization Code` Grant Type above, but rather than an Authorization Code being returned from the authorization
-request, a token is retured to the client.  This is most common for client-side devices (i.e. mobile) where the Client Credentials cannot
-be stored securely.
+The `Authorization Code` grant type is the most common OAuth2.0 flow.  It implements **3-Legged OAuth** and involves the user granting the
+client an authorization code, which can be exchanged for an Access Token. Click the [Live Demo](http://brentertainment.com/oauth2/) to see
+this grant type in action.
 
 ### [Resource Owner Password Credentials](http://tools.ietf.org/html/rfc6749#section-4.3)
 
@@ -32,17 +27,29 @@ $ curl -u testclient:testpass "http://localhost/token.php" -d 'grant_type=client
 {"access_token":"6f05ad622a3d32a5a81aee5d73a5826adb8cbf63","expires_in":3600,"token_type":"bearer","scope":null}
 ```
 
-### [JWT Authorization Grant](http://tools.ietf.org/html/draft-ietf-oauth-jwt-bearer-04#section-4)
+### [Refresh Token](http://tools.ietf.org/html/rfc6749#section-6)
+
+The client can submit a refresh token and recieve a new access token if the access token had expired.
+
+```json
+$ curl -u testclient:testpass "http://localhost/token.php" -d 'grant_type=refresh_token&refresh_token=c54adcfdb1d99d10be3be3b77ec32a2e402ef7e3'
+{"access_token":"0e9d02499fe06762ecaafb9cfbb506676631dcfd","expires_in":3600,"token_type":"bearer","scope":null}
+```
+
+### [Implicit](http://tools.ietf.org/html/rfc6749#section-4.2)
+
+This is similar to the `Authorization Code` Grant Type above, but rather than an Authorization Code being returned from the authorization
+request, a token is retured to the client.  This is most common for client-side devices (i.e. mobile) where the Client Credentials cannot
+be stored securely.
+
+### [JWT Bearer](http://tools.ietf.org/html/draft-ietf-oauth-jwt-bearer-04#section-4)
 
 The client can submit a JWT (JSON Web Token) in a request to the token endpoint. An access token (without a refresh token) is then returned directly.
 
-### [Refresh Token](http://tools.ietf.org/html/rfc6749#section-6)
-
-The client can submit refresh token and recieve a new access token e.g. it may be necessary to do this if the access_token had expired.
-
 ### [Extension Grant](http://tools.ietf.org/html/rfc6749#section-4.5)
 
-Create your own grant type by implementing the `OAuth2\GrantType\GrantTypeInterface` and adding it to the OAuth2 Server object.
+Create your own grant type by implementing the `OAuth2\GrantType\GrantTypeInterface` and adding it to the OAuth2 Server object.  The `JWT Bearer`
+Grant Type above is an example of this.
 
 ## Multiple Grant Types
 
