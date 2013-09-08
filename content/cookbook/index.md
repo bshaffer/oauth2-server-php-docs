@@ -28,8 +28,8 @@ CREATE TABLE oauth_clients (client_id VARCHAR(80) NOT NULL, client_secret VARCHA
 CREATE TABLE oauth_access_tokens (access_token VARCHAR(40) NOT NULL, client_id VARCHAR(80) NOT NULL, user_id VARCHAR(255), expires TIMESTAMP NOT NULL, scope VARCHAR(2000), CONSTRAINT access_token_pk PRIMARY KEY (access_token));
 CREATE TABLE oauth_authorization_codes (authorization_code VARCHAR(40) NOT NULL, client_id VARCHAR(80) NOT NULL, user_id VARCHAR(255), redirect_uri VARCHAR(2000), expires TIMESTAMP NOT NULL, scope VARCHAR(2000), CONSTRAINT auth_code_pk PRIMARY KEY (authorization_code));
 CREATE TABLE oauth_refresh_tokens (refresh_token VARCHAR(40) NOT NULL, client_id VARCHAR(80) NOT NULL, user_id VARCHAR(255), expires TIMESTAMP NOT NULL, scope VARCHAR(2000), CONSTRAINT refresh_token_pk PRIMARY KEY (refresh_token));
-CREATE TABLE oauth_users (username VARCHAR(255) NOT NULL, password VARCHAR(2000), first_name VARCHAR(255), last_name VARCHAR(255), supported_scope_group VARCHAR(255), default_scope_group VARCHAR(255), CONSTRAINT username_pk PRIMARY KEY (username));
-CREATE TABLE oauth_scopes (scope_group VARCHAR(255) NOT NULL, scope VARCHAR(2000), CONSTRAINT scope_group_pk PRIMARY KEY (scope_group));
+CREATE TABLE oauth_users (username VARCHAR(255) NOT NULL, password VARCHAR(2000), first_name VARCHAR(255), last_name VARCHAR(255), CONSTRAINT username_pk PRIMARY KEY (username));
+CREATE TABLE oauth_scopes (type VARCHAR(255) NOT NULL DEFAULT "supported", scope VARCHAR(2000), client_id VARCHAR (80));
 ```
 
 ## Bootstrap your OAuth2 Server
