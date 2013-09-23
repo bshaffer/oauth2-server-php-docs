@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Content-Language" content="en-us" />
+  <meta http-equiv="imagetoolbar" content="false" />
+  <meta name="MSSmartTagsPreventParsing" content="true" />
+
+  <title></title>
+
+  <link rel="alternate" type="application/atom+xml" title="API Changes" href="changes.atom" />
+  <link href="/oauth2-server-php-docs/css/reset.css" rel="stylesheet" type="text/css" />
+  <link href="/oauth2-server-php-docs/css/960.css" rel="stylesheet" type="text/css" />
+  <link href="/oauth2-server-php-docs/css/uv_active4d.css" rel="stylesheet" type="text/css" />
+  <link href="/oauth2-server-php-docs/shared/css/documentation.css" media="screen" rel="stylesheet" type="text/css">
+  <link href="/oauth2-server-php-docs/shared/css/pygments.css" media="screen" rel="stylesheet" type="text/css">
+  <link href="/oauth2-server-php-docs/css/coderay.css" rel="stylesheet" type="text/css" />
+
+  <script src="/oauth2-server-php-docs/shared/js/jquery.js" type="text/javascript"></script>
+  <script src="/oauth2-server-php-docs/shared/js/documentation.js" type="text/javascript"></script>
+</head>
+<body class="api">
+    <div id="header-wrapper">
+      <div id="header">
+        <div>
+          <a class="logo" href="/oauth2-server-php-docs/">
+            <img src="/oauth2-server-php-docs/images/oauth2-banner.png"/>
+          </a>
+          <ul class="nav">
+            <li><a href="/oauth2-server-php-docs/changes/">Changes</a></li>
+            <li><a href="/oauth2-server-php-docs/changes.atom">
+              <img src="/oauth2-server-php-docs/images/feed-icon-28x28.png" width="16" height="16" alt="GitHub API Changes Feed" />
+            </a></li>
+          </ul>
+        </div>
+      </div><!-- #header -->
+    </div><!-- #header-wrapper -->
+
+    <div id="wrapper">
+      <div class="content">
+    <h1>Crypto Tokens</h1>
+
+<h2>Overview</h2>
+
+<p>Crypto tokens provide a way to create and validate access tokens without requiring a central
+storage such as a database. This <em>decreases the latency</em> of the OAuth2 service when validating
+Access Tokens.</p>
+
+<p>Crypto Tokens use <a href="http://en.wikipedia.org/wiki/Public-key_cryptography">Public Key Cryptography</a>
+to establish their validity.  The OAuth2.0 Server signs the tokens using a <code>private key</code>, and other
+parties can verify the token using the Server's <code>public key</code>.</p>
+
+<h2>Token Payload</h2>
+
+<p>The following fields can be extracted from the token:</p>
+
+<ul>
+<li>
+<code>id</code> - the internal id of the token</li>
+<li>
+<code>token_type</code> - the kind of token (bearer)</li>
+<li>
+<code>expires</code> - number of <em>seconds</em> until the token expires</li>
+<li>
+<code>user_id</code> - the id of the user for which the token was released</li>
+<li>
+<code>client_id</code> - the id of the client who requested the token</li>
+<li>
+<code>scope</code> - comma separated list, the list of scopes for which the token was issued</li>
+</ul><h2>Details</h2>
+
+<p>The OAuth2 Server will use a public/private key based algorithm. Details of this method can be found in the spec
+for <a href="http://tools.ietf.org/html/draft-jones-json-web-signature-04">JSON Web Signatures</a> (<a href="http://tools.ietf.org/html/draft-jones-json-web-signature-04#section-6.2">Chapter 6.2</a>)</p>
+
+<p>With the OAuth2 Server's <code>public key</code>, Resource Servers will have the ability to verify the authenticity of the crypto token.</p>
+
+<h2>Format</h2>
+
+<p>A crypto token has the following format:</p>
+
+<div class="code-container">
+<div class="langspec">Bash</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-bash">HEADER.PAYLOAD.SIGNATURE</code></pre></div></div>
+</div>
+
+<p>The <code>HEADER</code> is a Base64 URL Safe encoding of the following JSON:</p>
+
+<div class="code-container">
+<div class="langspec">Json</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-json">{<span class="key"><span class="delimiter">"</span><span class="content">typ</span><span class="delimiter">"</span></span>: <span class="string"><span class="delimiter">"</span><span class="content">JWT</span><span class="delimiter">"</span></span>, <span class="key"><span class="delimiter">"</span><span class="content">alg</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">RS256</span><span class="delimiter">"</span></span>}</code></pre></div></div>
+</div>
+
+<p>The <code>PAYLOAD</code> is a Base64 URL Safe encoding of a json object with the following fields:</p>
+
+<div class="code-container">
+<div class="langspec">Json</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-json">{
+    <span class="key"><span class="delimiter">"</span><span class="content">id</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">b08e1069f585ccc124ec1e694b2a609f1153caf8</span><span class="delimiter">"</span></span>,
+    <span class="key"><span class="delimiter">"</span><span class="content">token_type</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">bearer</span><span class="delimiter">"</span></span>,
+    <span class="key"><span class="delimiter">"</span><span class="content">expires</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">1379982305</span><span class="delimiter">"</span></span>,
+    <span class="key"><span class="delimiter">"</span><span class="content">user_id</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">THE_USER_ID</span><span class="delimiter">"</span></span>,
+    <span class="key"><span class="delimiter">"</span><span class="content">client_id</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">THE_CLIENT_ID</span><span class="delimiter">"</span></span>,
+    <span class="key"><span class="delimiter">"</span><span class="content">scope</span><span class="delimiter">"</span></span>: <span class="string"><span class="delimiter">"</span><span class="content">onescope,twoscope</span><span class="delimiter">"</span></span>
+}</code></pre></div></div>
+</div>
+
+<h2>Verification</h2>
+
+<p>The signature can be verified in any language using standard <code>Public Key</code> encryption methods:</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">/**
+ * @requires PHP 5.4.8+
+ *
+ * @throws Exception on failure
+ *
+ * @param string $access_token       the Crypto Token from an OAuth2 Server
+ * @param string $public_key         the public key
+ *
+ * @return array
+ */</span>
+<span class="keyword">function</span> <span class="function">decodeAccessToken</span>(<span class="local-variable">$access_token</span>, <span class="local-variable">$public_key</span>)
+{
+    <span class="local-variable">$separator</span> = <span class="string"><span class="delimiter">'</span><span class="content">.</span><span class="delimiter">'</span></span>;
+
+    <span class="keyword">if</span> (<span class="integer">2</span> !== <span class="predefined">substr_count</span>(<span class="local-variable">$access_token</span>, <span class="local-variable">$separator</span>)) {
+        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="predefined-constant">Exception</span>(<span class="string"><span class="delimiter">"</span><span class="content">Incorrect access token format</span><span class="delimiter">"</span></span>);
+    }
+
+    <span class="predefined">list</span>(<span class="local-variable">$header</span>, <span class="local-variable">$payload</span>, <span class="local-variable">$signature</span>) = <span class="predefined">explode</span>(<span class="local-variable">$separator</span>, <span class="local-variable">$access_token</span>);
+
+    <span class="local-variable">$decoded_signature</span> = <span class="predefined">base64_decode</span>(<span class="local-variable">$signature</span>);
+
+    <span class="comment">// The header and payload are signed together</span>
+    <span class="local-variable">$payload_to_verify</span> = <span class="predefined">utf8_decode</span>(<span class="local-variable">$header</span> . <span class="local-variable">$separator</span> . <span class="local-variable">$payload</span>);
+
+    <span class="comment">// see http://www.php.net/manual/en/function.openssl-verify.php</span>
+    <span class="local-variable">$verified</span> = openssl_verify(<span class="local-variable">$payload_to_verify</span>, <span class="local-variable">$decoded_signature</span>, <span class="local-variable">$public_key</span>, <span class="constant">OPENSSL_ALGO_SHA256</span>);
+
+    <span class="keyword">if</span> (<span class="local-variable">$verified</span> !== <span class="integer">1</span>) {
+        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="predefined-constant">Exception</span>(<span class="string"><span class="delimiter">"</span><span class="content">Cannot verify signature</span><span class="delimiter">"</span></span>);
+    }
+
+    <span class="keyword">return</span> json_decode(<span class="predefined">base64_decode</span>(<span class="local-variable">$payload</span>));
+}</code></pre></div></div>
+</div>
+      </div>
+
+    <div id="js-sidebar" class="sidebar-shell">
+      <div class="js-toggle-list sidebar-module expandable">
+        <ul>
+          <li class="js-topic">
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/">Overview</a></h3>
+            <ul class="js-guides">
+              <li><a href="/oauth2-server-php-docs/overview/methods/">Methods</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/grant-types/">Grant Types</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/response/">Response</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/scope/">Scope</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/userid/">User ID</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/crypto-tokens/">Crypto Tokens</a></li>
+            </ul>
+          </li>
+          <li class="js-topic">
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/cookbook/">Cookbook</a></h3>
+            <ul class="js-guides">
+              <li><a href="/oauth2-server-php-docs/cookbook/">Step-By-Step Walkthrough</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/doctrine/">Doctrine</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/silex/">Silex</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/drupal/">Drupal</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/google-playground/">Google Playground</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/symfony2/">Symfony2</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/restler/">Restler</a></li>
+              <!-- <li><a href="/oauth2-server-php-docs/cookbook/doctrine2/">Doctrine2</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/symfony/">Symfony 1.4</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/laravel/">Laravel</a></li> -->
+            </ul>
+          </li>
+        </ul>
+      </div> <!-- /sidebar-module -->
+      <div class="sidebar-module">
+        <p>This project is open source. Please help us by forking the project and adding to it.</p>
+      </div>
+    </div><!-- /sidebar-shell -->
+
+    </div><!-- #wrapper -->
+
+    <div id="footer" >
+      <div class="upper_footer">
+        <div class="footer_inner clearfix">
+
+        </div><!-- /.site -->
+      </div><!-- /.upper_footer -->
+
+      <div class="lower_footer">
+        <div class="footer_inner clearfix">
+            <div id="legal">
+              <p>&copy; <span id="year">year</span> Brent Shaffer. All rights reserved.</p>
+            </div><!-- /#legal or /#legal_ie-->
+        </div><!-- /.site -->
+      </div><!-- /.lower_footer -->
+    </div><!-- /#footer -->
+    <a href="https://github.com/bshaffer/oauth2-server-php-docs"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-11590669-6', 'bshaffer.github.io');
+      ga('send', 'pageview');
+    </script>
+</body>
+</html>
