@@ -16,7 +16,7 @@ The following fields can be extracted from the token:
 
 * `id` - the internal id of the token
 * `token_type` - the kind of token (bearer)
-* `expires_in` - number of *seconds* until the token expires
+* `expires` - number of *seconds* until the token expires
 * `user_id` - the id of the user for which the token was released
 * `client_id` - the id of the client who requested the token
 * `scope` - comma separated list, the list of scopes for which the token was issued
@@ -48,7 +48,7 @@ The `PAYLOAD` is a Base64 URL Safe encoding of a json object with the following 
 {
     "id":"b08e1069f585ccc124ec1e694b2a609f1153caf8",
     "token_type":"bearer",
-    "expires_in":"3600",
+    "expires":"1379982305",
     "user_id":"THE_USER_ID",
     "client_id":"THE_CLIENT_ID",
     "scope": "onescope,twoscope"
