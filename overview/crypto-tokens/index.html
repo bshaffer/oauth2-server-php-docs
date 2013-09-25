@@ -57,8 +57,8 @@ parties can verify the token using the Server's <code>public key</code>.</p>
 <p>A crypto token has the following format:</p>
 
 <div class="code-container">
-<div class="langspec">Bash</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-bash">HEADER.PAYLOAD.SIGNATURE</code></pre></div></div>
+<div class="langspec">Text</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text">HEADER.PAYLOAD.SIGNATURE</code></pre></div></div>
 </div>
 
 <p>The <code>HEADER</code> is a Base64 URL Safe encoding of the following JSON:</p>
@@ -109,13 +109,19 @@ storage object and a <code>CryptoToken</code> response type:</p>
 <span class="local-variable">$privateKey</span> = <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/id_rsa</span><span class="delimiter">'</span></span>);
 
 <span class="comment">// create storage</span>
-<span class="local-variable">$pubkeyStorage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">PublicKey</span>(<span class="local-variable">$publicKey</span>, <span class="local-variable">$privateKey</span>);
+<span class="local-variable">$storage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Memory</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">keys</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(
+    <span class="string"><span class="delimiter">'</span><span class="content">public_key</span><span class="delimiter">'</span></span>  =&gt; <span class="local-variable">$publicKey</span>,
+    <span class="string"><span class="delimiter">'</span><span class="content">private_key</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$privateKey</span>,
+)));
+
+
+<span class="comment">// Make the "access_token" storage use Crypto Tokens instead of a database</span>
+<span class="local-variable">$cryptoStorage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">CryptoToken</span>(<span class="local-variable">$storage</span>);
+<span class="local-variable">$server</span>-&gt;addStorage(<span class="local-variable">$cryptoStorage</span>, <span class="string"><span class="delimiter">"</span><span class="content">access_token</span><span class="delimiter">"</span></span>);
 
 <span class="comment">// make the "token" response type a CryptoToken</span>
-<span class="local-variable">$server</span>-&gt;addResponseType(<span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">ResponseType</span>\<span class="constant">CryptoToken</span>(<span class="local-variable">$pubkeyStorage</span>));
-
-<span class="comment">// make the "access_token" storage use public key verification instead of a database</span>
-<span class="local-variable">$server</span>-&gt;addStorage(<span class="local-variable">$pubkeyStorage</span>, <span class="string"><span class="delimiter">"</span><span class="content">access_token</span><span class="delimiter">"</span></span>);</code></pre></div></div>
+<span class="local-variable">$cryptoResponseType</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">ResponseType</span>\<span class="constant">CryptoToken</span>(<span class="local-variable">$storage</span>);
+<span class="local-variable">$server</span>-&gt;addResponseType(<span class="local-variable">$cryptoResponseType</span>);</code></pre></div></div>
 </div>
 
 <p>Here is an example of a full server configuration:</p>
@@ -123,6 +129,9 @@ storage object and a <code>CryptoToken</code> response type:</p>
 <div class="code-container">
 <div class="langspec">Php</div>
 <div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// token.php</span>
+
+<span class="comment">// error reporting (this is a demo, after all!)</span>
+ini_set(<span class="string"><span class="delimiter">'</span><span class="content">display_errors</span><span class="delimiter">'</span></span>,<span class="integer">1</span>);<span class="predefined">error_reporting</span>(<span class="exception">E_ALL</span>);
 
 <span class="comment">// Autoloading (composer is preferred, but for this example let's just do this)</span>
 <span class="predefined">require_once</span>(<span class="string"><span class="delimiter">'</span><span class="content">oauth2-server-php/src/OAuth2/Autoloader.php</span><span class="delimiter">'</span></span>);
@@ -133,19 +142,27 @@ storage object and a <code>CryptoToken</code> response type:</p>
 <span class="local-variable">$privateKey</span> = <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/id_rsa</span><span class="delimiter">'</span></span>);
 
 <span class="comment">// create storage</span>
-<span class="local-variable">$pubkeyStorage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">PublicKey</span>(<span class="local-variable">$publicKey</span>, <span class="local-variable">$privateKey</span>); <span class="comment">// public key storage</span>
-<span class="local-variable">$clientStorage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Memory</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">client_credentials</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(
-    <span class="string"><span class="delimiter">'</span><span class="content">CLIENT_ID</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">client_secret</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">CLIENT_SECRET</span><span class="delimiter">'</span></span>) <span class="comment">// add a Client ID for testing</span>
-)));
+<span class="local-variable">$storage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Memory</span>(<span class="predefined">array</span>(
+    <span class="string"><span class="delimiter">'</span><span class="content">keys</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(
+        <span class="string"><span class="delimiter">'</span><span class="content">public_key</span><span class="delimiter">'</span></span>  =&gt; <span class="local-variable">$publicKey</span>,
+        <span class="string"><span class="delimiter">'</span><span class="content">private_key</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$privateKey</span>,
+    ),
+    <span class="comment">// add a Client ID for testing</span>
+    <span class="string"><span class="delimiter">'</span><span class="content">client_credentials</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(
+        <span class="string"><span class="delimiter">'</span><span class="content">CLIENT_ID</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">client_secret</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">CLIENT_SECRET</span><span class="delimiter">'</span></span>)
+    ),
+));
 
-<span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>(<span class="local-variable">$clientStorage</span>);
-<span class="local-variable">$server</span>-&gt;addGrantType(<span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">ClientCredentials</span>(<span class="local-variable">$clientStorage</span>)); <span class="comment">// minimum config</span>
+<span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>();
+<span class="local-variable">$server</span>-&gt;addGrantType(<span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">ClientCredentials</span>(<span class="local-variable">$storage</span>)); <span class="comment">// minimum config</span>
+
+<span class="comment">// Make the "access_token" storage use Crypto Tokens instead of a database</span>
+<span class="local-variable">$cryptoStorage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">CryptoToken</span>(<span class="local-variable">$storage</span>);
+<span class="local-variable">$server</span>-&gt;addStorage(<span class="local-variable">$cryptoStorage</span>, <span class="string"><span class="delimiter">"</span><span class="content">access_token</span><span class="delimiter">"</span></span>);
 
 <span class="comment">// make the "token" response type a CryptoToken</span>
-<span class="local-variable">$server</span>-&gt;addResponseType(<span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">ResponseType</span>\<span class="constant">CryptoToken</span>(<span class="local-variable">$pubkeyStorage</span>));
-
-<span class="comment">// make the "access_token" storage use public key verification instead of a database</span>
-<span class="local-variable">$server</span>-&gt;addStorage(<span class="local-variable">$pubkeyStorage</span>, <span class="string"><span class="delimiter">"</span><span class="content">access_token</span><span class="delimiter">"</span></span>);
+<span class="local-variable">$cryptoResponseType</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">ResponseType</span>\<span class="constant">CryptoToken</span>(<span class="local-variable">$storage</span>);
+<span class="local-variable">$server</span>-&gt;addResponseType(<span class="local-variable">$cryptoResponseType</span>);
 
 <span class="comment">// send the response</span>
 <span class="local-variable">$server</span>-&gt;handleTokenRequest(<span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals())-&gt;send();</code></pre></div></div>
@@ -179,31 +196,81 @@ your server without the Authorization Server's private key:</p>
 <div class="code-container">
 <div class="langspec">Php</div>
 <div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">/* for a Resource Server (minimum config) */</span>
-
 <span class="local-variable">$publicKey</span> = <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/id_rsa.pub</span><span class="delimiter">'</span></span>);
 
-<span class="local-variable">$pubkeyStorage</span> = <span class="keyword">new</span> <span class="constant">PublicKey</span>(<span class="local-variable">$publicKey</span>); <span class="comment">// no private key necessary</span>
+<span class="comment">// no private key necessary</span>
+<span class="local-variable">$storage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Memory</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">keys</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(
+    <span class="string"><span class="delimiter">'</span><span class="content">public_key</span><span class="delimiter">'</span></span>  =&gt; <span class="local-variable">$publicKey</span>,
+)));
 
 <span class="comment">// make the "access_token" storage use public key verification instead of a database</span>
-<span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>\<span class="constant">Server</span>(<span class="local-variable">$pubkeyStorage</span>);</code></pre></div></div>
+<span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>(<span class="local-variable">$storage</span>);</code></pre></div></div>
 </div>
 
 <p>This allows your server to verify access tokens without making any requests to the
 Authorization Server or any other shared resource.</p>
 
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// make the "access_token" storage use public key verification instead of a database</span>
+<span class="keyword">if</span> (!<span class="local-variable">$server</span>-&gt;verifyResourceRequest(<span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals())) {
+    <span class="predefined">exit</span>(<span class="string"><span class="delimiter">"</span><span class="content">Failed</span><span class="delimiter">"</span></span>);
+}
+<span class="predefined">echo</span> <span class="string"><span class="delimiter">"</span><span class="content">Success!</span><span class="delimiter">"</span></span>;</code></pre></div></div>
+</div>
+
 <h3>Using Secondary Storage</h3>
 
 <p>This library allows you to back up the access tokens to secondary storage.  Just pass
-an object implementing <code>OAuth2\Storage\AccessTokenInterface</code> to the <code>PublicKey</code> object
+an object implementing <code>OAuth2\Storage\AccessTokenInterface</code> to the <code>CryptoToken</code> object
 to have access tokens stored in an additional location:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$anyStorage</span>    = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Pdo</span>(<span class="local-variable">$pdo</span>); <span class="comment">// access token will also be saved to PDO</span>
-<span class="local-variable">$pubkeyStorage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">PublicKey</span>(<span class="local-variable">$publicKey</span>, <span class="local-variable">$privateKey</span>, <span class="predefined">array</span>(), <span class="local-variable">$anyStorage</span>);
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$pdoStorage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Pdo</span>(<span class="local-variable">$pdo</span>); <span class="comment">// access token will also be saved to PDO</span>
+<span class="local-variable">$memoryStorage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Memory</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">keys</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(
+    <span class="string"><span class="delimiter">'</span><span class="content">public_key</span><span class="delimiter">'</span></span>  =&gt; <span class="local-variable">$publicKey</span>,
+    <span class="string"><span class="delimiter">'</span><span class="content">private_key</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$privateKey</span>,
+)));
+
+<span class="local-variable">$cryptoStorage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">CryptoToken</span>(<span class="local-variable">$memoryStorage</span>, <span class="local-variable">$pdoStorage</span>);
 
 <span class="comment">// set the pubkey storage for access tokens</span>
-<span class="local-variable">$server</span>-&gt;addStorage(<span class="local-variable">$pubkeyStorage</span>, <span class="string"><span class="delimiter">"</span><span class="content">access_token</span><span class="delimiter">"</span></span>);</code></pre></div></div>
+<span class="local-variable">$server</span>-&gt;addStorage(<span class="local-variable">$cryptoStorage</span>, <span class="string"><span class="delimiter">"</span><span class="content">access_token</span><span class="delimiter">"</span></span>);</code></pre></div></div>
+</div>
+
+<p>This example pulls the public/private keys from <code>Memory</code> storage, and saves the
+granted access tokens to <code>Pdo</code> storage once they are signed.</p>
+
+<h3>Client-Specific Encryption Keys</h3>
+
+<p>It is a good idea to make the keys Client-Specific.  That way, if a key pair is
+compromised, only a single client is affected.  Both <code>Memory</code> and <code>Pdo</code> support
+this kind of storage:</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$memoryStorage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Memory</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">keys</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(
+    <span class="string"><span class="delimiter">'</span><span class="content">ClientID_One</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(
+        <span class="string"><span class="delimiter">'</span><span class="content">public_key</span><span class="delimiter">'</span></span>  =&gt; <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/client_1_rsa.pub</span><span class="delimiter">'</span></span>),
+        <span class="string"><span class="delimiter">'</span><span class="content">private_key</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/client_1_rsa</span><span class="delimiter">'</span></span>),
+    ),
+    <span class="string"><span class="delimiter">'</span><span class="content">ClientID_Two</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(
+        <span class="string"><span class="delimiter">'</span><span class="content">public_key</span><span class="delimiter">'</span></span>  =&gt; <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/client_2_rsa.pub</span><span class="delimiter">'</span></span>),
+        <span class="string"><span class="delimiter">'</span><span class="content">private_key</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/client_2_rsa</span><span class="delimiter">'</span></span>),
+    ),
+    <span class="comment">// declare global keys as well</span>
+    <span class="string"><span class="delimiter">'</span><span class="content">public_key</span><span class="delimiter">'</span></span>  =&gt; <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/global_rsa.pub</span><span class="delimiter">'</span></span>),
+    <span class="string"><span class="delimiter">'</span><span class="content">private_key</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/global_rsa</span><span class="delimiter">'</span></span>),
+)));</code></pre></div></div>
+</div>
+
+<p>And for MySQL PDO:</p>
+
+<div class="code-container">
+<div class="langspec">Sql</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-sql"><span class="class">INSERT</span> <span class="class">INTO</span> public_keys (client_id, public_key, private_key, encryption_algorithm) <span class="keyword">VALUES</span> (<span class="string"><span class="delimiter">"</span><span class="content">ClientID_One</span><span class="delimiter">"</span></span>, <span class="string"><span class="delimiter">"</span><span class="content">...</span><span class="delimiter">"</span></span>, <span class="string"><span class="delimiter">"</span><span class="content">...</span><span class="delimiter">"</span></span>, <span class="string"><span class="delimiter">"</span><span class="content">RS256</span><span class="delimiter">"</span></span>);
+<span class="class">INSERT</span> <span class="class">INTO</span> public_keys (client_id, public_key, private_key, encryption_algorithm) <span class="keyword">VALUES</span> (<span class="string"><span class="delimiter">"</span><span class="content">ClientID_Two</span><span class="delimiter">"</span></span>, <span class="string"><span class="delimiter">"</span><span class="content">...</span><span class="delimiter">"</span></span>, <span class="string"><span class="delimiter">"</span><span class="content">...</span><span class="delimiter">"</span></span>, <span class="string"><span class="delimiter">"</span><span class="content">RS256</span><span class="delimiter">"</span></span>);</code></pre></div></div>
 </div>
 
 <h3>Configure a Different Algorithms</h3>
@@ -217,13 +284,20 @@ to have access tokens stored in an additional location:</p>
 <li>"RS256" - uses <code>openssl_sign</code> / sha256</li>
 <li>"RS384" - uses <code>openssl_sign</code> / sha384</li>
 <li>"RS512" - uses <code>openssl_sign</code> / sha512</li>
-</ul><p>Configure this by passing an array as the third argument to the <code>OAuth2\Storage\PublicKey</code> object:</p>
+</ul><p>Configure this in your <code>OAuth2\Storage\PublicKeyInterface</code> instance.  When using
+the <code>Memory</code> storage, this would look like this:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$pubkeyStorage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">PublicKey</span>(<span class="local-variable">$publicKey</span>, <span class="local-variable">$privateKey</span>, <span class="predefined">array</span>(
-    <span class="string"><span class="delimiter">'</span><span class="content">algorithm</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">HS256</span><span class="delimiter">'</span></span>, <span class="comment">// "RS256" is the default</span>
-));</code></pre></div></div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$storage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Memory</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">keys</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(
+    <span class="string"><span class="delimiter">'</span><span class="content">public_key</span><span class="delimiter">'</span></span>            =&gt; <span class="local-variable">$publicKey</span>,
+    <span class="string"><span class="delimiter">'</span><span class="content">private_key</span><span class="delimiter">'</span></span>           =&gt; <span class="local-variable">$privateKey</span>,
+    <span class="string"><span class="delimiter">'</span><span class="content">encryption_algorithm</span><span class="delimiter">'</span></span>  =&gt; <span class="string"><span class="delimiter">'</span><span class="content">HS256</span><span class="delimiter">'</span></span>, <span class="comment">// "RS256" is the default</span>
+)));
+
+<span class="comment">// ... use this storage for OAuth2\Storage\CryptoToken and OAuth2\ResponseType\CryptoToken</span>
+<span class="local-variable">$server</span>-&gt;addStorage(<span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">CryptoToken</span>(<span class="local-variable">$storage</span>), <span class="string"><span class="delimiter">"</span><span class="content">access_token</span><span class="delimiter">"</span></span>);
+<span class="local-variable">$server</span>-&gt;addResponseType(<span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">ResponseType</span>\<span class="constant">CryptoToken</span>(<span class="local-variable">$storage</span>));</code></pre></div></div>
 </div>
 
 <h2>Client Verification</h2>
