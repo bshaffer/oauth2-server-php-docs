@@ -207,15 +207,23 @@ $memoryStorage = new OAuth2\Storage\Memory(array('keys' => array(
 
 ```
 
-And for MySQL PDO:
+And for MySQL PDO, run the following query:
 
 ```sql
-INSERT INTO public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES ("ClientID_One", "...", "...", "RS256");
-INSERT INTO public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES ("ClientID_Two", "...", "...", "RS256");
-// declare global keys as well
-INSERT INTO public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES ("", "...", "...", "RS256");
+INSERT INTO oauth_public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES ("ClientID_One", "...", "...", "RS256");
+INSERT INTO oauth_public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES ("ClientID_Two", "...", "...", "RS256");
+/* declare global keys as well */
+INSERT INTO oauth_public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES (NULL, "...", "...", "RS256");
 ```
 
+And instantiate the PDO Storage object:
+
+```php
+$dsn      = 'mysql:dbname=my_oauth2_db;host=localhost';
+$username = 'root';
+$password = '';
+$pdoStorage = new OAuth2\Storage\Pdo(array('dsn' => $dsn, 'username' => $username, 'password' => $password));
+```
 ### Configure a Different Algorithms
 
 The following algorithms are supported for CryptoTokens:
