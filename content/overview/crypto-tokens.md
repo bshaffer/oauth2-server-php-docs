@@ -16,7 +16,7 @@ parties can verify the token using the Server's `public key`.
 
 A crypto token has the following format:
 
-```bash
+```text
 HEADER.PAYLOAD.SIGNATURE
 ```
 
@@ -59,18 +59,27 @@ $publicKey  = file_get_contents('/path/to/id_rsa.pub');
 $privateKey = file_get_contents('/path/to/id_rsa');
 
 // create storage
-$pubkeyStorage = new OAuth2\Storage\PublicKey($publicKey, $privateKey);
+$storage = new OAuth2\Storage\Memory(array('keys' => array(
+    'public_key'  => $publicKey,
+    'private_key' => $privateKey,
+)));
+
+
+// Make the "access_token" storage use Crypto Tokens instead of a database
+$cryptoStorage = new OAuth2\Storage\CryptoToken($storage);
+$server->addStorage($cryptoStorage, "access_token");
 
 // make the "token" response type a CryptoToken
-$server->addResponseType(new OAuth2\ResponseType\CryptoToken($pubkeyStorage));
-
-// make the "access_token" storage use public key verification instead of a database
-$server->addStorage($pubkeyStorage, "access_token");
+$cryptoResponseType = new OAuth2\ResponseType\CryptoToken($storage);
+$server->addResponseType($cryptoResponseType);
 ```
 
 Here is an example of a full server configuration:
 ```php
 // token.php
+
+// error reporting (this is a demo, after all!)
+ini_set('display_errors',1);error_reporting(E_ALL);
 
 // Autoloading (composer is preferred, but for this example let's just do this)
 require_once('oauth2-server-php/src/OAuth2/Autoloader.php');
@@ -81,19 +90,27 @@ $publicKey  = file_get_contents('/path/to/id_rsa.pub');
 $privateKey = file_get_contents('/path/to/id_rsa');
 
 // create storage
-$pubkeyStorage = new OAuth2\Storage\PublicKey($publicKey, $privateKey); // public key storage
-$clientStorage = new OAuth2\Storage\Memory(array('client_credentials' => array(
-    'CLIENT_ID' => array('client_secret' => 'CLIENT_SECRET') // add a Client ID for testing
-)));
+$storage = new OAuth2\Storage\Memory(array(
+    'keys' => array(
+        'public_key'  => $publicKey,
+        'private_key' => $privateKey,
+    ),
+    // add a Client ID for testing
+    'client_credentials' => array(
+        'CLIENT_ID' => array('client_secret' => 'CLIENT_SECRET')
+    ),
+));
 
-$server = new OAuth2\Server($clientStorage);
-$server->addGrantType(new OAuth2\GrantType\ClientCredentials($clientStorage)); // minimum config
+$server = new OAuth2\Server();
+$server->addGrantType(new OAuth2\GrantType\ClientCredentials($storage)); // minimum config
+
+// Make the "access_token" storage use Crypto Tokens instead of a database
+$cryptoStorage = new OAuth2\Storage\CryptoToken($storage);
+$server->addStorage($cryptoStorage, "access_token");
 
 // make the "token" response type a CryptoToken
-$server->addResponseType(new OAuth2\ResponseType\CryptoToken($pubkeyStorage));
-
-// make the "access_token" storage use public key verification instead of a database
-$server->addStorage($pubkeyStorage, "access_token");
+$cryptoResponseType = new OAuth2\ResponseType\CryptoToken($storage);
+$server->addResponseType($cryptoResponseType);
 
 // send the response
 $server->handleTokenRequest(OAuth2\Request::createFromGlobals())->send();
@@ -123,30 +140,80 @@ your server without the Authorization Server's private key:
 
 ```php
 /* for a Resource Server (minimum config) */
-
 $publicKey = file_get_contents('/path/to/id_rsa.pub');
 
-$pubkeyStorage = new PublicKey($publicKey); // no private key necessary
+// no private key necessary
+$storage = new OAuth2\Storage\Memory(array('keys' => array(
+    'public_key'  => $publicKey,
+)));
 
 // make the "access_token" storage use public key verification instead of a database
-$server = new OAuth2\Server\Server($pubkeyStorage);
+$server = new OAuth2\Server($storage);
 ```
 
 This allows your server to verify access tokens without making any requests to the
 Authorization Server or any other shared resource.
 
+```php
+// make the "access_token" storage use public key verification instead of a database
+if (!$server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
+    exit("Failed");
+}
+echo "Success!";
+```
+
 ### Using Secondary Storage
 
 This library allows you to back up the access tokens to secondary storage.  Just pass
-an object implementing `OAuth2\Storage\AccessTokenInterface` to the `PublicKey` object
+an object implementing `OAuth2\Storage\AccessTokenInterface` to the `CryptoToken` object
 to have access tokens stored in an additional location:
 
 ```php
-$anyStorage    = new OAuth2\Storage\Pdo($pdo); // access token will also be saved to PDO
-$pubkeyStorage = new OAuth2\Storage\PublicKey($publicKey, $privateKey, array(), $anyStorage);
+$pdoStorage = new OAuth2\Storage\Pdo($pdo); // access token will also be saved to PDO
+$memoryStorage = new OAuth2\Storage\Memory(array('keys' => array(
+    'public_key'  => $publicKey,
+    'private_key' => $privateKey,
+)));
+
+$cryptoStorage = new OAuth2\Storage\CryptoToken($memoryStorage, $pdoStorage);
 
 // set the pubkey storage for access tokens
-$server->addStorage($pubkeyStorage, "access_token");
+$server->addStorage($cryptoStorage, "access_token");
+```
+
+This example pulls the public/private keys from `Memory` storage, and saves the
+granted access tokens to `Pdo` storage once they are signed.
+
+### Client-Specific Encryption Keys
+
+It is a good idea to make the keys Client-Specific.  That way, if a key pair is
+compromised, only a single client is affected.  Both `Memory` and `Pdo` support
+this kind of storage:
+
+```php
+$memoryStorage = new OAuth2\Storage\Memory(array('keys' => array(
+    'ClientID_One' => array(
+        'public_key'  => file_get_contents('/path/to/client_1_rsa.pub'),
+        'private_key' => file_get_contents('/path/to/client_1_rsa'),
+    ),
+    'ClientID_Two' => array(
+        'public_key'  => file_get_contents('/path/to/client_2_rsa.pub'),
+        'private_key' => file_get_contents('/path/to/client_2_rsa'),
+    ),
+    // declare global keys as well
+    'public_key'  => file_get_contents('/path/to/global_rsa.pub'),
+    'private_key' => file_get_contents('/path/to/global_rsa'),
+)));
+
+```
+
+And for MySQL PDO:
+
+```sql
+INSERT INTO public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES ("ClientID_One", "...", "...", "RS256");
+INSERT INTO public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES ("ClientID_Two", "...", "...", "RS256");
+// declare global keys as well
+INSERT INTO public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES ("", "...", "...", "RS256");
 ```
 
 ### Configure a Different Algorithms
@@ -160,12 +227,19 @@ The following algorithms are supported for CryptoTokens:
 * "RS384" - uses `openssl_sign` / sha384
 * "RS512" - uses `openssl_sign` / sha512
 
-Configure this by passing an array as the third argument to the `OAuth2\Storage\PublicKey` object:
+Configure this in your `OAuth2\Storage\PublicKeyInterface` instance.  When using
+the `Memory` storage, this would look like this:
 
 ```php
-$pubkeyStorage = new OAuth2\Storage\PublicKey($publicKey, $privateKey, array(
-    'algorithm' => 'HS256', // "RS256" is the default
-));
+$storage = new OAuth2\Storage\Memory(array('keys' => array(
+    'public_key'            => $publicKey,
+    'private_key'           => $privateKey,
+    'encryption_algorithm'  => 'HS256', // "RS256" is the default
+)));
+
+// ... use this storage for OAuth2\Storage\CryptoToken and OAuth2\ResponseType\CryptoToken
+$server->addStorage(new OAuth2\Storage\CryptoToken($storage), "access_token");
+$server->addResponseType(new OAuth2\ResponseType\CryptoToken($storage));
 ```
 
 ## Client Verification
