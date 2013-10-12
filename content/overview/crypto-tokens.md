@@ -190,7 +190,7 @@ granted access tokens to `Pdo` storage once they are signed.
 
 It is a good idea to make the keys Client-Specific.  That way, if a key pair is
 compromised, only a single client is affected.  Both `Memory` and `Pdo` support
-this kind of storage:
+this kind of storage.  Here is an example using `Memory` storage:
 
 ```php
 $keyStorage = new OAuth2\Storage\Memory(array('keys' => array(
@@ -209,13 +209,21 @@ $keyStorage = new OAuth2\Storage\Memory(array('keys' => array(
 
 ```
 
-And for MySQL PDO, run the following query:
+For `Pdo`, run the following query:
 
 ```sql
+/* create the database table */
+CREATE TABLE oauth_public_keys (client_id VARCHAR(80), public_key VARCHAR(8000), private_key VARCHAR(8000), encryption_algorithm VARCHAR(80) DEFAULT "RS256")
+```
+
+Insert sample data using something like this:
+
+```sql
+/* insert global keys into the database */
+INSERT INTO oauth_public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES (NULL, "...", "...", "RS256");
+/* add client-specific key pairs */
 INSERT INTO oauth_public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES ("ClientID_One", "...", "...", "RS256");
 INSERT INTO oauth_public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES ("ClientID_Two", "...", "...", "RS256");
-/* declare global keys as well */
-INSERT INTO oauth_public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES (NULL, "...", "...", "RS256");
 ```
 
 And instantiate the PDO Storage object:
