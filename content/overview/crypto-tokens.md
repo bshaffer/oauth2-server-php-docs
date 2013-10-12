@@ -143,19 +143,21 @@ your server without the Authorization Server's private key:
 $publicKey = file_get_contents('/path/to/id_rsa.pub');
 
 // no private key necessary
-$storage = new OAuth2\Storage\Memory(array('keys' => array(
+$keyStorage = new OAuth2\Storage\Memory(array('keys' => array(
     'public_key'  => $publicKey,
 )));
 
+$cryptoStorage = new OAuth2\Storage\CryptoToken($keyStorage);
+
 // make the "access_token" storage use public key verification instead of a database
-$server = new OAuth2\Server($storage);
+$server->addStorage($cryptoStorage, "access_token");
 ```
 
 This allows your server to verify access tokens without making any requests to the
 Authorization Server or any other shared resource.
 
 ```php
-// make the "access_token" storage use public key verification instead of a database
+// verify the crypto token in the request
 if (!$server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
     exit("Failed");
 }
@@ -170,14 +172,14 @@ to have access tokens stored in an additional location:
 
 ```php
 $pdoStorage = new OAuth2\Storage\Pdo($pdo); // access token will also be saved to PDO
-$memoryStorage = new OAuth2\Storage\Memory(array('keys' => array(
+$keyStorage = new OAuth2\Storage\Memory(array('keys' => array(
     'public_key'  => $publicKey,
     'private_key' => $privateKey,
 )));
 
-$cryptoStorage = new OAuth2\Storage\CryptoToken($memoryStorage, $pdoStorage);
+$cryptoStorage = new OAuth2\Storage\CryptoToken($keyStorage, $pdoStorage);
 
-// set the pubkey storage for access tokens
+// make the "access_token" storage use public key verification instead of a database
 $server->addStorage($cryptoStorage, "access_token");
 ```
 
@@ -191,7 +193,7 @@ compromised, only a single client is affected.  Both `Memory` and `Pdo` support
 this kind of storage:
 
 ```php
-$memoryStorage = new OAuth2\Storage\Memory(array('keys' => array(
+$keyStorage = new OAuth2\Storage\Memory(array('keys' => array(
     'ClientID_One' => array(
         'public_key'  => file_get_contents('/path/to/client_1_rsa.pub'),
         'private_key' => file_get_contents('/path/to/client_1_rsa'),
