@@ -22,7 +22,7 @@ require_once('/path/to/oauth2-server-php/src/OAuth2/Autoloader.php');
 OAuth2\Autoloader::register();
 ```
 
-Using [Composer](http://getcomposer.php)? Add the following to `composer.json`:
+Using [Composer](http://getcomposer.org)? Add the following to `composer.json`:
 
 ```json
 {
