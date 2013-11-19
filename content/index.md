@@ -67,7 +67,7 @@ Built-in storage classes include [PDO](https://github.com/bshaffer/oauth2-server
 the use of your own Storage objects to fit your application's implementation (see the [Doctrine Storage](cookbook/doctrine) example).
 
 Once you've created a storage object, pass it to the server object and define which Grant Types your server is to support.  See
-the list of supported [Grant Types](overview/grant_types).
+the list of supported [Grant Types](overview/grant-types).
 
 The final step, once the Server object is set up, is to handle the incoming request.  Consult the [Server Methods](overview/methods), or
 see the Step-by-Step walkthrough below to familiarize yourself with the types of requests involved in OAuth2.0 workflows.
