@@ -17,11 +17,11 @@ That will save the user ID into the database with the access token. When the tok
 can retrieve the associated ID:
 
 ```php
-if (!$server->verifyResourceRequest(OAuth2_Request::createFromGlobals())) {
+if (!$server->verifyResourceRequest(\OAuth2\Request::createFromGlobals())) {
     $server->getResponse()->send();
     die;
 }
 
-$token = $server->getAccessTokenData(OAuth2_Request::createFromGlobals());
+$token = $server->getAccessTokenData(\OAuth2\Request::createFromGlobals());
 echo "User ID associated with this token is {$token['user_id']}";
 ```
