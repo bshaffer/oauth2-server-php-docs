@@ -62,13 +62,17 @@ specific credentials (access token).</p>
 
 <ul>
 <li>Receives a request object for an authorize request, returns a response object with the appropriate response</li>
-</ul><p><strong>validateAuthorizeRequest</strong></p>
+</ul>
+
+<p><strong>validateAuthorizeRequest</strong></p>
 
 <ul>
 <li>Receives a request object, returns false if the incoming request is not a valid Authorize Request. If the request
 is valid, returns an array of retrieved client details together with input.
 Applications should call this before displaying a login or authorization form to the user</li>
-</ul><h2>Token Requests</h2>
+</ul>
+
+<h2>Token Requests</h2>
 
 <p>An endpoint which the client uses to exchange the <code>authorization code</code> for an <code>access token</code>.</p>
 
@@ -76,11 +80,15 @@ Applications should call this before displaying a login or authorization form to
 
 <ul>
 <li>Receives a request object for a token request, returns a token if the request is valid.</li>
-</ul><p><strong>handleTokenRequest</strong></p>
+</ul>
+
+<p><strong>handleTokenRequest</strong></p>
 
 <ul>
 <li>Receives a request object for a token request, returns a response object for the appropriate response.</li>
-</ul><h2>Resource Requests</h2>
+</ul>
+
+<h2>Resource Requests</h2>
 
 <p>Any API method requiring oauth2 authentication.  The server will validate the incomming request, and then allow
 the application to serve back the protected resource.</p>
@@ -90,11 +98,15 @@ the application to serve back the protected resource.</p>
 <ul>
 <li>Receives a request object for a resource request, finds the token if it exists, and returns a Boolean for whether
 the incomming request is valid</li>
-</ul><p><strong>getAccessTokenData</strong></p>
+</ul>
+
+<p><strong>getAccessTokenData</strong></p>
 
 <ul>
 <li>Takes a token string as an argument and returns the token data if applicable, or null if the token is invalid</li>
 </ul>
+
+
       </div>
 
     <div id="js-sidebar" class="sidebar-shell">

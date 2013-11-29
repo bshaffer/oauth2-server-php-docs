@@ -95,7 +95,9 @@ parties can verify the token using the Server's <code>public key</code>.</p>
 <code>client_id</code> - the id of the client who requested the token</li>
 <li>
 <code>scope</code> - comma separated list of scopes for which the token is issued</li>
-</ul><h2>Using Crypto Tokens With This Library</h2>
+</ul>
+
+<h2>Using Crypto Tokens With This Library</h2>
 
 <h3>Basic Usage</h3>
 
@@ -307,7 +309,9 @@ this kind of storage.  Here is an example using <code>Memory</code> storage:</p>
 <li>"RS256" - uses <code>openssl_sign</code> / sha256</li>
 <li>"RS384" - uses <code>openssl_sign</code> / sha384</li>
 <li>"RS512" - uses <code>openssl_sign</code> / sha512</li>
-</ul><p>Configure this in your <code>OAuth2\Storage\PublicKeyInterface</code> instance.  When using
+</ul>
+
+<p>Configure this in your <code>OAuth2\Storage\PublicKeyInterface</code> instance.  When using
 the <code>Memory</code> storage, this would look like this:</p>
 
 <div class="code-container">
@@ -361,6 +365,8 @@ is an example of this in PHP:</p>
 <span class="comment">// output the Crypto Token payload</span>
 <span class="predefined">var_dump</span>(<span class="predefined">base64_decode</span>(<span class="local-variable">$payload</span>));</code></pre></div></div>
 </div>
+
+
       </div>
 
     <div id="js-sidebar" class="sidebar-shell">
