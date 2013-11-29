@@ -17,7 +17,7 @@ class FencedCodeBlock < Nanoc3::Filter
         replacement << '</div>'
       end
 
-      replacement << '<pre class="highlight"><code class="language'
+      replacement << '<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language'
 
       if lang_spec && lang_spec.length > 0
         replacement << '-'
@@ -30,7 +30,7 @@ class FencedCodeBlock < Nanoc3::Filter
 
       coder = ::HTMLEntities.new
       replacement << coder.encode(code_block)
-      replacement << '</code></pre></div>'
+      replacement << '</code></pre></div></div></div>'
     }
   end
 end
