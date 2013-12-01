@@ -85,6 +85,18 @@ this grant type in action.</p>
 request, a token is retured to the client.  This is most common for client-side devices (i.e. mobile) where the Client Credentials cannot
 be stored securely.</p>
 
+<p>Use the <code>Implicit</code> Grant Type by setting the <code>allow_implicit</code> option to true for the <code>authorize</code> endpoint:</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$storage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Pdo</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">dsn</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$dsn</span>, <span class="string"><span class="delimiter">'</span><span class="content">username</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$username</span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$password</span>));
+<span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>(<span class="local-variable">$storage</span>, <span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">allow_implicit</span><span class="delimiter">'</span></span> =&gt; <span class="predefined-constant">true</span>));
+
+<span class="local-variable">$server</span>-&gt;handleAuthorizeRequest(<span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals())-&gt;send();</code></pre></div></div>
+</div>
+
+<blockquote><p>It is important to note this is not added as a <code>Grant Type</code> class because the implicit grant type is requested using the <code>authorize</code> endpoint rather than the <code>token</code> endpoint.</p></blockquote>
+
 <h3><a href="http://tools.ietf.org/html/draft-ietf-oauth-jwt-bearer-04#section-4">JWT Bearer</a></h3>
 
 <p>The client can submit a JWT (JSON Web Token) in a request to the token endpoint. An access token (without a refresh token) is then returned directly.</p>
