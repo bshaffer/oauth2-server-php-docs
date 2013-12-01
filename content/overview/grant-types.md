@@ -42,6 +42,17 @@ This is similar to the `Authorization Code` Grant Type above, but rather than an
 request, a token is retured to the client.  This is most common for client-side devices (i.e. mobile) where the Client Credentials cannot
 be stored securely.
 
+Use the `Implicit` Grant Type by setting the `allow_implicit` option to true for the `authorize` endpoint:
+
+```php
+$storage = new OAuth2\Storage\Pdo(array('dsn' => $dsn, 'username' => $username, 'password' => $password));
+$server = new OAuth2\Server($storage, array('allow_implicit' => true));
+
+$server->handleAuthorizeRequest(OAuth2\Request::createFromGlobals())->send();
+```
+
+> It is important to note this is not added as a `Grant Type` class because the implicit grant type is requested using the `authorize` endpoint rather than the `token` endpoint.
+
 ### [JWT Bearer](http://tools.ietf.org/html/draft-ietf-oauth-jwt-bearer-04#section-4)
 
 The client can submit a JWT (JSON Web Token) in a request to the token endpoint. An access token (without a refresh token) is then returned directly.
