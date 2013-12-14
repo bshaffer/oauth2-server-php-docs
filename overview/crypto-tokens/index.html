@@ -99,6 +99,20 @@ parties can verify the token using the Server's <code>public key</code>.</p>
 
 <h2>Using Crypto Tokens With This Library</h2>
 
+<h3>Creating a Public and Private Key Pair</h3>
+
+<p>To get started, you'll need a public/private key pair.  These can be generated
+on any Unix-based operating system with the following commands:</p>
+
+<div class="code-container">
+<div class="langspec">Bash</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-bash"># private key
+openssl genrsa -out privkey.pem 2048
+
+# public key
+openssl rsa -in privkey.pem -pubout -out pubkey.pem</code></pre></div></div>
+</div>
+
 <h3>Basic Usage</h3>
 
 <p>Your Server can be configured to grant Crypto Tokens by creating a <code>PublicKey</code>
@@ -107,15 +121,14 @@ storage object and a <code>CryptoToken</code> response type:</p>
 <div class="code-container">
 <div class="langspec">Php</div>
 <div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// your public key strings can be passed in however you like</span>
-<span class="local-variable">$publicKey</span>  = <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/id_rsa.pub</span><span class="delimiter">'</span></span>);
-<span class="local-variable">$privateKey</span> = <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/id_rsa</span><span class="delimiter">'</span></span>);
+<span class="local-variable">$publicKey</span>  = <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/pubkey.pem</span><span class="delimiter">'</span></span>);
+<span class="local-variable">$privateKey</span> = <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/privkey.pem</span><span class="delimiter">'</span></span>);
 
 <span class="comment">// create storage</span>
 <span class="local-variable">$storage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Memory</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">keys</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(
     <span class="string"><span class="delimiter">'</span><span class="content">public_key</span><span class="delimiter">'</span></span>  =&gt; <span class="local-variable">$publicKey</span>,
     <span class="string"><span class="delimiter">'</span><span class="content">private_key</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$privateKey</span>,
 )));
-
 
 <span class="comment">// Make the "access_token" storage use Crypto Tokens instead of a database</span>
 <span class="local-variable">$cryptoStorage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">CryptoToken</span>(<span class="local-variable">$storage</span>);
@@ -140,8 +153,8 @@ ini_set(<span class="string"><span class="delimiter">'</span><span class="conten
 <span class="constant">OAuth2</span>\<span class="constant">Autoloader</span>::register();
 
 <span class="comment">// your public key strings can be passed in however you like</span>
-<span class="local-variable">$publicKey</span>  = <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/id_rsa.pub</span><span class="delimiter">'</span></span>);
-<span class="local-variable">$privateKey</span> = <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/id_rsa</span><span class="delimiter">'</span></span>);
+<span class="local-variable">$publicKey</span>  = <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/pubkey.pem</span><span class="delimiter">'</span></span>);
+<span class="local-variable">$privateKey</span> = <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/privkey.pem</span><span class="delimiter">'</span></span>);
 
 <span class="comment">// create storage</span>
 <span class="local-variable">$storage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Memory</span>(<span class="predefined">array</span>(
@@ -198,7 +211,7 @@ your server without the Authorization Server's private key:</p>
 <div class="code-container">
 <div class="langspec">Php</div>
 <div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">/* for a Resource Server (minimum config) */</span>
-<span class="local-variable">$publicKey</span> = <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/id_rsa.pub</span><span class="delimiter">'</span></span>);
+<span class="local-variable">$publicKey</span> = <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/pubkey.pem</span><span class="delimiter">'</span></span>);
 
 <span class="comment">// no private key necessary</span>
 <span class="local-variable">$keyStorage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Memory</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">keys</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(
@@ -353,7 +366,7 @@ is an example of this in PHP:</p>
 <span class="local-variable">$payload_to_verify</span> = <span class="predefined">utf8_decode</span>(<span class="local-variable">$header</span> . <span class="local-variable">$separator</span> . <span class="local-variable">$payload</span>);
 
 <span class="comment">// however you want to load your public key</span>
-<span class="local-variable">$public_key</span> = <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/id_rsa.pub</span><span class="delimiter">'</span></span>);
+<span class="local-variable">$public_key</span> = <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/pubkey.pem</span><span class="delimiter">'</span></span>);
 
 <span class="comment">// default is SHA256</span>
 <span class="local-variable">$verified</span> = openssl_verify(<span class="local-variable">$payload_to_verify</span>, <span class="local-variable">$decoded_signature</span>, <span class="local-variable">$public_key</span>, <span class="constant">OPENSSL_ALGO_SHA256</span>);
