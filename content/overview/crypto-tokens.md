@@ -48,6 +48,19 @@ The `PAYLOAD` is a Base64 URL Safe encoding of a json object with the following 
 
 ## Using Crypto Tokens With This Library
 
+### Creating a Public and Private Key Pair
+
+To get started, you'll need a public/private key pair.  These can be generated
+on any Unix-based operating system with the following commands:
+
+```bash
+# private key
+openssl genrsa -out privkey.pem 2048
+
+# public key
+openssl rsa -in privkey.pem -pubout -out pubkey.pem
+```
+
 ### Basic Usage
 
 Your Server can be configured to grant Crypto Tokens by creating a `PublicKey`
@@ -55,15 +68,14 @@ storage object and a `CryptoToken` response type:
 
 ```php
 // your public key strings can be passed in however you like
-$publicKey  = file_get_contents('/path/to/id_rsa.pub');
-$privateKey = file_get_contents('/path/to/id_rsa');
+$publicKey  = file_get_contents('/path/to/pubkey.pem');
+$privateKey = file_get_contents('/path/to/privkey.pem');
 
 // create storage
 $storage = new OAuth2\Storage\Memory(array('keys' => array(
     'public_key'  => $publicKey,
     'private_key' => $privateKey,
 )));
-
 
 // Make the "access_token" storage use Crypto Tokens instead of a database
 $cryptoStorage = new OAuth2\Storage\CryptoToken($storage);
@@ -86,8 +98,8 @@ require_once('oauth2-server-php/src/OAuth2/Autoloader.php');
 OAuth2\Autoloader::register();
 
 // your public key strings can be passed in however you like
-$publicKey  = file_get_contents('/path/to/id_rsa.pub');
-$privateKey = file_get_contents('/path/to/id_rsa');
+$publicKey  = file_get_contents('/path/to/pubkey.pem');
+$privateKey = file_get_contents('/path/to/privkey.pem');
 
 // create storage
 $storage = new OAuth2\Storage\Memory(array(
@@ -140,7 +152,7 @@ your server without the Authorization Server's private key:
 
 ```php
 /* for a Resource Server (minimum config) */
-$publicKey = file_get_contents('/path/to/id_rsa.pub');
+$publicKey = file_get_contents('/path/to/pubkey.pem');
 
 // no private key necessary
 $keyStorage = new OAuth2\Storage\Memory(array('keys' => array(
@@ -285,7 +297,7 @@ $decoded_signature = base64_decode($signature);
 $payload_to_verify = utf8_decode($header . $separator . $payload);
 
 // however you want to load your public key
-$public_key = file_get_contents('/path/to/id_rsa.pub');
+$public_key = file_get_contents('/path/to/pubkey.pem');
 
 // default is SHA256
 $verified = openssl_verify($payload_to_verify, $decoded_signature, $public_key, OPENSSL_ALGO_SHA256);
