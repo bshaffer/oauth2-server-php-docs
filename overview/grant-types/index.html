@@ -43,13 +43,13 @@
 <p>There are many supported grant types in the OAuth2 specification, and this library allows for the addition of custom grant types as well.
 Supported grant types are as follows:</p>
 
-<h3><a href="http://tools.ietf.org/html/rfc6749#section-4.1">Authorization Code</a></h3>
+<h3><a href="../../grant-types/authorization-code/">Authorization Code</a></h3>
 
 <p>The <code>Authorization Code</code> grant type is the most common OAuth2.0 flow.  It implements <strong>3-Legged OAuth</strong> and involves the user granting the
 client an authorization code, which can be exchanged for an Access Token. Click the <a href="http://brentertainment.com/oauth2/">Live Demo</a> to see
 this grant type in action.</p>
 
-<h3><a href="http://tools.ietf.org/html/rfc6749#section-4.3">Resource Owner Password Credentials</a></h3>
+<h3><a href="../../grant-types/user-credentials/">Resource Owner Password Credentials</a></h3>
 
 <p>A Resource Owner's username and password are submitted as part of the request, and a token is issued upon successful authentication.</p>
 
@@ -59,7 +59,7 @@ this grant type in action.</p>
 {<span class="key"><span class="delimiter">"</span><span class="content">access_token</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">206c80413b9a96c1312cc346b7d2517b84463edd</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">expires_in</span><span class="delimiter">"</span></span>:<span class="integer">3600</span>,<span class="key"><span class="delimiter">"</span><span class="content">token_type</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">bearer</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">scope</span><span class="delimiter">"</span></span>:<span class="value">null</span>}</code></pre></div></div>
 </div>
 
-<h3><a href="http://tools.ietf.org/html/rfc6749#section-4.4">Client Credentials</a></h3>
+<h3><a href="../../grant-types/client-credentials/">Client Credentials</a></h3>
 
 <p>The client uses their credentials to retrieve an access token directly, which allows access to resources under the client's control</p>
 
@@ -69,7 +69,7 @@ this grant type in action.</p>
 {<span class="key"><span class="delimiter">"</span><span class="content">access_token</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">6f05ad622a3d32a5a81aee5d73a5826adb8cbf63</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">expires_in</span><span class="delimiter">"</span></span>:<span class="integer">3600</span>,<span class="key"><span class="delimiter">"</span><span class="content">token_type</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">bearer</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">scope</span><span class="delimiter">"</span></span>:<span class="value">null</span>}</code></pre></div></div>
 </div>
 
-<h3><a href="http://tools.ietf.org/html/rfc6749#section-6">Refresh Token</a></h3>
+<h3><a href="../../grant-types/refresh-token/">Refresh Token</a></h3>
 
 <p>The client can submit a refresh token and recieve a new access token if the access token had expired.</p>
 
@@ -79,7 +79,7 @@ this grant type in action.</p>
 {<span class="key"><span class="delimiter">"</span><span class="content">access_token</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">0e9d02499fe06762ecaafb9cfbb506676631dcfd</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">expires_in</span><span class="delimiter">"</span></span>:<span class="integer">3600</span>,<span class="key"><span class="delimiter">"</span><span class="content">token_type</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">bearer</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">scope</span><span class="delimiter">"</span></span>:<span class="value">null</span>}</code></pre></div></div>
 </div>
 
-<h3><a href="http://tools.ietf.org/html/rfc6749#section-4.2">Implicit</a></h3>
+<h3><a href="../../grant-types/implicit/">Implicit</a></h3>
 
 <p>This is similar to the <code>Authorization Code</code> Grant Type above, but rather than an Authorization Code being returned from the authorization
 request, a token is retured to the client.  This is most common for client-side devices (i.e. mobile) where the Client Credentials cannot
@@ -97,7 +97,7 @@ be stored securely.</p>
 
 <blockquote><p>It is important to note this is not added as a <code>Grant Type</code> class because the implicit grant type is requested using the <code>authorize</code> endpoint rather than the <code>token</code> endpoint.</p></blockquote>
 
-<h3><a href="http://tools.ietf.org/html/draft-ietf-oauth-jwt-bearer-04#section-4">JWT Bearer</a></h3>
+<h3><a href="../../grant-types/jwt-bearer/">JWT Bearer</a></h3>
 
 <p>The client can submit a JWT (JSON Web Token) in a request to the token endpoint. An access token (without a refresh token) is then returned directly.</p>
 
@@ -135,7 +135,7 @@ Grant Type above is an example of this.</p>
             </ul>
           </li>
           <li class="js-topic">
-            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/grant-types">Grant Types</a></h3>
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/grant-types/authorization-code/">Grant Types</a></h3>
             <ul class="js-guides">
               <li><a href="/oauth2-server-php-docs/grant-types/authorization-code/">Authorization Code</a></li>
               <li><a href="/oauth2-server-php-docs/grant-types/implicit/">Implicit</a></li>
