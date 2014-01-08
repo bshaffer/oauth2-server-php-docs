@@ -3,13 +3,13 @@
 There are many supported grant types in the OAuth2 specification, and this library allows for the addition of custom grant types as well.
 Supported grant types are as follows:
 
-### [Authorization Code](http://tools.ietf.org/html/rfc6749#section-4.1)
+### [Authorization Code](../../grant-types/authorization-code/)
 
 The `Authorization Code` grant type is the most common OAuth2.0 flow.  It implements **3-Legged OAuth** and involves the user granting the
 client an authorization code, which can be exchanged for an Access Token. Click the [Live Demo](http://brentertainment.com/oauth2/) to see
 this grant type in action.
 
-### [Resource Owner Password Credentials](http://tools.ietf.org/html/rfc6749#section-4.3)
+### [Resource Owner Password Credentials](../../grant-types/user-credentials/)
 
 A Resource Owner's username and password are submitted as part of the request, and a token is issued upon successful authentication.
 
@@ -18,7 +18,7 @@ $ curl -u testclient:testpass "http://localhost/token.php" -d 'grant_type=passwo
 {"access_token":"206c80413b9a96c1312cc346b7d2517b84463edd","expires_in":3600,"token_type":"bearer","scope":null}
 ```
 
-### [Client Credentials](http://tools.ietf.org/html/rfc6749#section-4.4)
+### [Client Credentials](../../grant-types/client-credentials/)
 
 The client uses their credentials to retrieve an access token directly, which allows access to resources under the client's control
 
@@ -27,7 +27,7 @@ $ curl -u testclient:testpass "http://localhost/token.php" -d 'grant_type=client
 {"access_token":"6f05ad622a3d32a5a81aee5d73a5826adb8cbf63","expires_in":3600,"token_type":"bearer","scope":null}
 ```
 
-### [Refresh Token](http://tools.ietf.org/html/rfc6749#section-6)
+### [Refresh Token](../../grant-types/refresh-token/)
 
 The client can submit a refresh token and recieve a new access token if the access token had expired.
 
@@ -36,7 +36,7 @@ $ curl -u testclient:testpass "http://localhost/token.php" -d 'grant_type=refres
 {"access_token":"0e9d02499fe06762ecaafb9cfbb506676631dcfd","expires_in":3600,"token_type":"bearer","scope":null}
 ```
 
-### [Implicit](http://tools.ietf.org/html/rfc6749#section-4.2)
+### [Implicit](../../grant-types/implicit/)
 
 This is similar to the `Authorization Code` Grant Type above, but rather than an Authorization Code being returned from the authorization
 request, a token is retured to the client.  This is most common for client-side devices (i.e. mobile) where the Client Credentials cannot
@@ -53,7 +53,7 @@ $server->handleAuthorizeRequest(OAuth2\Request::createFromGlobals())->send();
 
 > It is important to note this is not added as a `Grant Type` class because the implicit grant type is requested using the `authorize` endpoint rather than the `token` endpoint.
 
-### [JWT Bearer](http://tools.ietf.org/html/draft-ietf-oauth-jwt-bearer-04#section-4)
+### [JWT Bearer](../../grant-types/jwt-bearer/)
 
 The client can submit a JWT (JSON Web Token) in a request to the token endpoint. An access token (without a refresh token) is then returned directly.
 
