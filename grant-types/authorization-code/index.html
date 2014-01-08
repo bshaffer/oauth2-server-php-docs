@@ -6,7 +6,7 @@
   <meta http-equiv="imagetoolbar" content="false" />
   <meta name="MSSmartTagsPreventParsing" content="true" />
 
-  <title>Symfony2</title>
+  <title></title>
 
   <link rel="alternate" type="application/atom+xml" title="API Changes" href="changes.atom" />
   <link href="/oauth2-server-php-docs/css/reset.css" rel="stylesheet" type="text/css" />
@@ -38,10 +38,74 @@
 
     <div id="wrapper">
       <div class="content">
-    <h1>Symfony2</h1>
+    <h1>Authorization Code</h1>
 
-<p>See the <a href="https://github.com/bshaffer/oauth2-server-bundle">OAuth2 Server Bundle</a> on how to integrate with
-symfony2 and the dependency injection container.</p>
+<h2>Overview</h2>
+
+<p>The <code>Authorization Code</code> grant type is used when the
+client wants to request access to protected resources on
+behalf of another user (i.e. a 3rd party).  This is the
+grant type most often associated with OAuth.</p>
+
+<p><a href="http://tools.ietf.org/html/rfc6749#section-4.1">Read more about authorization code</a></p>
+
+<h2>Use Cases</h2>
+
+<ul>
+<li>calls on behalf of a third party</li>
+</ul>
+
+<h2>Implementation</h2>
+
+<p>Create an instance of <code>OAuth2\GrantType\AuthorizationCode</code> and add it to
+your server</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// create a storage object to hold new authorization codes</span>
+<span class="local-variable">$storage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Pdo</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">dsn</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">sqlite:authcodes.sqlite</span><span class="delimiter">'</span></span>));
+
+<span class="comment">// create the grant type</span>
+<span class="local-variable">$grantType</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">AuthorizationCode</span>(<span class="local-variable">$storage</span>);
+
+<span class="comment">// add the grant type to your OAuth server</span>
+<span class="local-variable">$server</span>-&gt;addGrantType(<span class="local-variable">$grantType</span>);</code></pre></div></div>
+</div>
+
+<h2>Example Request</h2>
+
+<p>Authorization Codes are retrieved using the <code>Authorize Controller</code>. The client
+must send the user to the OAuth server's <code>authorize</code> URL.</p>
+
+<p>First, redirect the user to the following URL:</p>
+
+<div class="code-container">
+<div class="langspec">Text</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text">https://api.mysite.com/authorize?response_type=code&amp;client_id=TestClient&amp;redirect_uri=https://myredirecturi.com/cb</code></pre></div></div>
+</div>
+
+<p>A successful authorization will pass the client the authorization code in the URL
+via the supplied redirect_uri:</p>
+
+<div class="code-container">
+<div class="langspec">Text</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text">https://myredirecturi.com/cb?code=SplxlOBeZQQYbYS6WxSbIA&amp;state=xyz</code></pre></div></div>
+</div>
+
+<p>Once this is done, a token can be requested using the authorization code.</p>
+
+<div class="code-container">
+<div class="langspec">Text</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text">$ curl -u TestClient:TestSecret https://api.mysite.com/token -d 'grant_type=authorization_code&amp;code=xyz'</code></pre></div></div>
+</div>
+
+<p>A successful token request will return a standard access token in JSON format:</p>
+
+<div class="code-container">
+<div class="langspec">Json</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-json">{<span class="key"><span class="delimiter">"</span><span class="content">access_token</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">03807cb390319329bdf6c777d4dfae9c0d3b3c35</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">expires_in</span><span class="delimiter">"</span></span>:<span class="integer">3600</span>,<span class="key"><span class="delimiter">"</span><span class="content">token_type</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">bearer</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">scope</span><span class="delimiter">"</span></span>:<span class="value">null</span>}</code></pre></div></div>
+</div>
+
 
       </div>
 

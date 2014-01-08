@@ -27,10 +27,10 @@
             <img src="/oauth2-server-php-docs/images/oauth2-banner.png"/>
           </a>
           <ul class="nav">
-            <li><a href="/oauth2-server-php-docs/changes/">Changes</a></li>
-            <li><a href="/oauth2-server-php-docs/changes.atom">
+            <li><a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/CHANGELOG.md">Changes</a></li>
+            <!-- <li><a href="/oauth2-server-php-docs/changes.atom">
               <img src="/oauth2-server-php-docs/images/feed-icon-28x28.png" width="16" height="16" alt="GitHub API Changes Feed" />
-            </a></li>
+            </a></li> -->
           </ul>
         </div>
       </div><!-- #header -->
@@ -105,8 +105,8 @@ parties can verify the token using the Server's <code>public key</code>.</p>
 on any Unix-based operating system with the following commands:</p>
 
 <div class="code-container">
-<div class="langspec">Bash</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-bash"># private key
+<div class="langspec">Text</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text"># private key
 openssl genrsa -out privkey.pem 2048
 
 # public key
@@ -186,8 +186,8 @@ ini_set(<span class="string"><span class="delimiter">'</span><span class="conten
 <p>Now you can call your server and receive a crypto token:</p>
 
 <div class="code-container">
-<div class="langspec">Bash</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-bash">$ curl -i -v http://localhost/token.php -u 'CLIENT_ID:CLIENT_SECRET' -d "grant_type=client_credentials"</code></pre></div></div>
+<div class="langspec">Text</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text">$ curl -i -v http://localhost/token.php -u 'CLIENT_ID:CLIENT_SECRET' -d "grant_type=client_credentials"</code></pre></div></div>
 </div>
 
 <p>And the server will return a response containing the crypto token:</p>
@@ -394,6 +394,17 @@ is an example of this in PHP:</p>
               <li><a href="/oauth2-server-php-docs/overview/scope/">Scope</a></li>
               <li><a href="/oauth2-server-php-docs/overview/userid/">User ID</a></li>
               <li><a href="/oauth2-server-php-docs/overview/crypto-tokens/">Crypto Tokens</a></li>
+            </ul>
+          </li>
+          <li class="js-topic">
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/grant-types">Grant Types</a></h3>
+            <ul class="js-guides">
+              <li><a href="/oauth2-server-php-docs/grant-types/authorization-code/">Authorization Code</a></li>
+              <li><a href="/oauth2-server-php-docs/grant-types/implicit/">Implicit</a></li>
+              <li><a href="/oauth2-server-php-docs/grant-types/user-credentials/">User Credentials</a></li>
+              <li><a href="/oauth2-server-php-docs/grant-types/client-credentials/">Client Credentials</a></li>
+              <li><a href="/oauth2-server-php-docs/grant-types/refresh-token/">Refresh Token</a></li>
+              <li><a href="/oauth2-server-php-docs/grant-types/jwt-bearer/">JWT Bearer</a></li>
             </ul>
           </li>
           <li class="js-topic">
