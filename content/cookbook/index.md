@@ -12,7 +12,7 @@ check out the [OAuth2 Demo](https://github.com/bshaffer/oauth2-demo-php).
 
 Create a directory for your project and pull in this library
 
-```bash
+```text
 mkdir my-oauth2-walkthrough
 cd my-oauth2-walkthrough
 git clone https://github.com/bshaffer/oauth2-server-php.git
@@ -88,7 +88,7 @@ INSERT INTO oauth_clients (client_id, client_secret, redirect_uri) VALUES ("test
 
 Now run the following from the command line:
 
-```bash
+```text
 curl -u testclient:testpass http://localhost/token.php -d 'grant_type=client_credentials'
 ```
 
@@ -120,7 +120,7 @@ echo json_encode(array('success' => true, 'message' => 'You accessed my APIs!'))
 
 Now run the following from the command line:
 
-```bash
+```text
 curl http://localhost/resource.php -d 'access_token=YOUR_TOKEN'
 ```
 
@@ -183,7 +183,7 @@ You will be prompted with an authorization form, and receive an authorization co
 The Authorization Code can now be used to receive an access token from your previously
 created `token.php` endpoint.  Just call this endpoint using the returned authorization code:
 
-```bash
+```text
 curl -u testclient:testpass http://localhost/token.php -d 'grant_type=authorization_code&code=YOUR_CODE'
 ```
 

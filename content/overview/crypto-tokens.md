@@ -53,7 +53,7 @@ The `PAYLOAD` is a Base64 URL Safe encoding of a json object with the following 
 To get started, you'll need a public/private key pair.  These can be generated
 on any Unix-based operating system with the following commands:
 
-```bash
+```text
 # private key
 openssl genrsa -out privkey.pem 2048
 
@@ -130,7 +130,7 @@ $server->handleTokenRequest(OAuth2\Request::createFromGlobals())->send();
 
 Now you can call your server and receive a crypto token:
 
-```bash
+```text
 $ curl -i -v http://localhost/token.php -u 'CLIENT_ID:CLIENT_SECRET' -d "grant_type=client_credentials"
 ```
 And the server will return a response containing the crypto token:
