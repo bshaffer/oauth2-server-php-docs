@@ -33,14 +33,15 @@ $server = new OAuth2\Server($storage, array(
 ));
 ```
 
-This tells the `Authorize Controller` it is allowed to return an access token
-directly from an authorize request.
+This allows the `Authorize Controller` to return an access token directly from
+a request to the server's `authorize` endpoint.
 
 ## Example Request
 
 When using the Implicit grant type, tokens are retrieved using the
-`Authorize Controller`. The client must send the user to the OAuth server's
-`authorize` URL.
+`Authorize Controller`. The client specifies the grant type by setting
+the querystring parameter `response_type=token` in the OAuth server's
+`authorize' endpoint.
 
 First, redirect the user to the following URL:
 
@@ -53,3 +54,8 @@ A successful token request will be returned in the fragment of the URL:
 ```text
 https://myredirecturi.com/cb#access_token=2YotnFZFEjr1zCsicMWpAA&state=xyz&token_type=bearer&expires_in=3600
 ```
+
+## Demo
+
+[See the implicit grant type demo](http://brentertainment.com/oauth2/)
+
