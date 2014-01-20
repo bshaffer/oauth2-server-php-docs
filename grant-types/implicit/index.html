@@ -76,14 +76,15 @@ grant type</p>
 ));</code></pre></div></div>
 </div>
 
-<p>This tells the <code>Authorize Controller</code> it is allowed to return an access token
-directly from an authorize request.</p>
+<p>This allows the <code>Authorize Controller</code> to return an access token directly from
+a request to the server's <code>authorize</code> endpoint.</p>
 
 <h2>Example Request</h2>
 
 <p>When using the Implicit grant type, tokens are retrieved using the
-<code>Authorize Controller</code>. The client must send the user to the OAuth server's
-<code>authorize</code> URL.</p>
+<code>Authorize Controller</code>. The client specifies the grant type by setting
+the querystring parameter <code>response_type=token</code> in the OAuth server's
+`authorize' endpoint.</p>
 
 <p>First, redirect the user to the following URL:</p>
 
@@ -99,6 +100,9 @@ directly from an authorize request.</p>
 <div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text">https://myredirecturi.com/cb#access_token=2YotnFZFEjr1zCsicMWpAA&amp;state=xyz&amp;token_type=bearer&amp;expires_in=3600</code></pre></div></div>
 </div>
 
+<h2>Demo</h2>
+
+<p><a href="http://brentertainment.com/oauth2/">See the implicit grant type demo</a></p>
 
       </div>
 
