@@ -1,4 +1,4 @@
-# Methods
+# Controllers
 
 > ...an end-user (resource owner) can grant a printing
 > service (client) access to her protected photos stored at a photo
@@ -12,9 +12,12 @@
 
 Most OAuth2 APIs will have endpoints for `Authorize Requests`, `Token Requests`, and `Resource Requests`.  The `OAuth2\Server` object has methods to handle each of these requests.
 
-## Authorize Requests
+Each controller below corresponds to the endpoint by the same name.
 
-An endpoint requiring the user to authenticate, which redirects back to the client with an `authorization code`.
+## Authorize Controller
+
+For the Authorize Endpoint, which requires the user to authenticate and redirects back to the client with an `authorization code` ([Authorization Code](../../grant-types/authorization-code) grant type)
+or `access token` ([Implicit](../../grant-types/implicit) grant type).
 
 **handleAuthorizeRequest**
 
@@ -26,9 +29,10 @@ An endpoint requiring the user to authenticate, which redirects back to the clie
 is valid, returns an array of retrieved client details together with input.
 Applications should call this before displaying a login or authorization form to the user
 
-## Token Requests
+## Token Controller
 
-An endpoint which the client uses to exchange the `authorization code` for an `access token`.
+For the Token Endpoint, which uses the configured [Grant Types](../grant-types) to return  an `access token`
+to the client.
 
 **grantAccessToken**
 
@@ -38,10 +42,10 @@ An endpoint which the client uses to exchange the `authorization code` for an `a
 
   * Receives a request object for a token request, returns a response object for the appropriate response.
 
-## Resource Requests
+## Resource Controller
 
-Any API method requiring oauth2 authentication.  The server will validate the incomming request, and then allow
-the application to serve back the protected resource.
+For any resource request (i.e. API Call) requiring oauth2 authentication.  The controller will validate the
+incomming request, and then allow the application to serve back the protected resource.
 
 **verifyResourceRequest**
 

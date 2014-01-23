@@ -40,11 +40,6 @@ And then run `composer.phar install`
 > ensure your application doesn't break from backwards-compatibility issues, but also this means you
 > will not receive the latest changes.
 
-Learning the OAuth2.0 Standard
-------------------------------
-
-If you are new to OAuth2, take a little time first to look at the [OAuth2 Demo Application](http://brentertainment.com/oauth2) and the [source code](https://github.com/bshaffer/oauth2-demo-php), and read up on [OAuth2 Flows](http://drupal.org/node/1958718).  For everything else, consult the [OAuth2.0 Specification](http://tools.ietf.org/html/rfc6749)
-
 Get Started With This Library
 -----------------------------
 
@@ -58,26 +53,24 @@ $server->addGrantType(new OAuth2\GrantType\AuthorizationCode($storage)); // or a
 $server->handleTokenRequest(OAuth2\Request::createFromGlobals())->send();
 ```
 
-All implementations require a `Storage` object.  This allows the server to interact with data in your storage
-layer such as [OAuth Clients](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/ClientInterface.php) and
-[Authorization Codes](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/AuthorizationCodeInterface.php).
-Built-in storage classes include [PDO](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/Pdo.php),
-[Redis](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/Redis.php), and
-[Mongo](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/Mongo.php).  The interfaces allow (and encourage)
-the use of your own Storage objects to fit your application's implementation (see the [Doctrine Storage](cookbook/doctrine) example).
+See [Main Concepts](overview/main-concepts) for more information on how this library works.
 
-Once you've created a storage object, pass it to the server object and define which Grant Types your server is to support.  See
-the list of supported [Grant Types](overview/grant-types).
+Learning the OAuth2.0 Standard
+------------------------------
 
-The final step, once the Server object is set up, is to handle the incoming request.  Consult the [Server Methods](overview/methods), or
-see the Step-by-Step walkthrough below to familiarize yourself with the types of requests involved in OAuth2.0 workflows.
+If you are new to OAuth2, I highly recommend the [**OAuth in 8 Steps**](https://knpuniversity.com/screencast/oauth) screencast
+from Knp University:
 
-You might also want to learn about the [Scope](overview/scope), how to integrate [User IDs](overview/userid), or read more about
-the [Response Object](overview/response)
+![OAuth in 8 Steps](https://pbs.twimg.com/media/BemcRQ6CEAA1DxF.png)
 
-### Walkthrough Example
+Additionally, take some time to click around on the [**OAuth2 Demo Application**](http://brentertainment.com/oauth2)
+and view the [source code](https://github.com/bshaffer/oauth2-demo-php) for examples using a variety of
+[grant types](overview/grant-types).
 
-To get started quickly with some real code try out the [Step-by-Step Walkthrough](cookbook).
+![OAuth Demo Application](http://brentertainment.com/other/screenshots/demoapp-authorize.png)
+
+Finally, consult the [official OAuth2.0 documentation](http://tools.ietf.org/html/rfc6749) for the down-and-dirty
+technical specifications.
 
 Contact
 -------
