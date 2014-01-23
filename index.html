@@ -76,10 +76,6 @@ autoloaders exist which can autoload this library for that reason, but if you ar
 ensure your application doesn't break from backwards-compatibility issues, but also this means you
 will not receive the latest changes.</p></blockquote>
 
-<h2>Learning the OAuth2.0 Standard</h2>
-
-<p>If you are new to OAuth2, take a little time first to look at the <a href="http://brentertainment.com/oauth2">OAuth2 Demo Application</a> and the <a href="https://github.com/bshaffer/oauth2-demo-php">source code</a>, and read up on <a href="http://drupal.org/node/1958718">OAuth2 Flows</a>.  For everything else, consult the <a href="http://tools.ietf.org/html/rfc6749">OAuth2.0 Specification</a></p>
-
 <h2>Get Started With This Library</h2>
 
 <p>Looking through the <a href="cookbook">cookbook</a> examples is the best way to get started.  For those who just skim the docs for
@@ -93,26 +89,23 @@ code samples, here is an example of a bare-bones OAuth2 Server implementation:</
 <span class="local-variable">$server</span>-&gt;handleTokenRequest(<span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals())-&gt;send();</code></pre></div></div>
 </div>
 
-<p>All implementations require a <code>Storage</code> object.  This allows the server to interact with data in your storage
-layer such as <a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/ClientInterface.php">OAuth Clients</a> and
-<a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/AuthorizationCodeInterface.php">Authorization Codes</a>.
-Built-in storage classes include <a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/Pdo.php">PDO</a>,
-<a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/Redis.php">Redis</a>, and
-<a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/Mongo.php">Mongo</a>.  The interfaces allow (and encourage)
-the use of your own Storage objects to fit your application's implementation (see the <a href="cookbook/doctrine">Doctrine Storage</a> example).</p>
+<p>See <a href="overview/main-concepts">Main Concepts</a> for more information on how this library works.</p>
 
-<p>Once you've created a storage object, pass it to the server object and define which Grant Types your server is to support.  See
-the list of supported <a href="overview/grant-types">Grant Types</a>.</p>
+<h2>Learning the OAuth2.0 Standard</h2>
 
-<p>The final step, once the Server object is set up, is to handle the incoming request.  Consult the <a href="overview/methods">Server Methods</a>, or
-see the Step-by-Step walkthrough below to familiarize yourself with the types of requests involved in OAuth2.0 workflows.</p>
+<p>If you are new to OAuth2, I highly recommend the <a href="https://knpuniversity.com/screencast/oauth"><strong>OAuth in 8 Steps</strong></a> screencast
+from Knp University:</p>
 
-<p>You might also want to learn about the <a href="overview/scope">Scope</a>, how to integrate <a href="overview/userid">User IDs</a>, or read more about
-the <a href="overview/response">Response Object</a></p>
+<p><img src="https://pbs.twimg.com/media/BemcRQ6CEAA1DxF.png" alt="OAuth in 8 Steps"></p>
 
-<h3>Walkthrough Example</h3>
+<p>Additionally, take some time to click around on the <a href="http://brentertainment.com/oauth2"><strong>OAuth2 Demo Application</strong></a>
+and view the <a href="https://github.com/bshaffer/oauth2-demo-php">source code</a> for examples using a variety of
+<a href="overview/grant-types">grant types</a>.</p>
 
-<p>To get started quickly with some real code try out the <a href="cookbook">Step-by-Step Walkthrough</a>.</p>
+<p><img src="http://brentertainment.com/other/screenshots/demoapp-authorize.png" alt="OAuth Demo Application"></p>
+
+<p>Finally, consult the <a href="http://tools.ietf.org/html/rfc6749">official OAuth2.0 documentation</a> for the down-and-dirty
+technical specifications.</p>
 
 <h2>Contact</h2>
 
@@ -130,8 +123,10 @@ help answer questions for others as well.</p>
           <li class="js-topic">
             <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/">Overview</a></h3>
             <ul class="js-guides">
-              <li><a href="/oauth2-server-php-docs/overview/methods/">Methods</a></li>
+              <li><a href="/oauth2-server-php-docs/">Get Started</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/main-concepts/">Main Concepts</a></li>
               <li><a href="/oauth2-server-php-docs/overview/grant-types/">Grant Types</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/controllers/">Controllers</a></li>
               <li><a href="/oauth2-server-php-docs/overview/response/">Response</a></li>
               <li><a href="/oauth2-server-php-docs/overview/scope/">Scope</a></li>
               <li><a href="/oauth2-server-php-docs/overview/userid/">User ID</a></li>
