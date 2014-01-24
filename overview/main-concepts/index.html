@@ -40,43 +40,50 @@
       <div class="content">
     <h1>Main Concepts</h1>
 
+<blockquote><p>To better understand the OAuth specification, please see
+<a href="../../#learning-the-oauth-standard">Learning the OAuth Standard</a>.</p></blockquote>
+
 <p>The library involves several main concepts:</p>
 
-<ul>
-<li>
-<a href="overview/grant-types"><strong>Grant Types</strong></a>: the OAuth2 Grant Types your server supports</li>
-<li>
-<strong>Storage Objects</strong>: How the server interacts with your data layer. The following storages are included:
+<p><code>Grant Types</code></p>
+
+<p><a href="../../overview/grant-types">Grant Types</a> allow you to expose multiple ways for a client to receives an
+Access Token.</p>
+
+<p><code>Controllers</code></p>
+
+<p>An OAuth Server has 3 endpoints, each of which can be fielded by a <a href="../controllers">Controller</a>. Each endpoint
+performs a distinct function in the OAuth process.</p>
 
 <ul>
-<li><a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/Pdo.php">PDO</a></li>
-<li><a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/Redis.php">Redis</a></li>
-<li><a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/Mongo.php">Mongo</a></li>
-<li><a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/Cassandra.php">Cassandra</a></li>
+<li>
+<a href="../../controllers/authorize/">Authorize Endpoint</a> - The user is redirected here by the client to authorize the request</li>
+<li>
+<a href="../../controllers/token/">Token Endpoint</a> - The client makes a request to this endpoint in order to obtain an Access Token</li>
+<li>
+<a href="../../controllers/resource/">Resource Endpoint(s)</a> - The client requests resources, providing an Access Token for authenticationken. This library supports many different grant types, including all of those defined by the official OAuth Specification.</li>
+</ul>
+
+<p><code>Storage Objects</code></p>
+
+<p>This library uses <a href="../../storage/interfaces/">Storage Interfaces</a> to allow interaction with multiple data layers.
+The following storage classes come with the library, but interfaces allow for your own customization:</p>
+
+<ul>
+<li><a href="../../storage/pdo/">PDO</a></li>
+<li><a href="../../storage/redis/">Redis</a></li>
+<li><a href="../../storage/mongo/">Mongo</a></li>
+<li><a href="../../storage/cassandra/">Cassandra</a></li>
 <li><a href="../../cookbook/doctrine">Doctrine Storage</a></li>
-<li>Custom Storage using the <a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/AccessTokenInterface.php">Storage Interfaces</a>
-</li>
 </ul>
-</li>
-<li>
-<a href="../controllers"><strong>Controllers</strong></a>: The functions which take a <code>Request</code> object and return a <code>Response</code> object
 
-<ul>
-<li><a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Controller/TokenController.php">Token Controller</a></li>
-<li><a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Controller/AuthorizeController.php">Authorize Controller</a></li>
-<li><a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Controller/ResourceController.php">Resource Controller</a></li>
-</ul>
-</li>
-<li>
-<strong>Miscellaneous Concepts</strong>
+<p><code>Other Concepts</code></p>
 
 <ul>
 <li><a href="../response">Response Object</a></li>
 <li><a href="../scope">Scope</a></li>
 <li><a href="../userid">User IDs</a></li>
 <li><a href="../crypto-tokens">Crypto Tokens</a></li>
-</ul>
-</li>
 </ul>
 
 
