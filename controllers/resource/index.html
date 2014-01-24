@@ -6,7 +6,7 @@
   <meta http-equiv="imagetoolbar" content="false" />
   <meta name="MSSmartTagsPreventParsing" content="true" />
 
-  <title>Restler</title>
+  <title></title>
 
   <link rel="alternate" type="application/atom+xml" title="API Changes" href="changes.atom" />
   <link href="/oauth2-server-php-docs/css/reset.css" rel="stylesheet" type="text/css" />
@@ -38,41 +38,27 @@
 
     <div id="wrapper">
       <div class="content">
-    <h1>Restler</h1>
+    <h1>Resource Controller</h1>
 
-<ol>
-<li>
-<p>Download the latest copy from <a href="https://github.com/Luracast/Restler.git">features\html</a></p>
+<h2>Overview</h2>
 
-<pre><code> $ git clone -b features/html https://github.com/Luracast/Restler.git
-</code></pre>
-</li>
-<li>
-<p>Run <code>composer.phar install</code> to make sure you have:</p>
+<p>For any resource request (i.e. API Call) requiring oauth2 authentication.  The controller will validate the
+incomming request, and then allow the application to serve back the protected resource.</p>
 
-<ul>
-<li>twig template library</li>
-<li>bshaffer's oauth2 libaray</li>
-</ul>
-</li>
-<li>
-<p>Make sure the following directories have write permissions to create the compiled template files:</p>
+<h2>Methods</h2>
+
+<p><code>verifyResourceRequest</code></p>
 
 <ul>
-<li><code>public/examples/_014_oauth2_client/cache</code></li>
-<li><code>public/examples/_015_oauth2_server/cache</code></li>
+<li>Receives a request object for a resource request, finds the token if it exists, and returns a Boolean for whether
+the incomming request is valid</li>
 </ul>
-</li>
-<li>
-<p>Make sure the following directory has write permissions. This is where <code>oauth.sqlite</code> file be created at run time:</p>
+
+<p><code>getAccessTokenData</code></p>
 
 <ul>
-<li><code>public/examples/_015_oauth2_server/OAuth2/db</code></li>
+<li>Takes a token string as an argument and returns the token data if applicable, or null if the token is invalid</li>
 </ul>
-</li>
-<li><p>Set up a virtual host for <code>/path/to/Restler/public</code>.</p></li>
-<li><p>Point your browser to <code>http://yourhost/examples/_014_oauth2_client</code> to play around.</p></li>
-</ol>
 
 
       </div>

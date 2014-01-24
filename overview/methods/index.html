@@ -6,7 +6,7 @@
   <meta http-equiv="imagetoolbar" content="false" />
   <meta name="MSSmartTagsPreventParsing" content="true" />
 
-  <title>Restler</title>
+  <title></title>
 
   <link rel="alternate" type="application/atom+xml" title="API Changes" href="changes.atom" />
   <link href="/oauth2-server-php-docs/css/reset.css" rel="stylesheet" type="text/css" />
@@ -38,41 +38,73 @@
 
     <div id="wrapper">
       <div class="content">
-    <h1>Restler</h1>
+    <h1>Methods</h1>
 
-<ol>
-<li>
-<p>Download the latest copy from <a href="https://github.com/Luracast/Restler.git">features\html</a></p>
+<blockquote>
+<p>...an end-user (resource owner) can grant a printing
+service (client) access to her protected photos stored at a photo
+sharing service (resource server), without sharing her username and
+password with the printing service.  Instead, she authenticates
+directly with a server trusted by the photo sharing service
+(authorization server), which issues the printing service delegation-
+specific credentials (access token).</p>
 
-<pre><code> $ git clone -b features/html https://github.com/Luracast/Restler.git
-</code></pre>
-</li>
-<li>
-<p>Run <code>composer.phar install</code> to make sure you have:</p>
+<p>  ~ OAuth2 (<a href="http://tools.ietf.org/html/rfc6749#section-1">draft #31</a>)</p>
+</blockquote>
 
-<ul>
-<li>twig template library</li>
-<li>bshaffer's oauth2 libaray</li>
-</ul>
-</li>
-<li>
-<p>Make sure the following directories have write permissions to create the compiled template files:</p>
+<p>Most OAuth2 APIs will have endpoints for <code>Authorize Requests</code>, <code>Token Requests</code>, and <code>Resource Requests</code>.  The <code>OAuth2\Server</code> object has methods to handle each of these requests.</p>
 
-<ul>
-<li><code>public/examples/_014_oauth2_client/cache</code></li>
-<li><code>public/examples/_015_oauth2_server/cache</code></li>
-</ul>
-</li>
-<li>
-<p>Make sure the following directory has write permissions. This is where <code>oauth.sqlite</code> file be created at run time:</p>
+<h2>Authorize Requests</h2>
+
+<p>An endpoint requiring the user to authenticate, which redirects back to the client with an <code>authorization code</code>.</p>
+
+<p><strong>handleAuthorizeRequest</strong></p>
 
 <ul>
-<li><code>public/examples/_015_oauth2_server/OAuth2/db</code></li>
+<li>Receives a request object for an authorize request, returns a response object with the appropriate response</li>
 </ul>
-</li>
-<li><p>Set up a virtual host for <code>/path/to/Restler/public</code>.</p></li>
-<li><p>Point your browser to <code>http://yourhost/examples/_014_oauth2_client</code> to play around.</p></li>
-</ol>
+
+<p><strong>validateAuthorizeRequest</strong></p>
+
+<ul>
+<li>Receives a request object, returns false if the incoming request is not a valid Authorize Request. If the request
+is valid, returns an array of retrieved client details together with input.
+Applications should call this before displaying a login or authorization form to the user</li>
+</ul>
+
+<h2>Token Requests</h2>
+
+<p>An endpoint which the client uses to exchange the <code>authorization code</code> for an <code>access token</code>.</p>
+
+<p><strong>grantAccessToken</strong></p>
+
+<ul>
+<li>Receives a request object for a token request, returns a token if the request is valid.</li>
+</ul>
+
+<p><strong>handleTokenRequest</strong></p>
+
+<ul>
+<li>Receives a request object for a token request, returns a response object for the appropriate response.</li>
+</ul>
+
+<h2>Resource Requests</h2>
+
+<p>Any API method requiring oauth2 authentication.  The server will validate the incomming request, and then allow
+the application to serve back the protected resource.</p>
+
+<p><strong>verifyResourceRequest</strong></p>
+
+<ul>
+<li>Receives a request object for a resource request, finds the token if it exists, and returns a Boolean for whether
+the incomming request is valid</li>
+</ul>
+
+<p><strong>getAccessTokenData</strong></p>
+
+<ul>
+<li>Takes a token string as an argument and returns the token data if applicable, or null if the token is invalid</li>
+</ul>
 
 
       </div>
@@ -85,8 +117,8 @@
             <ul class="js-guides">
               <li><a href="/oauth2-server-php-docs/">Get Started</a></li>
               <li><a href="/oauth2-server-php-docs/overview/main-concepts/">Main Concepts</a></li>
-              <li><a href="/oauth2-server-php-docs/overview/grant-types/">Grant Types</a></li>
               <li><a href="/oauth2-server-php-docs/overview/controllers/">Controllers</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/grant-types/">Grant Types</a></li>
               <li><a href="/oauth2-server-php-docs/overview/response/">Response</a></li>
               <li><a href="/oauth2-server-php-docs/overview/scope/">Scope</a></li>
               <li><a href="/oauth2-server-php-docs/overview/userid/">User ID</a></li>
@@ -102,24 +134,6 @@
               <li><a href="/oauth2-server-php-docs/grant-types/client-credentials/">Client Credentials</a></li>
               <li><a href="/oauth2-server-php-docs/grant-types/refresh-token/">Refresh Token</a></li>
               <li><a href="/oauth2-server-php-docs/grant-types/jwt-bearer/">JWT Bearer</a></li>
-            </ul>
-          </li>
-          <li class="js-topic">
-            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/controllers/authorize">Controllers</a></h3>
-            <ul class="js-guides">
-              <li><a href="/oauth2-server-php-docs/controllers/authorize">Authorize</a></li>
-              <li><a href="/oauth2-server-php-docs/controllers/resource/">Resource</a></li>
-              <li><a href="/oauth2-server-php-docs/controllers/token/">Token</a></li>
-            </ul>
-          </li>
-          <li class="js-topic">
-            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/storage/interfaces">Storage</a></h3>
-            <ul class="js-guides">
-              <li><a href="/oauth2-server-php-docs/storage/interfaces">Interfaces</a></li>
-              <li><a href="/oauth2-server-php-docs/storage/pdo/">PDO</a></li>
-              <li><a href="/oauth2-server-php-docs/storage/mongo/">Mongo</a></li>
-              <li><a href="/oauth2-server-php-docs/storage/redis/">Redis</a></li>
-              <li><a href="/oauth2-server-php-docs/storage/cassandra/">Cassandra</a></li>
             </ul>
           </li>
           <li class="js-topic">

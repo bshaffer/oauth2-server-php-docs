@@ -6,7 +6,7 @@
   <meta http-equiv="imagetoolbar" content="false" />
   <meta name="MSSmartTagsPreventParsing" content="true" />
 
-  <title>Restler</title>
+  <title></title>
 
   <link rel="alternate" type="application/atom+xml" title="API Changes" href="changes.atom" />
   <link href="/oauth2-server-php-docs/css/reset.css" rel="stylesheet" type="text/css" />
@@ -38,42 +38,50 @@
 
     <div id="wrapper">
       <div class="content">
-    <h1>Restler</h1>
+    <h1>PDO</h1>
 
-<ol>
-<li>
-<p>Download the latest copy from <a href="https://github.com/Luracast/Restler.git">features\html</a></p>
+<h2>Overview</h2>
 
-<pre><code> $ git clone -b features/html https://github.com/Luracast/Restler.git
-</code></pre>
-</li>
-<li>
-<p>Run <code>composer.phar install</code> to make sure you have:</p>
+<p>The PDO Storage class uses the <a href="http://www.php.net/manual/en/book.pdo.php">PDO</a>
+extension for PHP. This allows connection to MySQL, SQLite, PostgreSQL, and
+<a href="http://www.php.net/manual/en/pdo.drivers.php">many more</a>.</p>
 
-<ul>
-<li>twig template library</li>
-<li>bshaffer's oauth2 libaray</li>
-</ul>
-</li>
-<li>
-<p>Make sure the following directories have write permissions to create the compiled template files:</p>
+<h2>Installation</h2>
 
-<ul>
-<li><code>public/examples/_014_oauth2_client/cache</code></li>
-<li><code>public/examples/_015_oauth2_server/cache</code></li>
-</ul>
-</li>
-<li>
-<p>Make sure the following directory has write permissions. This is where <code>oauth.sqlite</code> file be created at run time:</p>
+<p>PDO is installed by default in <code>php 5.1+</code>, which is already required for this library,
+so you'll be good to go.</p>
 
-<ul>
-<li><code>public/examples/_015_oauth2_server/OAuth2/db</code></li>
-</ul>
-</li>
-<li><p>Set up a virtual host for <code>/path/to/Restler/public</code>.</p></li>
-<li><p>Point your browser to <code>http://yourhost/examples/_014_oauth2_client</code> to play around.</p></li>
-</ol>
+<h2>Get Started</h2>
 
+<p>Once this is done, <a href="http://www.php.net/manual/en/pdo.connections.php">instantiate a PDO client</a>
+to connect to your database server of choice.</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// connection for MySQL</span>
+<span class="local-variable">$pdo</span> = <span class="keyword">new</span> <span class="constant">PDO</span>(<span class="string"><span class="delimiter">'</span><span class="content">mysql:host=localhost;dbname=test</span><span class="delimiter">'</span></span>, <span class="local-variable">$user</span>, <span class="local-variable">$pass</span>);
+
+<span class="comment">// connection for SQLite</span>
+<span class="local-variable">$pdo</span> = <span class="keyword">new</span> <span class="constant">PDO</span>(<span class="string"><span class="delimiter">'</span><span class="content">sqlite:/opt/databases/mydb.sq3</span><span class="delimiter">'</span></span>);
+
+<span class="comment">// connection for SQLite in memory</span>
+<span class="local-variable">$pdo</span> = <span class="keyword">new</span> <span class="constant">PDO</span>(<span class="string"><span class="delimiter">'</span><span class="content">sqlite::memory:</span><span class="delimiter">'</span></span>);</code></pre></div></div>
+</div>
+
+<p>Then, create the storage object using the <code>Pdo</code> storage class:</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$storage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Pdo</span>(<span class="local-variable">$pdo</span>);
+
+<span class="comment">// now you can perform storage functions, such as the one below</span>
+<span class="local-variable">$storage</span>-&gt;setClientDetails(<span class="local-variable">$client_id</span>, <span class="local-variable">$client_secret</span>, <span class="local-variable">$redirect_uri</span>);</code></pre></div></div>
+</div>
+
+<h2>Usage</h2>
+
+<p>The PDO storage engine implements all the standard Storage Interfaces supported
+in this library.  See <a href="../interfaces">interfaces</a> for more information.</p>
 
       </div>
 
