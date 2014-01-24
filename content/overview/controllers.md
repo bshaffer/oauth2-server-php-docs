@@ -1,3 +1,7 @@
+---
+title: Controllers | OAuth2 Server PHP
+---
+
 # Controllers
 
 > ...an end-user (resource owner) can grant a printing

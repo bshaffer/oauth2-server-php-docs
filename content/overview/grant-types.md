@@ -1,3 +1,7 @@
+---
+title: Grant Types | OAuth2 Server PHP
+---
+
 # Grant Types
 
 There are many supported grant types in the OAuth2 specification, and this library allows for the addition of custom grant types as well.

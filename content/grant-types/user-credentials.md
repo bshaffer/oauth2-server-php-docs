@@ -1,3 +1,7 @@
+---
+title: User Credentials Grant Type | OAuth2 Server PHP
+---
+
 # User Credentials
 
 ## Overview

@@ -6,13 +6,11 @@ title: OAuth2 Server PHP
 
 Implement OAuth2.0 cleanly into your PHP application.  [Download the Code](https://github.com/bshaffer/oauth2-server-php) from GitHub to get started.
 
-Requirements
-------------
+## Requirements
 
 **PHP 5.3.9+** is required for this library.  However, there is a [stable release](https://github.com/bshaffer/oauth2-server-php/tree/v0.9) and [developerment branch](https://github.com/bshaffer/oauth2-server-php/tree/php5.2-develop) for **PHP 5.2.x-5.3.8** as well.
 
-Installation
-------------
+## Installation
 
 This library follows the zend [PSR-0](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md) standards.  A number of
 autoloaders exist which can autoload this library for that reason, but if you are not using one, you can register the `OAuth2\Autoloader`:
@@ -40,8 +38,7 @@ And then run `composer.phar install`
 > ensure your application doesn't break from backwards-compatibility issues, but also this means you
 > will not receive the latest changes.
 
-Get Started With This Library
------------------------------
+## Get Started With This Library
 
 Looking through the [cookbook](cookbook) examples is the best way to get started.  For those who just skim the docs for
 code samples, here is an example of a bare-bones OAuth2 Server implementation:
@@ -55,10 +52,9 @@ $server->handleTokenRequest(OAuth2\Request::createFromGlobals())->send();
 
 See [Main Concepts](overview/main-concepts) for more information on how this library works.
 
-<a class="anchor" name="learning-the-oauth-standard" href="#learning-the-oauth-standard"></a>Learning the OAuth2.0 Standard
---------------------------------------------------------------
+## <a class="anchor" name="learning-the-oauth-standard" href="#learning-the-oauth-standard"></a>Learning the OAuth2.0 Standard
 
-If you are new to OAuth2, I highly recommend the [**OAuth in 8 Steps**](https://knpuniversity.com/screencast/oauth) screencast
+If you are new to OAuth2, I highly recommend the **<a href="https://knpuniversity.com/screencast/oauth" onClick="trackOutboundLink(this, 'Outbound Links', this.href)">OAuth in 8 Steps</a>** screencast
 from Knp University:
 
 ![OAuth in 8 Steps](https://pbs.twimg.com/media/BemcRQ6CEAA1DxF.png)

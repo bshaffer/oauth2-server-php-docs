@@ -1,3 +1,7 @@
+---
+title: Refresh Token Grant Type | OAuth2 Server PHP
+---
+
 # Refresh Token
 
 ## Overview

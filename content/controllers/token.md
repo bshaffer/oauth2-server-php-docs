@@ -1,3 +1,7 @@
+---
+title: Token Controller | OAuth2 Server PHP
+---
+
 # Token Controller
 
 ## Overview

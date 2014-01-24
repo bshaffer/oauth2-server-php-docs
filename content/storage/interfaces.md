@@ -1,3 +1,7 @@
+---
+title: Storage Interfaces | OAuth2 Server PHP
+---
+
 # Interfaces
 
 ## Overview

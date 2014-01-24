@@ -1,3 +1,7 @@
+---
+title: Main Concepts | OAuth2 Server PHP
+---
+
 # Main Concepts
 
 > To better understand the OAuth specification, please see

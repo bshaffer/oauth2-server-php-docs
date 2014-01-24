@@ -1,3 +1,7 @@
+---
+title: Authorize Controller | OAuth2 Server PHP
+---
+
 # Authorize Controller
 
 ## Overview

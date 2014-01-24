@@ -1,3 +1,7 @@
+---
+title: Crypto Tokens | OAuth2 Server PHP
+---
+
 # Crypto Tokens
 
 ## Overview

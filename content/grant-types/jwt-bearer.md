@@ -1,3 +1,7 @@
+---
+title: JWT Bearer Grant Type | OAuth2 Server PHP
+---
+
 # JWT Bearer
 
 ## Overview

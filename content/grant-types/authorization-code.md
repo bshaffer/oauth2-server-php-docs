@@ -1,3 +1,7 @@
+---
+title: Authorization Code Grant Type | OAuth2 Server PHP
+---
+
 # Authorization Code
 
 ## Overview

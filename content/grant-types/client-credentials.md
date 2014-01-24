@@ -1,3 +1,7 @@
+---
+title: Client Credentials Grant Type | OAuth2 Server PHP
+---
+
 # Client Credentials
 
 ## Overview

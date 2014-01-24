@@ -1,3 +1,7 @@
+---
+title: Scope | OAuth2 Server PHP
+---
+
 # Scope
 
 ## Configure your Scope

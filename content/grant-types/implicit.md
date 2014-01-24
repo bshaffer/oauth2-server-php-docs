@@ -1,3 +1,7 @@
+---
+title: Implicit Grant Type | OAuth2 Server PHP
+---
+
 # Implicit
 
 ## Overview

@@ -1,3 +1,7 @@
+---
+title: Resource Controller | OAuth2 Server PHP
+---
+
 # Resource Controller
 
 ## Overview

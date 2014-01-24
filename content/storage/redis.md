@@ -1,3 +1,7 @@
+---
+title: Redis Storage | OAuth2 Server PHP
+---
+
 # Redis
 
 ## Overview

@@ -1,3 +1,7 @@
+---
+title: User ID | OAuth2 Server PHP
+---
+
 # User IDs
 
 Associating Local Users With Access Tokens

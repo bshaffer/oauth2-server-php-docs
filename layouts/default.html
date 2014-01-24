@@ -135,6 +135,16 @@
 
       ga('create', 'UA-11590669-6', 'bshaffer.github.io');
       ga('send', 'pageview');
+
+      function trackOutboundLink(link, category, action) {
+        try {
+          _gaq.push(['_trackEvent', category , action]);
+        } catch(err){}
+
+        setTimeout(function() {
+          document.location.href = link.href;
+        }, 100);
+      }
     </script>
 </body>
 </html>
