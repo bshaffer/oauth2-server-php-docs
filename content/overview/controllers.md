@@ -14,44 +14,6 @@ Most OAuth2 APIs will have endpoints for `Authorize Requests`, `Token Requests`,
 
 Each controller below corresponds to the endpoint by the same name.
 
-## Authorize Controller
-
-For the Authorize Endpoint, which requires the user to authenticate and redirects back to the client with an `authorization code` ([Authorization Code](../../grant-types/authorization-code) grant type)
-or `access token` ([Implicit](../../grant-types/implicit) grant type).
-
-**handleAuthorizeRequest**
-
-  * Receives a request object for an authorize request, returns a response object with the appropriate response
-
-**validateAuthorizeRequest**
-
-  * Receives a request object, returns false if the incoming request is not a valid Authorize Request. If the request
-is valid, returns an array of retrieved client details together with input.
-Applications should call this before displaying a login or authorization form to the user
-
-## Token Controller
-
-For the Token Endpoint, which uses the configured [Grant Types](../grant-types) to return  an `access token`
-to the client.
-
-**grantAccessToken**
-
-  * Receives a request object for a token request, returns a token if the request is valid.
-
-**handleTokenRequest**
-
-  * Receives a request object for a token request, returns a response object for the appropriate response.
-
-## Resource Controller
-
-For any resource request (i.e. API Call) requiring oauth2 authentication.  The controller will validate the
-incomming request, and then allow the application to serve back the protected resource.
-
-**verifyResourceRequest**
-
-  * Receives a request object for a resource request, finds the token if it exists, and returns a Boolean for whether
-the incomming request is valid
-
-**getAccessTokenData**
-
-  * Takes a token string as an argument and returns the token data if applicable, or null if the token is invalid
+ * [Authorize Controller](../../controllers/authorize/)
+ * [Resource Controller](../../controllers/resource/)
+ * [Token Controller](../../controllers/token/)
