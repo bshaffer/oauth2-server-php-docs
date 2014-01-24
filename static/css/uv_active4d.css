@@ -114,7 +114,7 @@ pre.active4d .DateTimeLiteral {
    color: #66CCFF;
 }
 
-
+/* bshaffer custom styles */
 .code-container {
   position: relative;
 }
@@ -127,4 +127,13 @@ pre.active4d .DateTimeLiteral {
   text-transform: lowercase;
   font-size: 9px;
   color: #999;
+}
+
+.anchor {
+  width: 20px;
+  display: block;
+  float: left;
+  height: 20px;
+  margin-left: -20px;
+  cursor: pointer;
 }

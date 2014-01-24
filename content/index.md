@@ -55,8 +55,8 @@ $server->handleTokenRequest(OAuth2\Request::createFromGlobals())->send();
 
 See [Main Concepts](overview/main-concepts) for more information on how this library works.
 
-Learning the OAuth2.0 Standard
-------------------------------
+<a class="anchor" name="learning-the-oauth-standard" href="#learning-the-oauth-standard"></a>Learning the OAuth2.0 Standard
+--------------------------------------------------------------
 
 If you are new to OAuth2, I highly recommend the [**OAuth in 8 Steps**](https://knpuniversity.com/screencast/oauth) screencast
 from Knp University:
