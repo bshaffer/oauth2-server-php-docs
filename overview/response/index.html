@@ -6,7 +6,7 @@
   <meta http-equiv="imagetoolbar" content="false" />
   <meta name="MSSmartTagsPreventParsing" content="true" />
 
-  <title></title>
+  <title>The Response Object | OAuth2 Server PHP</title>
 
   <link rel="alternate" type="application/atom+xml" title="API Changes" href="changes.atom" />
   <link href="/oauth2-server-php-docs/css/reset.css" rel="stylesheet" type="text/css" />
@@ -179,6 +179,16 @@ into frameworks using the <a href="https://github.com/symfony/HttpFoundation">Ht
 
       ga('create', 'UA-11590669-6', 'bshaffer.github.io');
       ga('send', 'pageview');
+
+      function trackOutboundLink(link, category, action) {
+        try {
+          _gaq.push(['_trackEvent', category , action]);
+        } catch(err){}
+
+        setTimeout(function() {
+          document.location.href = link.href;
+        }, 100);
+      }
     </script>
 </body>
 </html>

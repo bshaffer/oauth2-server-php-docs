@@ -94,7 +94,7 @@ code samples, here is an example of a bare-bones OAuth2 Server implementation:</
 <h2>
 <a class="anchor" name="learning-the-oauth-standard" href="#learning-the-oauth-standard"></a>Learning the OAuth2.0 Standard</h2>
 
-<p>If you are new to OAuth2, I highly recommend the <a href="https://knpuniversity.com/screencast/oauth"><strong>OAuth in 8 Steps</strong></a> screencast
+<p>If you are new to OAuth2, I highly recommend the <strong><a href="https://knpuniversity.com/screencast/oauth" onclick="trackOutboundLink(this, 'Outbound Links', this.href)">OAuth in 8 Steps</a></strong> screencast
 from Knp University:</p>
 
 <p><img src="https://pbs.twimg.com/media/BemcRQ6CEAA1DxF.png" alt="OAuth in 8 Steps"></p>
@@ -212,6 +212,16 @@ help answer questions for others as well.</p>
 
       ga('create', 'UA-11590669-6', 'bshaffer.github.io');
       ga('send', 'pageview');
+
+      function trackOutboundLink(link, category, action) {
+        try {
+          _gaq.push(['_trackEvent', category , action]);
+        } catch(err){}
+
+        setTimeout(function() {
+          document.location.href = link.href;
+        }, 100);
+      }
     </script>
 </body>
 </html>

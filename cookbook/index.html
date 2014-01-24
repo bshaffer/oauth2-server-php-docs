@@ -353,6 +353,16 @@ you'll probably want to know which user an access token applies to when it is us
 
       ga('create', 'UA-11590669-6', 'bshaffer.github.io');
       ga('send', 'pageview');
+
+      function trackOutboundLink(link, category, action) {
+        try {
+          _gaq.push(['_trackEvent', category , action]);
+        } catch(err){}
+
+        setTimeout(function() {
+          document.location.href = link.href;
+        }, 100);
+      }
     </script>
 </body>
 </html>
