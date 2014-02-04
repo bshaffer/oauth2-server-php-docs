@@ -96,7 +96,7 @@ file, as well as an <code>OAuthAccessToken</code> and <code>OAuthAccessTokenTabl
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">class</span> <span class="class">OAuthClientTable</span> <span class="keyword">extends</span> <span class="constant">PluginOAuthClientTable</span> <span class="keyword">implements</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">ClientCredentialsInterface</span>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">class</span> <span class="class">OAuthClientTable</span> <span class="keyword">extends</span> <span class="constant">Doctrine_Table</span> <span class="keyword">implements</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">ClientCredentialsInterface</span>
 {
     <span class="keyword">public</span> <span class="keyword">function</span> <span class="function">getClientDetails</span>(<span class="local-variable">$client_id</span>)
     {
@@ -129,7 +129,7 @@ file, as well as an <code>OAuthAccessToken</code> and <code>OAuthAccessTokenTabl
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">class</span> <span class="class">OAuthAccessTokenTable</span> <span class="keyword">extends</span> <span class="constant">PluginOAuthAccessTokenTable</span> <span class="keyword">implements</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">AccessTokenInterface</span>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">class</span> <span class="class">OAuthAccessTokenTable</span> <span class="keyword">extends</span> <span class="constant">Doctrine_Table</span> <span class="keyword">implements</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">AccessTokenInterface</span>
 {
     <span class="keyword">public</span> <span class="keyword">function</span> <span class="function">getAccessToken</span>(<span class="local-variable">$oauth_token</span>)
     {
@@ -263,7 +263,7 @@ types as well.</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">class</span> <span class="class">OAuthAuthorizationCodeTable</span> <span class="keyword">extends</span> <span class="constant">PluginOAuthAuthorizationCodeTable</span> <span class="keyword">implements</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">AuthorizationCodeInterface</span>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">class</span> <span class="class">OAuthAuthorizationCodeTable</span> <span class="keyword">extends</span> <span class="constant">Doctrine_Table</span> <span class="keyword">implements</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">AuthorizationCodeInterface</span>
 {
     <span class="keyword">public</span> <span class="keyword">function</span> <span class="function">getAuthorizationCode</span>(<span class="local-variable">$code</span>)
     {
@@ -313,7 +313,7 @@ types as well.</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">class</span> <span class="class">OAuthRefreshTokenTable</span> <span class="keyword">extends</span> <span class="constant">PluginOAuthRefreshTokenTable</span> <span class="keyword">implements</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">RefreshTokenInterface</span>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">class</span> <span class="class">OAuthRefreshTokenTable</span> <span class="keyword">extends</span> <span class="constant">Doctrine_Table</span> <span class="keyword">implements</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">RefreshTokenInterface</span>
 {
     <span class="keyword">public</span> <span class="keyword">function</span> <span class="function">getRefreshToken</span>(<span class="local-variable">$refresh_token</span>)
     {
