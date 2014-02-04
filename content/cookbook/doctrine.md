@@ -59,7 +59,7 @@ file, as well as an `OAuthAccessToken` and `OAuthAccessTokenTable` object.
 Implement `OAuth2\Storage\ClientCredentialsInterface` on the `OAuthClientTable` class:
 
 ```php
-class OAuthClientTable extends PluginOAuthClientTable implements OAuth2\Storage\ClientCredentialsInterface
+class OAuthClientTable extends Doctrine_Table implements OAuth2\Storage\ClientCredentialsInterface
 {
     public function getClientDetails($client_id)
     {
@@ -91,7 +91,7 @@ class OAuthClientTable extends PluginOAuthClientTable implements OAuth2\Storage\
 Now implement `OAuth2\Storage\AccessTokenInterface` on the `OAuthAccessTokenTable` class:
 
 ```php
-class OAuthAccessTokenTable extends PluginOAuthAccessTokenTable implements OAuth2\Storage\AccessTokenInterface
+class OAuthAccessTokenTable extends Doctrine_Table implements OAuth2\Storage\AccessTokenInterface
 {
     public function getAccessToken($oauth_token)
     {
@@ -224,7 +224,7 @@ Implement `OAuth2\Storage\AuthorizationCodeInterface` on the `OAuthAuthorization
 
 
 ```php
-class OAuthAuthorizationCodeTable extends PluginOAuthAuthorizationCodeTable implements OAuth2\Storage\AuthorizationCodeInterface
+class OAuthAuthorizationCodeTable extends Doctrine_Table implements OAuth2\Storage\AuthorizationCodeInterface
 {
     public function getAuthorizationCode($code)
     {
@@ -273,7 +273,7 @@ class OAuthAuthorizationCodeTable extends PluginOAuthAuthorizationCodeTable impl
 Implement `OAuth2\Storage\RefreshTokenInterface` on the `OAuthRefreshTokenTable` class:
 
 ```php
-class OAuthRefreshTokenTable extends PluginOAuthRefreshTokenTable implements OAuth2\Storage\RefreshTokenInterface
+class OAuthRefreshTokenTable extends Doctrine_Table implements OAuth2\Storage\RefreshTokenInterface
 {
     public function getRefreshToken($refresh_token)
     {
