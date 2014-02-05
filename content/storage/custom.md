@@ -17,7 +17,7 @@ First, find out which storage interfaces you want to implement. As a minimum, ev
 OAuth2 server requires storage objects implementing `AccessTokenInterface` and
 `ClientCredentialsInterface`, so if you cannot store these using one of the built-in
 storage classes, your custom storage can start with these. After that, you'll want to
-implement additional interfaces based on your [Grant Types](../../grant-types/).
+implement additional interfaces based on your [Grant Types](../../overview/grant-types/).
 For instance, if you want your server to support the `authorization_code` grant type
 (most common), and you want your custom storage to do it, you'll need to implement
 `AuthorizationCodeInterface` on your storage object(s) as well.
