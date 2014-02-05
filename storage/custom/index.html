@@ -6,7 +6,7 @@
   <meta http-equiv="imagetoolbar" content="false" />
   <meta name="MSSmartTagsPreventParsing" content="true" />
 
-  <title>PDO Storage | OAuth2 Server PHP</title>
+  <title>Custom Storage | OAuth2 Server PHP</title>
 
   <link rel="alternate" type="application/atom+xml" title="API Changes" href="changes.atom" />
   <link href="/oauth2-server-php-docs/css/reset.css" rel="stylesheet" type="text/css" />
@@ -38,50 +38,135 @@
 
     <div id="wrapper">
       <div class="content">
-    <h1>PDO</h1>
+    <h1>Custom Storage</h1>
 
 <h2>Overview</h2>
 
-<p>The PDO Storage class uses the <a href="http://www.php.net/manual/en/book.pdo.php">PDO</a>
-extension for PHP. This allows connection to MySQL, SQLite, PostgreSQL, and
-<a href="http://www.php.net/manual/en/pdo.drivers.php">many more</a>.</p>
+<p>A great advantage to using this library is the ease of customizing your
+own storage. If one of the built-in storage objects does not fit your needs,
+you can implement one or more of the interfaces below to obtain custom storage
+functionality.</p>
 
-<h2>Installation</h2>
+<h2>How to Customize Storage</h2>
 
-<p>PDO is installed by default in <code>php 5.1+</code>, which is already required for this library,
-so you'll be good to go.</p>
+<p>First, find out which storage interfaces you want to implement. As a minimum, every
+OAuth2 server requires storage objects implementing <code>AccessTokenInterface</code> and
+<code>ClientCredentialsInterface</code>, so if you cannot store these using one of the built-in
+storage classes, your custom storage can start with these. After that, you'll want to
+implement additional interfaces based on your <a href="../../grant-types/">Grant Types</a>.
+For instance, if you want your server to support the <code>authorization_code</code> grant type
+(most common), and you want your custom storage to do it, you'll need to implement
+<code>AuthorizationCodeInterface</code> on your storage object(s) as well.</p>
 
-<h2>Get Started</h2>
-
-<p>Once this is done, <a href="http://www.php.net/manual/en/pdo.connections.php">instantiate a PDO client</a>
-to connect to your database server of choice.</p>
-
-<div class="code-container">
-<div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// connection for MySQL</span>
-<span class="local-variable">$pdo</span> = <span class="keyword">new</span> <span class="constant">PDO</span>(<span class="string"><span class="delimiter">'</span><span class="content">mysql:host=localhost;dbname=test</span><span class="delimiter">'</span></span>, <span class="local-variable">$user</span>, <span class="local-variable">$pass</span>);
-
-<span class="comment">// connection for SQLite</span>
-<span class="local-variable">$pdo</span> = <span class="keyword">new</span> <span class="constant">PDO</span>(<span class="string"><span class="delimiter">'</span><span class="content">sqlite:/opt/databases/mydb.sq3</span><span class="delimiter">'</span></span>);
-
-<span class="comment">// connection for SQLite in memory</span>
-<span class="local-variable">$pdo</span> = <span class="keyword">new</span> <span class="constant">PDO</span>(<span class="string"><span class="delimiter">'</span><span class="content">sqlite::memory:</span><span class="delimiter">'</span></span>);</code></pre></div></div>
-</div>
-
-<p>Then, create the storage object using the <code>Pdo</code> storage class:</p>
+<p>The term "implement" refers to the class declaration in your custom storage
+PHP class. For instance, to use custom storage for access tokens, clients, and the
+authorization code grant type, your class will look something like this:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$storage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Pdo</span>(<span class="local-variable">$pdo</span>);
-
-<span class="comment">// now you can perform storage functions, such as the one below</span>
-<span class="local-variable">$storage</span>-&gt;setClientDetails(<span class="local-variable">$client_id</span>, <span class="local-variable">$client_secret</span>, <span class="local-variable">$redirect_uri</span>);</code></pre></div></div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">class</span> <span class="class">MyCustomStorage</span> <span class="keyword">implements</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">AccessTokenInterface</span>,
+<span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">ClientCredentialsInterface</span>, <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">AuthorizationCodeInterface</span>
+{
+    <span class="comment">// method implementation here...</span>
+}</code></pre></div></div>
 </div>
 
-<h2>Usage</h2>
+<p>Once this is done, you will need to write all the methods that those interfaces require.
+For instance, <code>ClientCredentialsInterface</code> specifies the method <code>getClientDetails</code>,
+which accepts a <code>$client_id</code> parameter and returns an array of client data.</p>
 
-<p>The PDO storage engine implements all the standard Storage Interfaces supported
-in this library.  See <a href="../interfaces">interfaces</a> for more information.</p>
+<p>From there, you'll pass this new storage object into the server class:</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$customStorage</span> = <span class="keyword">new</span> <span class="constant">MyCustomStorage</span>();
+<span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>(<span class="local-variable">$customStorage</span>);</code></pre></div></div>
+</div>
+
+<p>Don't know what methods you need? No problem, just pop open the interface classes and <a href="https://github.com/bshaffer/oauth2-server-php/tree/develop/src/OAuth2/Storage">take
+a look</a>! If
+this isn't your style, PHP throws a helpful error message to let you know the
+methods your class still needs to implement, if it's missing them.</p>
+
+<p>All of the storage objects included in this library are no different from a "Custom Storage"
+object.  The only real difference is that they're included in the library by default, and
+they implement <strong>all</strong> the interfaces (yours doesn't have to implement all the storage
+interfaces, just the ones you want to customize).</p>
+
+<p>See the list of interfaces below for all possible storage interfaces, and check out the
+<a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/Cassandra.php">Cassandra Storage</a>
+class for an example of a storage object implemented for a "custom" purpose - to interface
+with the Cassandra storage engine.</p>
+
+<h2>Interfaces</h2>
+
+<p><strong><a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/AccessTokenInterface.php">Access Token Interface</a></strong></p>
+
+<p>For implementing basic Access Tokens. This is required for the
+<a href="../../controllers/token/">Token Controller</a>, unless
+<a href="../../overview/crypto-tokens">Crypto Tokens</a> are used instead.</p>
+
+<p><em>id: "access_token"</em></p>
+
+<p><strong><a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/ClientInterface.php">Client Interface</a></strong></p>
+
+<p>Required for the <a href="../../controllers/token/">Token Controller</a>
+and <a href="../../controllers/authorize/">Authorize Controller</a>, and
+is used to gather information about the client making the request.</p>
+
+<p><em>id: "client"</em></p>
+
+<p><strong><a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/ClientCredentialsInterface.php">Client Credentials Interface</a></strong></p>
+
+<p>For validating a client's credentials. This is required for all requests
+to the <a href="../../controllers/token/">Token Controller</a>, in order to validate
+the client making the request.</p>
+
+<p><em>id: "client_credentials"</em></p>
+
+<p><strong><a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/AuthorizationCodeInterface.php">Authorization Code Interface</a></strong></p>
+
+<p>For implementing the <a href="../../grant-type/authorization-code">Authorization Code Grant Type</a></p>
+
+<p><em>id: "authorization_code"</em></p>
+
+<p><strong><a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/RefreshTokenInterface.php">Refresh Token Interface</a></strong></p>
+
+<p>For implementing the <a href="../../grant-type/refresh-token/">Refresh Token Grant Type</a>.</p>
+
+<p><em>id: "refresh_token"</em></p>
+
+<p><strong><a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/UserCredentialsInterface.php">User Credentials Interface</a></strong></p>
+
+<p>For implementing the <a href="../../grant-type/user-credentials">User Credentials Grant Type</a>.</p>
+
+<p><em>id: "user_credentials"</em></p>
+
+<p><strong><a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/JwtBearerInterface.php">JWT Bearer Interface</a></strong></p>
+
+<p>Required for the <a href="../../grant-type/jwt-bearer">JWT Bearer Grant Type</a>.</p>
+
+<p><em>id: "jwt_bearer"</em></p>
+
+<p><strong><a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/ScopeInterface.php">Scope Interface</a></strong></p>
+
+<p>For implementing scopes using the <a href="../../overview/scope">Scope Util</a>.</p>
+
+<p><em>id: "scope"</em></p>
+
+<p><strong><a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/PublicKeyInterface.php">Public Key Interface</a></strong></p>
+
+<p>For implementing <a href="../../overview/crypto-tokens">Crypto Token</a>.</p>
+
+<p><em>id: "public_key"</em></p>
+
+<p><strong><a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/CryptoTokenInterface.php">Crypto Token Interface</a></strong></p>
+
+<p>An interface for using <a href="../../overview/crypto-tokens">Crypto Tokens</a>.
+This requires the Public Key interface (below), and is used for validating
+access tokens without the use of a database system.</p>
+
+<p><em>id: NONE</em></p>
 
       </div>
 

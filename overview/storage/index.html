@@ -6,7 +6,7 @@
   <meta http-equiv="imagetoolbar" content="false" />
   <meta name="MSSmartTagsPreventParsing" content="true" />
 
-  <title>Storage Interfaces | OAuth2 Server PHP</title>
+  <title>Storage | OAuth2 Server PHP</title>
 
   <link rel="alternate" type="application/atom+xml" title="API Changes" href="changes.atom" />
   <link href="/oauth2-server-php-docs/css/reset.css" rel="stylesheet" type="text/css" />
@@ -38,65 +38,22 @@
 
     <div id="wrapper">
       <div class="content">
-    <h1>Interfaces</h1>
+    <h1>Storage</h1>
 
 <h2>Overview</h2>
 
 <p>This library supports adapters for several different storage engines.
-Among them is <a href="../pdo">PDO</a> (for MySQL, SQLite, PostgreSQL, etc),
-<a href="../mongo">MongoDB</a>, <a href="../redis">Redis</a>, and <a href="../cassandra">Cassandra</a>.</p>
+Among them is <a href="../../storage/pdo">PDO</a> (for MySQL, SQLite, PostgreSQL, etc),
+<a href="../../storage/mongo">MongoDB</a>, <a href="../../storage/redis">Redis</a>, and
+<a href="../../storage/cassandra">Cassandra</a>.</p>
 
 <p>This is done through multiple PHP Interfaces which dictate how different
 objects are stored. Interfaces allow the library to be extended and
-customized for multiple platforms.</p>
+customized for multiple platforms, making it easy to
+<a href="../../storage/custom/">Write your own Storage class</a>.</p>
 
-<p><strong><a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/AccessTokenInterface.php">Access Token Interface</a></strong></p>
-
-<p>For implementing basic Access Tokens. This is required for the
-<a href="../../controllers/token/">Token Controller</a>, unless
-<a href="../../overview/crypto-tokens">Crypto Tokens</a> are used instead.</p>
-
-<p><strong><a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/AuthorizationCodeInterface.php">Authorization Token Interface</a></strong></p>
-
-<p>For implementing the <a href="../../grant-type/authorization-code">Authorization Code Grant Type</a></p>
-
-<p><strong><a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/ClientInterface.php">Client Interface</a></strong></p>
-
-<p>Required for the <a href="../../controllers/token/">Token Controller</a>
-and <a href="../../controllers/authorize/">Authorize Controller</a>, and
-is used to gather information about the client making the request.</p>
-
-<p><strong><a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/ClientCredentialsInterface.php">Client Credentials Interface</a></strong></p>
-
-<p>For validating a client's credentials. This is required for all requests
-to the <a href="../../controllers/token/">Token Controller</a>, in order to validate
-the client making the request.</p>
-
-<p><strong><a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/CryptoTokenInterface.php">Crypto Token Interface</a></strong></p>
-
-<p>An interface for using <a href="../../overview/crypto-tokens">Crypto Tokens</a>.
-This requires the Public Key interface (below), and is used for validating
-access tokens without the use of a database system.</p>
-
-<p><strong><a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/JwtBearerInterface.php">JWT Bearer Interface</a></strong></p>
-
-<p>Required for the <a href="../../grant-type/jwt-bearer">JWT Bearer Grant Type</a>.</p>
-
-<p><strong><a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/PublicKeyInterface.php">Public Key Interface</a></strong></p>
-
-<p>For implementing <a href="../../overview/crypto-tokens">Crypto Token</a>.</p>
-
-<p><strong><a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/RefreshTokenInterface.php">Refresh Token Interface</a></strong></p>
-
-<p>For implementing the <a href="../../grant-type/refresh-token/">Refresh Token Grant Type</a>.</p>
-
-<p><strong><a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/ScopeInterface.php">Scope Interface</a></strong></p>
-
-<p>For implementing scopes using the <a href="../../overview/scope">Scope Util</a>.</p>
-
-<p><strong><a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/UserCredentialsInterface.php">User Credentials Interface</a></strong></p>
-
-<p>For implementing the <a href="../../grant-type/user-credentials">User Credentials Grant Type</a>.</p>
+<p>Storage interfaces also make it easy to store your objects across
+<a href="../../storage/multiple">multiple data storage systems</a>.</p>
 
       </div>
 
@@ -110,7 +67,8 @@ access tokens without the use of a database system.</p>
               <li><a href="/oauth2-server-php-docs/overview/main-concepts/">Main Concepts</a></li>
               <li><a href="/oauth2-server-php-docs/overview/grant-types/">Grant Types</a></li>
               <li><a href="/oauth2-server-php-docs/overview/controllers/">Controllers</a></li>
-              <li><a href="/oauth2-server-php-docs/overview/response/">Response</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/storage/">Storage</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/response/">Request and Response</a></li>
               <li><a href="/oauth2-server-php-docs/overview/scope/">Scope</a></li>
               <li><a href="/oauth2-server-php-docs/overview/userid/">User ID</a></li>
               <li><a href="/oauth2-server-php-docs/overview/crypto-tokens/">Crypto Tokens</a></li>
@@ -136,13 +94,14 @@ access tokens without the use of a database system.</p>
             </ul>
           </li>
           <li class="js-topic">
-            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/storage/interfaces">Storage</a></h3>
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/storage/pdo/">Storage</a></h3>
             <ul class="js-guides">
-              <li><a href="/oauth2-server-php-docs/storage/interfaces">Interfaces</a></li>
               <li><a href="/oauth2-server-php-docs/storage/pdo/">PDO</a></li>
               <li><a href="/oauth2-server-php-docs/storage/mongo/">Mongo</a></li>
               <li><a href="/oauth2-server-php-docs/storage/redis/">Redis</a></li>
               <li><a href="/oauth2-server-php-docs/storage/cassandra/">Cassandra</a></li>
+              <li><a href="/oauth2-server-php-docs/storage/custom/">Custom Storage</a></li>
+              <li><a href="/oauth2-server-php-docs/storage/multiple/">Using Multiple Storages</a></li>
             </ul>
           </li>
           <li class="js-topic">

@@ -6,7 +6,7 @@
   <meta http-equiv="imagetoolbar" content="false" />
   <meta name="MSSmartTagsPreventParsing" content="true" />
 
-  <title>The Response Object | OAuth2 Server PHP</title>
+  <title>Request and Response | OAuth2 Server PHP</title>
 
   <link rel="alternate" type="application/atom+xml" title="API Changes" href="changes.atom" />
   <link href="/oauth2-server-php-docs/css/reset.css" rel="stylesheet" type="text/css" />
@@ -38,7 +38,34 @@
 
     <div id="wrapper">
       <div class="content">
-    <h1>The Response Object</h1>
+    <h1>Request and Response</h1>
+
+<h2>The Request Object</h2>
+
+<p>Every server call begins with a request. This library uses its own simple object to
+validate calls to the server. You will almost always create this like so:</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$request</span> = <span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals();
+
+<span class="comment">// call the OAuth server with it</span>
+<span class="local-variable">$server</span>-&gt;handleTokenRequest(<span class="local-variable">$request</span>);</code></pre></div></div>
+</div>
+
+<p>Because this uses PHP Interfaces, we can easily extend it for the framework we are using:</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// use HttpFoundation Requests instead, for Symfony / Twig / Laravel 4 / Drupal 8 / etc!</span>
+<span class="local-variable">$symfony_request</span> = <span class="constant">Symfony</span>\<span class="constant">Component</span>\<span class="constant">HttpFoundation</span>\<span class="constant">Request</span>::createFromGlobals();
+<span class="local-variable">$request</span> = <span class="constant">OAuth2</span>\<span class="constant">HttpFoundationBridge</span>\<span class="constant">Request</span>::createFromRequest(<span class="local-variable">$symfony_request</span>)
+
+<span class="comment">// call the OAuth server with it</span>
+<span class="local-variable">$server</span>-&gt;handleTokenRequest(<span class="local-variable">$request</span>);</code></pre></div></div>
+</div>
+
+<h2>The Response Object</h2>
 
 <p>The response object serves the purpose of making your server OAuth2 compliant.  It will set the appropriate status codes, headers,
 and response body for a valid or invalid oauth request.  To use it as it's simplest level, just send the output and exit:</p>
@@ -95,7 +122,8 @@ into frameworks using the <a href="https://github.com/symfony/HttpFoundation">Ht
               <li><a href="/oauth2-server-php-docs/overview/main-concepts/">Main Concepts</a></li>
               <li><a href="/oauth2-server-php-docs/overview/grant-types/">Grant Types</a></li>
               <li><a href="/oauth2-server-php-docs/overview/controllers/">Controllers</a></li>
-              <li><a href="/oauth2-server-php-docs/overview/response/">Response</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/storage/">Storage</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/response/">Request and Response</a></li>
               <li><a href="/oauth2-server-php-docs/overview/scope/">Scope</a></li>
               <li><a href="/oauth2-server-php-docs/overview/userid/">User ID</a></li>
               <li><a href="/oauth2-server-php-docs/overview/crypto-tokens/">Crypto Tokens</a></li>
@@ -121,13 +149,14 @@ into frameworks using the <a href="https://github.com/symfony/HttpFoundation">Ht
             </ul>
           </li>
           <li class="js-topic">
-            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/storage/interfaces">Storage</a></h3>
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/storage/pdo/">Storage</a></h3>
             <ul class="js-guides">
-              <li><a href="/oauth2-server-php-docs/storage/interfaces">Interfaces</a></li>
               <li><a href="/oauth2-server-php-docs/storage/pdo/">PDO</a></li>
               <li><a href="/oauth2-server-php-docs/storage/mongo/">Mongo</a></li>
               <li><a href="/oauth2-server-php-docs/storage/redis/">Redis</a></li>
               <li><a href="/oauth2-server-php-docs/storage/cassandra/">Cassandra</a></li>
+              <li><a href="/oauth2-server-php-docs/storage/custom/">Custom Storage</a></li>
+              <li><a href="/oauth2-server-php-docs/storage/multiple/">Using Multiple Storages</a></li>
             </ul>
           </li>
           <li class="js-topic">
