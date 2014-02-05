@@ -11,7 +11,7 @@ The library involves several main concepts:
 
 `Grant Types`
 
-[Grant Types](../../overview/grant-types) allow you to expose multiple ways for a client to receives an
+[Grant Types](../../grant-types/) allow you to expose multiple ways for a client to receives an
 Access Token.
 
 `Controllers`
