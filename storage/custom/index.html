@@ -53,7 +53,7 @@ functionality.</p>
 OAuth2 server requires storage objects implementing <code>AccessTokenInterface</code> and
 <code>ClientCredentialsInterface</code>, so if you cannot store these using one of the built-in
 storage classes, your custom storage can start with these. After that, you'll want to
-implement additional interfaces based on your <a href="../../grant-types/">Grant Types</a>.
+implement additional interfaces based on your <a href="../../overview/grant-types/">Grant Types</a>.
 For instance, if you want your server to support the <code>authorization_code</code> grant type
 (most common), and you want your custom storage to do it, you'll need to implement
 <code>AuthorizationCodeInterface</code> on your storage object(s) as well.</p>
