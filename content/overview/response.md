@@ -1,8 +1,33 @@
 ---
-title: The Response Object | OAuth2 Server PHP
+title: Request and Response | OAuth2 Server PHP
 ---
 
-# The Response Object
+# Request and Response
+
+## The Request Object
+
+Every server call begins with a request. This library uses its own simple object to
+validate calls to the server. You will almost always create this like so:
+
+```php
+$request = OAuth2\Request::createFromGlobals();
+
+// call the OAuth server with it
+$server->handleTokenRequest($request);
+```
+
+Because this uses PHP Interfaces, we can easily extend it for the framework we are using:
+
+```php
+// use HttpFoundation Requests instead, for Symfony / Twig / Laravel 4 / Drupal 8 / etc!
+$symfony_request = Symfony\Component\HttpFoundation\Request::createFromGlobals();
+$request = OAuth2\HttpFoundationBridge\Request::createFromRequest($symfony_request)
+
+// call the OAuth server with it
+$server->handleTokenRequest($request);
+```
+
+## The Response Object
 
 The response object serves the purpose of making your server OAuth2 compliant.  It will set the appropriate status codes, headers,
 and response body for a valid or invalid oauth request.  To use it as it's simplest level, just send the output and exit:
