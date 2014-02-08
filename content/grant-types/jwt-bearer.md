@@ -29,7 +29,7 @@ your server:
 $public_key = file_get_contents('id_rsa.pub');
 
 // assign the public key to a client and user
-$clientKeys = array('TestClient' => array('User1' => $public_key));
+$clientKeys = array('TestClient' => array('subject'=>'User1', 'key' => $public_key));
 
 // create a storage object
 $storage = new OAuth2\Storage\Memory(array('jwt' => $clientKeys));
