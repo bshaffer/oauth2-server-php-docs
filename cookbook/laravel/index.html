@@ -42,6 +42,45 @@
 
 <p>See this <a href="https://github.com/julien-c/laravel-oauth2-server">Laravel demo application</a> for implementing this library in Laravel 4.</p>
 
+<h2>Step-By-Step Walkthrough</h2>
+
+<ol>
+<li>Create your Laravel project (e.g. <code>composer create-project laravel/laravel --prefer-dist</code>)</li>
+<li>Install the OAuth2 server and HTTPFoundation bridge dependencies using Composer: <code>composer require bshaffer/oauth2-server-php</code> and <code>composer require bshaffer/oauth2-server-httpfoundation-bridge</code>
+</li>
+<li>
+<p>Setup your database and run the provided migration (see <a href="https://github.com/julien-c/laravel-oauth2-server/commit/b290d4f699b9758696444e2d62dd82f0eeedcb7d">https://github.com/julien-c/laravel-oauth2-server/commit/b290d4f699b9758696444e2d62dd82f0eeedcb7d</a>):</p>
+
+<p><code>php artisan db:migrate</code></p>
+</li>
+<li>
+<p>Seed your database using the provided script : <a href="https://github.com/julien-c/laravel-oauth2-server/commit/8895c54cbf8ea8ba78aafab53a5a0409ce2f1ba2">https://github.com/julien-c/laravel-oauth2-server/commit/8895c54cbf8ea8ba78aafab53a5a0409ce2f1ba2</a></p>
+
+<p><code>php artisan db:seed</code></p>
+</li>
+<li>
+<p>Setup your OAuth2 server. To be able to access the single instance anywhere in your Laravel app, you can attach it as a singleton:</p>
+
+<p>```php
+App::singleton('oauth2', function() {</p>
+
+<pre><code>$storage = new OAuth2\Storage\Pdo(array('dsn' =&gt; 'mysql:dbname=oauth2;host=localhost', 'username' =&gt; 'root', 'password' =&gt; 'root'));
+$server = new OAuth2\Server($storage);
+
+$server-&gt;addGrantType(new OAuth2\GrantType\ClientCredentials($storage));
+$server-&gt;addGrantType(new OAuth2\GrantType\UserCredentials($storage));
+
+return $server;
+</code></pre>
+
+<p>});
+```</p>
+</li>
+<li><p>Implement the actual OAuth2 controllers you wish to implement. For example a token controller and a resource controller: see <a href="https://github.com/julien-c/laravel-oauth2-server/blob/master/app/routes.php"><code>app/routes.php</code></a></p></li>
+</ol>
+
+<p>You can even unit test your integration! Here's an example using Guzzle: <a href="https://github.com/julien-c/laravel-oauth2-server/blob/master/app/tests/OAuthTest.php">https://github.com/julien-c/laravel-oauth2-server/blob/master/app/tests/OAuthTest.php</a></p>
+
       </div>
 
     <div id="js-sidebar" class="sidebar-shell">
@@ -95,15 +134,15 @@
             <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/cookbook/">Cookbook</a></h3>
             <ul class="js-guides">
               <li><a href="/oauth2-server-php-docs/cookbook/">Step-By-Step Walkthrough</a></li>
-              <li><a href="/oauth2-server-php-docs/cookbook/zend-framework/">Zend Framework</a></li>
-              <li><a href="/oauth2-server-php-docs/cookbook/silex/">Silex</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/google-playground/">Google Playground</a></li>
               <li><a href="/oauth2-server-php-docs/cookbook/drupal/">Drupal</a></li>
               <li><a href="/oauth2-server-php-docs/cookbook/symfony2/">Symfony2</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/silex/">Silex</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/zend-framework/">Zend Framework</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/laravel/">Laravel</a></li>
               <li><a href="/oauth2-server-php-docs/cookbook/doctrine/">Doctrine</a></li>
-              <li><a href="/oauth2-server-php-docs/cookbook/google-playground/">Google Playground</a></li>
               <li><a href="/oauth2-server-php-docs/cookbook/cakephp/">CakePHP</a></li>
               <li><a href="/oauth2-server-php-docs/cookbook/restler/">Restler</a></li>
-              <li><a href="/oauth2-server-php-docs/cookbook/laravel/">Laravel</a></li>
               <!-- <li><a href="/oauth2-server-php-docs/cookbook/doctrine2/">Doctrine2</a></li>
               <li><a href="/oauth2-server-php-docs/cookbook/symfony/">Symfony 1.4</a></li> -->
             </ul>
