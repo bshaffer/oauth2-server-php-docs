@@ -54,7 +54,7 @@ For example:
 // the refresh token grant request will have a "refresh_token" field
 // with a new refresh token on each request
 $grantType = new OAuth2\GrantType\RefreshToken($storage, array(
-    'always_issue_new_refresh_token => true'
+    'always_issue_new_refresh_token' => true
 ));
 ```
 
