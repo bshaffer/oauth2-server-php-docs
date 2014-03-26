@@ -103,7 +103,7 @@ of <code>OAuth2\Server</code>.</p>
 <div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// the refresh token grant request will have a "refresh_token" field</span>
 <span class="comment">// with a new refresh token on each request</span>
 <span class="local-variable">$grantType</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">RefreshToken</span>(<span class="local-variable">$storage</span>, <span class="predefined">array</span>(
-    <span class="string"><span class="delimiter">'</span><span class="content">always_issue_new_refresh_token =&gt; true</span><span class="delimiter">'</span></span>
+    <span class="string"><span class="delimiter">'</span><span class="content">always_issue_new_refresh_token</span><span class="delimiter">'</span></span> =&gt; <span class="predefined-constant">true</span>
 ));</code></pre></div></div>
 </div>
 
