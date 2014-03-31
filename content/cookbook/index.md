@@ -15,7 +15,7 @@ Create a directory for your project and pull in this library
 ```text
 mkdir my-oauth2-walkthrough
 cd my-oauth2-walkthrough
-git clone https://github.com/bshaffer/oauth2-server-php.git
+git clone https://github.com/bshaffer/oauth2-server-php.git -b master
 ```
 
 ## Define your Schema
