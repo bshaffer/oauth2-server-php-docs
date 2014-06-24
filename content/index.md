@@ -8,7 +8,7 @@ Implement OAuth2.0 cleanly into your PHP application.  [Download the Code](https
 
 ## Requirements
 
-**PHP 5.3.9+** is required for this library.  However, there is a [stable release](https://github.com/bshaffer/oauth2-server-php/tree/v0.9) and [developerment branch](https://github.com/bshaffer/oauth2-server-php/tree/php5.2-develop) for **PHP 5.2.x-5.3.8** as well.
+**PHP 5.3.9+** is required for this library.  However, there is a [stable release](https://github.com/bshaffer/oauth2-server-php/tree/v0.9) and [development branch](https://github.com/bshaffer/oauth2-server-php/tree/php5.2-develop) for **PHP 5.2.x-5.3.8** as well.
 
 ## Installation
 
