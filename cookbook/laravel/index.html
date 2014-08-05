@@ -58,25 +58,26 @@
 
 <p><code>php artisan db:seed</code></p>
 </li>
-<li>
-<p>Setup your OAuth2 server. To be able to access the single instance anywhere in your Laravel app, you can attach it as a singleton:</p>
+<li><p>Setup your OAuth2 server. To be able to access the single instance anywhere in your Laravel app, you can attach it as a singleton:</p></li>
+</ol>
 
-<p>```php
-App::singleton('oauth2', function() {</p>
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="constant">App</span>::singleton(<span class="string"><span class="delimiter">'</span><span class="content">oauth2</span><span class="delimiter">'</span></span>, <span class="keyword">function</span>() {
+    
+    <span class="local-variable">$storage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Pdo</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">dsn</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">mysql:dbname=oauth2;host=localhost</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">username</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">root</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">root</span><span class="delimiter">'</span></span>));
+    <span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>(<span class="local-variable">$storage</span>);
+    
+    <span class="local-variable">$server</span>-&gt;addGrantType(<span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">ClientCredentials</span>(<span class="local-variable">$storage</span>));
+    <span class="local-variable">$server</span>-&gt;addGrantType(<span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">UserCredentials</span>(<span class="local-variable">$storage</span>));
+    
+    <span class="keyword">return</span> <span class="local-variable">$server</span>;
+});</code></pre></div></div>
+</div>
 
-<pre><code>$storage = new OAuth2\Storage\Pdo(array('dsn' =&gt; 'mysql:dbname=oauth2;host=localhost', 'username' =&gt; 'root', 'password' =&gt; 'root'));
-$server = new OAuth2\Server($storage);
-
-$server-&gt;addGrantType(new OAuth2\GrantType\ClientCredentials($storage));
-$server-&gt;addGrantType(new OAuth2\GrantType\UserCredentials($storage));
-
-return $server;
-</code></pre>
-
-<p>});
-```</p>
+<ol>
+<li>Implement the actual OAuth2 controllers you wish to implement. For example a token controller and a resource controller: see <a href="https://github.com/julien-c/laravel-oauth2-server/blob/master/app/routes.php"><code>app/routes.php</code></a>
 </li>
-<li><p>Implement the actual OAuth2 controllers you wish to implement. For example a token controller and a resource controller: see <a href="https://github.com/julien-c/laravel-oauth2-server/blob/master/app/routes.php"><code>app/routes.php</code></a></p></li>
 </ol>
 
 <p>You can even unit test your integration! Here's an example using Guzzle: <a href="https://github.com/julien-c/laravel-oauth2-server/blob/master/app/tests/OAuthTest.php">https://github.com/julien-c/laravel-oauth2-server/blob/master/app/tests/OAuthTest.php</a></p>
