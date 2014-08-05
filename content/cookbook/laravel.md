@@ -20,18 +20,18 @@ See this [Laravel demo application](https://github.com/julien-c/laravel-oauth2-s
     
 5.  Setup your OAuth2 server. To be able to access the single instance anywhere in your Laravel app, you can attach it as a singleton:
         
-    ```php
-    App::singleton('oauth2', function() {
-        
-        $storage = new OAuth2\Storage\Pdo(array('dsn' => 'mysql:dbname=oauth2;host=localhost', 'username' => 'root', 'password' => 'root'));
-        $server = new OAuth2\Server($storage);
-        
-        $server->addGrantType(new OAuth2\GrantType\ClientCredentials($storage));
-        $server->addGrantType(new OAuth2\GrantType\UserCredentials($storage));
-        
-        return $server;
-    });
-    ```
+```php
+App::singleton('oauth2', function() {
+    
+    $storage = new OAuth2\Storage\Pdo(array('dsn' => 'mysql:dbname=oauth2;host=localhost', 'username' => 'root', 'password' => 'root'));
+    $server = new OAuth2\Server($storage);
+    
+    $server->addGrantType(new OAuth2\GrantType\ClientCredentials($storage));
+    $server->addGrantType(new OAuth2\GrantType\UserCredentials($storage));
+    
+    return $server;
+});
+```
 
 6.  Implement the actual OAuth2 controllers you wish to implement. For example a token controller and a resource controller: see [`app/routes.php`](https://github.com/julien-c/laravel-oauth2-server/blob/master/app/routes.php)
     
