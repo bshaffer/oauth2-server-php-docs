@@ -25,7 +25,7 @@ performs a distinct function in the OAuth process.
 
 `Storage Objects`
 
-This library uses [Storage Interfaces](../../storage/interfaces/) to allow interaction with multiple data layers.
+This library uses [Storage Interfaces](../../storage/custom/) to allow interaction with multiple data layers.
 The following storage classes come with the library, but interfaces allow for your own customization:
 
   * [PDO](../../storage/pdo/)

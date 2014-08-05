@@ -39,4 +39,4 @@ $storage->setClientDetails($client_id, $client_secret, $redirect_uri);
 ## Usage
 
 The Cassandra storage engine implements all the standard Storage Interfaces supported
-in this library.  See [interfaces](../interfaces) for more information.
+in this library.  See [interfaces](../custom) for more information.
