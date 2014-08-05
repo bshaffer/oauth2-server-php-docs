@@ -7,7 +7,7 @@ title: Mongo Storage | OAuth2 Server PHP
 ## Overview
 
 Uses the [Mongo](http://www.mongodb.org/) Document Database
-for storing/retrieving objects in OAuth.
+for storing and retrieving objects in OAuth.
 
 ## Installation
 

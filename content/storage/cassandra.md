@@ -7,7 +7,7 @@ title: Cassandra Storage | OAuth2 Server PHP
 ## Overview
 
 Uses the [Cassandra](http://cassandra.apache.org/) Database Management System
-for storing/retrieving objects in OAuth.
+for storing and retrieving objects in OAuth.
 
 ## Installation
 

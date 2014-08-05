@@ -7,7 +7,7 @@ title: Redis Storage | OAuth2 Server PHP
 ## Overview
 
 Uses the [Redis](http://redis.io/) Key-Value Storage System
-for storing/retrieving objects in OAuth.
+for storing and retrieving objects in OAuth.
 
 ## Installation
 
