@@ -168,7 +168,7 @@ ini_set(<span class="string"><span class="delimiter">'</span><span class="conten
     ),
 ));
 
-<span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>();
+<span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>(<span class="local-variable">$storage</span>);
 <span class="local-variable">$server</span>-&gt;addGrantType(<span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">ClientCredentials</span>(<span class="local-variable">$storage</span>)); <span class="comment">// minimum config</span>
 
 <span class="comment">// Make the "access_token" storage use Crypto Tokens instead of a database</span>
