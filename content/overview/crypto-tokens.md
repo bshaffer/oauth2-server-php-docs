@@ -117,7 +117,7 @@ $storage = new OAuth2\Storage\Memory(array(
     ),
 ));
 
-$server = new OAuth2\Server();
+$server = new OAuth2\Server($storage);
 $server->addGrantType(new OAuth2\GrantType\ClientCredentials($storage)); // minimum config
 
 // Make the "access_token" storage use Crypto Tokens instead of a database
