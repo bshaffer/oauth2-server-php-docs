@@ -54,18 +54,18 @@ See [Main Concepts](overview/main-concepts) for more information on how this lib
 
 ## <a class="anchor" name="learning-the-oauth-standard" href="#learning-the-oauth-standard"></a>Learning the OAuth2.0 Standard
 
-If you are new to OAuth2, I highly recommend the **<a href="https://knpuniversity.com/screencast/oauth" onClick="trackOutboundLink(this, 'Outbound Links', this.href)">OAuth in 8 Steps</a>** screencast
+1.  If you are new to OAuth2, I highly recommend the **<a href="https://knpuniversity.com/screencast/oauth" onClick="trackOutboundLink(this, 'Outbound Links', this.href)">OAuth in 8 Steps</a>** screencast
 from Knp University:
-
 ![OAuth in 8 Steps](https://pbs.twimg.com/media/BemcRQ6CEAA1DxF.png)
 
-Additionally, take some time to click around on the [**OAuth2 Demo Application**](http://brentertainment.com/oauth2)
+2. Additionally, take some time to click around on the [**OAuth2 Demo Application**](http://brentertainment.com/oauth2)
 and view the [source code](https://github.com/bshaffer/oauth2-demo-php) for examples using a variety of
 [grant types](overview/grant-types).
-
 ![OAuth Demo Application](http://brentertainment.com/other/screenshots/demoapp-authorize.png)
 
-Finally, consult the [official OAuth2.0 documentation](http://tools.ietf.org/html/rfc6749) for the down-and-dirty
+3. Also, [Auth0](https://auth0.com/) provides a very nice layer for implementing OAuth2.0 for [PHP applications](https://docs.auth0.com/server-platforms/php).
+
+4. Finally, consult the [official OAuth2.0 documentation](http://tools.ietf.org/html/rfc6749) for the down-and-dirty
 technical specifications.
 
 Contact
