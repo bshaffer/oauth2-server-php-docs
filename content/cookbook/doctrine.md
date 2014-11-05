@@ -143,7 +143,7 @@ use the `client_credentials` grant type:
 
 ```php
 // will only be able to handle token requests when "grant_type=client_credentials".
-$server->addGrantType(new OAuth2\GrantType\ClientCredentials($clientStorage));
+$server->addGrantType(new OAuth2\GrantType\ClientCredentials($clientStore));
 
 // handle the request
 $server->handleTokenRequest(OAuth2\Request::createFromGlobals())->send();
