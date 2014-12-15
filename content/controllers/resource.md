@@ -18,4 +18,4 @@ the incomming request is valid
 
 `getAccessTokenData`
 
-  * Takes a token string as an argument and returns the token data if applicable, or null if the token is invalid
+  * Takes a request object as an argument and returns the token data if applicable, or null if the token is invalid
