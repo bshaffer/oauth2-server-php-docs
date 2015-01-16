@@ -66,7 +66,7 @@ with the Cassandra storage engine.
 
 For implementing basic Access Tokens. This is required for the
 [Token Controller](../../controllers/token/), unless
-[Crypto Tokens](../../overview/crypto-tokens) are used instead.
+[JWT Access Tokens](../../overview/jwt-access-tokens) are used instead.
 
 *id: "access_token"*
 
@@ -118,13 +118,13 @@ For implementing scopes using the [Scope Util](../../overview/scope).
 
 **[Public Key Interface](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/PublicKeyInterface.php)**
 
-For implementing [Crypto Token](../../overview/crypto-tokens).
+For implementing [JWT Access Token](../../overview/jwt-access-tokens).
 
 *id: "public_key"*
 
-**[Crypto Token Interface](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/CryptoTokenInterface.php)**
+**[JWT Access Token Interface](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/JwtAccessTokenInterface.php)**
 
-An interface for using [Crypto Tokens](../../overview/crypto-tokens).
+An interface for using [JWT Access Tokens](../../overview/jwt-access-tokens).
 This requires the Public Key interface (below), and is used for validating
 access tokens without the use of a database system.
 

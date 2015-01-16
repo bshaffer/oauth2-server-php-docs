@@ -39,4 +39,4 @@ The following storage classes come with the library, but interfaces allow for yo
   * [Response Object](../response)
   * [Scope](../scope)
   * [User IDs](../userid)
-  * [Crypto Tokens](../crypto-tokens)
+  * [JWT Access Tokens](../jwt-access-tokens)

@@ -1,16 +1,16 @@
 ---
-title: Crypto Tokens | OAuth2 Server PHP
+title: JWT Access Tokens | OAuth2 Server PHP
 ---
 
-# Crypto Tokens
+# JWT Access Tokens
 
 ## Overview
 
-Crypto tokens provide a way to create and validate access tokens without requiring a central
+JWT Access Tokens provide a way to create and validate access tokens without requiring a central
 storage such as a database. This *decreases the latency* of the OAuth2 service when validating
 Access Tokens.
 
-Crypto Tokens use [JSON Web Signatures](http://tools.ietf.org/html/draft-jones-json-web-signature-04)
+JWT Access Tokens use [JSON Web Signatures](http://tools.ietf.org/html/draft-jones-json-web-signature-04)
 ([Chapter 6.2](http://tools.ietf.org/html/draft-jones-json-web-signature-04#section-6.2)) and
 [Public Key Cryptography](http://en.wikipedia.org/wiki/Public-key_cryptography)
 to establish their validity.  The OAuth2.0 Server signs the tokens using a `private key`, and other
@@ -18,7 +18,7 @@ parties can verify the token using the Server's `public key`.
 
 ## Format
 
-A crypto token has the following format:
+A JWT Access Token has the following format:
 
 ```text
 HEADER.PAYLOAD.SIGNATURE
@@ -50,7 +50,7 @@ The `PAYLOAD` is a Base64 URL Safe encoding of a json object with the following 
 * `client_id` - the id of the client who requested the token
 * `scope` - comma separated list of scopes for which the token is issued
 
-## Using Crypto Tokens With This Library
+## Using JWT Access Tokens With This Library
 
 ### Creating a Public and Private Key Pair
 
@@ -67,8 +67,17 @@ openssl rsa -in privkey.pem -pubout -out pubkey.pem
 
 ### Basic Usage
 
-Your Server can be configured to grant Crypto Tokens by creating a `PublicKey`
-storage object and a `CryptoToken` response type:
+The easiest way to configure your server is to supply the `use_jwt_access_tokens`
+option to your OAuth Server's configuration:
+
+```php
+$server = new OAuth2\Server($storage, array(
+    'use_jwt_access_tokens' => true,
+));
+```
+
+This will require you to create a `PublicKey` storage object. You can use the
+built in `Memory` storage for this:
 
 ```php
 // your public key strings can be passed in however you like
@@ -81,14 +90,14 @@ $storage = new OAuth2\Storage\Memory(array('keys' => array(
     'private_key' => $privateKey,
 )));
 
-// Make the "access_token" storage use Crypto Tokens instead of a database
-$cryptoStorage = new OAuth2\Storage\CryptoToken($storage);
-$server->addStorage($cryptoStorage, "access_token");
-
-// make the "token" response type a CryptoToken
-$cryptoResponseType = new OAuth2\ResponseType\CryptoToken($storage);
-$server->addResponseType($cryptoResponseType);
+$server = new OAuth2\Server($storage, array(
+    'use_jwt_access_tokens' => true,
+));
 ```
+
+This is the minimal configuration when using JWT Access Tokens, and will be valid
+for the `ResourceController` only. For a full server configuration, you must supply
+a `Client` storage and some Grant Types.
 
 Here is an example of a full server configuration:
 ```php
@@ -102,8 +111,9 @@ require_once('oauth2-server-php/src/OAuth2/Autoloader.php');
 OAuth2\Autoloader::register();
 
 // your public key strings can be passed in however you like
-$publicKey  = file_get_contents('/path/to/pubkey.pem');
-$privateKey = file_get_contents('/path/to/privkey.pem');
+// (there is a public/private key pair for testing already in the oauth library)
+$publicKey  = file_get_contents('oauth2-server-php/test/config/keys/id_rsa.pub');
+$privateKey = file_get_contents('oauth2-server-php/test/config/keys/id_rsa');
 
 // create storage
 $storage = new OAuth2\Storage\Memory(array(
@@ -117,27 +127,23 @@ $storage = new OAuth2\Storage\Memory(array(
     ),
 ));
 
-$server = new OAuth2\Server($storage);
+$server = new OAuth2\Server($storage, array(
+    'use_jwt_access_tokens' => true,
+));
 $server->addGrantType(new OAuth2\GrantType\ClientCredentials($storage)); // minimum config
-
-// Make the "access_token" storage use Crypto Tokens instead of a database
-$cryptoStorage = new OAuth2\Storage\CryptoToken($storage);
-$server->addStorage($cryptoStorage, "access_token");
-
-// make the "token" response type a CryptoToken
-$cryptoResponseType = new OAuth2\ResponseType\CryptoToken($storage);
-$server->addResponseType($cryptoResponseType);
 
 // send the response
 $server->handleTokenRequest(OAuth2\Request::createFromGlobals())->send();
 ```
 
-Now you can call your server and receive a crypto token:
+Now you can call your server and receive a JWT Access Token:
 
 ```text
-$ curl -i -v http://localhost/token.php -u 'CLIENT_ID:CLIENT_SECRET' -d "grant_type=client_credentials"
+# start the PHP built-in web server
+$ php -S localhost:3000 &
+$ curl -i -v http://localhost:3000/token.php -u 'CLIENT_ID:CLIENT_SECRET' -d "grant_type=client_credentials"
 ```
-And the server will return a response containing the crypto token:
+And the server will return a response containing the JWT Access Token:
 ```json
 {
     "access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpZCI6IjYzMjIwNzg0YzUzODA3ZjVmZTc2Yjg4ZjZkNjdlMmExZTIxODlhZTEiLCJjbGllbnRfaWQiOiJUZXN0IENsaWVudCBJRCIsInVzZXJfaWQiOm51bGwsImV4cGlyZXMiOjEzODAwNDQ1NDIsInRva2VuX3R5cGUiOiJiZWFyZXIiLCJzY29wZSI6bnVsbH0.PcC4k8Q_etpU-J4yGFEuBUdeyMJhtpZFkVQ__sXpe78eSi7xTniqOOtgfWa62Y4sj5Npta8xPuDglH8Fueh_APZX4wGCiRE1P4nT4APQCOTbgcuCNXwjmP8znk9F76ID2WxThaMbmpsTTEkuyyUYQKCCdxlIcSbVvcLZUGKZ6-g",
@@ -163,27 +169,35 @@ $keyStorage = new OAuth2\Storage\Memory(array('keys' => array(
     'public_key'  => $publicKey,
 )));
 
-$cryptoStorage = new OAuth2\Storage\CryptoToken($keyStorage);
-
-// make the "access_token" storage use public key verification instead of a database
-$server->addStorage($cryptoStorage, "access_token");
+$server = new OAuth2\Server($keyStorage, array(
+    'use_jwt_access_tokens' => true,
+));
 ```
 
 This allows your server to verify access tokens without making any requests to the
 Authorization Server or any other shared resource.
 
 ```php
-// verify the crypto token in the request
+// verify the JWT Access Token in the request
 if (!$server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
     exit("Failed");
 }
 echo "Success!";
 ```
 
+Now you can request this and experiment with sending in the token you generated above!
+
+```text
+# start the PHP built-in web server
+$ php -S localhost:3000 &
+$ curl "http://localhost:3000/resource.php?access_token=eyJ0eXAi..."
+Success!
+```
+
 ### Using Secondary Storage
 
 This library allows you to back up the access tokens to secondary storage.  Just pass
-an object implementing `OAuth2\Storage\AccessTokenInterface` to the `CryptoToken` object
+an object implementing `OAuth2\Storage\AccessTokenInterface` to the `JwtAccessToken` object
 to have access tokens stored in an additional location:
 
 ```php
@@ -192,11 +206,6 @@ $keyStorage = new OAuth2\Storage\Memory(array('keys' => array(
     'public_key'  => $publicKey,
     'private_key' => $privateKey,
 )));
-
-$cryptoStorage = new OAuth2\Storage\CryptoToken($keyStorage, $pdoStorage);
-
-// make the "access_token" storage use public key verification instead of a database
-$server->addStorage($cryptoStorage, "access_token");
 ```
 
 This example pulls the public/private keys from `Memory` storage, and saves the
@@ -252,7 +261,7 @@ $pdoStorage = new OAuth2\Storage\Pdo(array('dsn' => $dsn, 'username' => $usernam
 ```
 ### Configure a Different Algorithms
 
-The following algorithms are supported for CryptoTokens:
+The following algorithms are supported for JwtAccessTokens:
 
 * "HS256" - uses `hash_hmac` / sha256
 * "HS384" - uses `hash_hmac` / sha384
@@ -270,10 +279,6 @@ $storage = new OAuth2\Storage\Memory(array('keys' => array(
     'private_key'           => $privateKey,
     'encryption_algorithm'  => 'HS256', // "RS256" is the default
 )));
-
-// ... use this storage for OAuth2\Storage\CryptoToken and OAuth2\ResponseType\CryptoToken
-$server->addStorage(new OAuth2\Storage\CryptoToken($storage), "access_token");
-$server->addResponseType(new OAuth2\ResponseType\CryptoToken($storage));
 ```
 
 ## Client Verification
@@ -285,15 +290,15 @@ is an example of this in PHP:
 ```php
 $token = json_decode($curlResponse);
 
-$crypto_token = $token['access_token'];
+$jwt_access_token = $token['access_token'];
 
 $separator = '.';
 
-if (2 !== substr_count($crypto_token, $separator)) {
+if (2 !== substr_count($jwt_access_token, $separator)) {
     throw new Exception("Incorrect access token format");
 }
 
-list($header, $payload, $signature) = explode($separator, $crypto_token);
+list($header, $payload, $signature) = explode($separator, $jwt_access_token);
 
 $decoded_signature = base64_decode($signature);
 
@@ -310,7 +315,7 @@ if ($verified !== 1) {
     throw new Exception("Cannot verify signature");
 }
 
-// output the Crypto Token payload
+// output the JWT Access Token payload
 var_dump(base64_decode($payload));
 
 ```
