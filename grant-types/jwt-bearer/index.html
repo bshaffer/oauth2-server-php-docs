@@ -38,9 +38,10 @@
 
     <div id="wrapper">
       <div class="content">
-    <h1>JWT Bearer</h1>
+    
+<h1 id="jwt-bearer">JWT Bearer</h1>
 
-<h2>Overview</h2>
+<h2 id="overview">Overview</h2>
 
 <p>The <code>JWT Bearer</code> grant type is used when the client wants to
 receive access tokens without transmitting sensitive information
@@ -49,22 +50,22 @@ clients to gain access to user resources without user authorization.</p>
 
 <p><a href="http://tools.ietf.org/html/draft-ietf-oauth-jwt-bearer-07#section-1">Read more about jwt bearer</a></p>
 
-<h2>Use Cases</h2>
+<h2 id="use-cases">Use Cases</h2>
 
 <ul>
-<li>same benefits as the Client Credentials grant type</li>
-<li>allows for secure calls to be made without transmitting credentials</li>
-<li>for trusted clients, allows access of user resources without authorization</li>
+  <li>same benefits as the Client Credentials grant type</li>
+  <li>allows for secure calls to be made without transmitting credentials</li>
+  <li>for trusted clients, allows access of user resources without authorization</li>
 </ul>
 
-<h2>Implementation</h2>
+<h2 id="implementation">Implementation</h2>
 
 <p>Create an instance of <code>OAuth2\GrantType\JwtBearer</code> and add it to
 your server:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// load public key from keystore</span>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// load public key from keystore</span>
 <span class="local-variable">$public_key</span> = <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">id_rsa.pub</span><span class="delimiter">'</span></span>);
 
 <span class="comment">// assign the public key to a client and user</span>
@@ -80,10 +81,13 @@ your server:</p>
 <span class="local-variable">$grantType</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">JwtBearer</span>(<span class="local-variable">$storage</span>, <span class="local-variable">$audience</span>);
 
 <span class="comment">// add the grant type to your OAuth server</span>
-<span class="local-variable">$server</span>-&gt;addGrantType(<span class="local-variable">$grantType</span>);</code></pre></div></div>
+<span class="local-variable">$server</span>-&gt;addGrantType(<span class="local-variable">$grantType</span>);</code></pre></div></div></div></div>
 </div>
+<blockquote>
 
-<h2>Example Request</h2>
+</blockquote>
+
+<h2 id="example-request">Example Request</h2>
 
 <p>JWT requests require the signing of the JWT assertion using
 <a href="http://en.wikipedia.org/wiki/Public-key_cryptography">public key cryptography</a>.
@@ -91,7 +95,7 @@ The code snippet below provides an example of how this might be done.</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">/**
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">/**
  * Generate a JWT
  *
  * @param $privateKey The private key to use to sign the token
@@ -129,34 +133,33 @@ The code snippet below provides an example of how this might be done.</p>
     <span class="local-variable">$jwtUtil</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Encryption</span>\<span class="constant">Jwt</span>();
 
     <span class="keyword">return</span> <span class="local-variable">$jwtUtil</span>-&gt;encode(<span class="local-variable">$params</span>, <span class="local-variable">$privateKey</span>, <span class="string"><span class="delimiter">'</span><span class="content">RS256</span><span class="delimiter">'</span></span>);
-}</code></pre></div></div>
+}</code></pre></div></div></div></div>
 </div>
-
-<blockquote><p>Note: This example uses the <code>OAuth2\Encryption\Jwt</code> class provided in this library. This is
-not necessary for JWT authentication, but it is convenient.</p></blockquote>
+<blockquote>
+  <p>Note: This example uses the <code>OAuth2\Encryption\Jwt</code> class provided in this library. This is
+not necessary for JWT authentication, but it is convenient.</p>
+</blockquote>
 
 <p>This function can then be called to generate the payload for the request. Write a script to
 generate the jwt and request a token:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$private_key</span> = <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">id_rsa</span><span class="delimiter">'</span></span>);
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$private_key</span> = <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">id_rsa</span><span class="delimiter">'</span></span>);
 <span class="local-variable">$client_id</span>   = <span class="string"><span class="delimiter">'</span><span class="content">TestClient</span><span class="delimiter">'</span></span>;
 <span class="local-variable">$user_id</span>     = <span class="string"><span class="delimiter">'</span><span class="content">User1</span><span class="delimiter">'</span></span>;
 <span class="local-variable">$grant_type</span>  = <span class="string"><span class="delimiter">'</span><span class="content">urn:ietf:params:oauth:grant-type:jwt-bearer</span><span class="delimiter">'</span></span>;
 
 <span class="local-variable">$jwt</span> = generateJWT(<span class="local-variable">$private_key</span>, <span class="local-variable">$client_id</span>, <span class="local-variable">$user_id</span>, <span class="string"><span class="delimiter">'</span><span class="content">https://api.mysite.com</span><span class="delimiter">'</span></span>);
 
-<span class="predefined">passthru</span>(<span class="string"><span class="delimiter">"</span><span class="content">curl https://api.mysite.com/token -d 'grant_type=</span><span class="local-variable">$grant_type</span><span class="content">&amp;assertion=</span><span class="local-variable">$jwt</span><span class="content">'</span><span class="delimiter">"</span></span>);</code></pre></div></div>
+<span class="predefined">passthru</span>(<span class="string"><span class="delimiter">"</span><span class="content">curl https://api.mysite.com/token -d 'grant_type=</span><span class="local-variable">$grant_type</span><span class="content">&amp;assertion=</span><span class="local-variable">$jwt</span><span class="content">'</span><span class="delimiter">"</span></span>);</code></pre></div></div></div></div>
 </div>
-
 <p>A successful token request will return a standard access token in JSON format:</p>
 
 <div class="code-container">
 <div class="langspec">Json</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-json">{<span class="key"><span class="delimiter">"</span><span class="content">access_token</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">03807cb390319329bdf6c777d4dfae9c0d3b3c35</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">expires_in</span><span class="delimiter">"</span></span>:<span class="integer">3600</span>,<span class="key"><span class="delimiter">"</span><span class="content">token_type</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">bearer</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">scope</span><span class="delimiter">"</span></span>:<span class="value">null</span>}</code></pre></div></div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-json">{<span class="key"><span class="delimiter">"</span><span class="content">access_token</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">03807cb390319329bdf6c777d4dfae9c0d3b3c35</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">expires_in</span><span class="delimiter">"</span></span>:<span class="integer">3600</span>,<span class="key"><span class="delimiter">"</span><span class="content">token_type</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">bearer</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">scope</span><span class="delimiter">"</span></span>:<span class="value">null</span>}</code></pre></div></div></div></div>
 </div>
-
 
       </div>
 
@@ -174,7 +177,7 @@ generate the jwt and request a token:</p>
               <li><a href="/oauth2-server-php-docs/overview/response/">Request and Response</a></li>
               <li><a href="/oauth2-server-php-docs/overview/scope/">Scope</a></li>
               <li><a href="/oauth2-server-php-docs/overview/userid/">User ID</a></li>
-              <li><a href="/oauth2-server-php-docs/overview/crypto-tokens/">Crypto Tokens</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/jwt-access-tokens/">JWT Access Tokens</a></li>
             </ul>
           </li>
           <li class="js-topic">

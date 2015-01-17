@@ -38,82 +38,89 @@
 
     <div id="wrapper">
       <div class="content">
-    <h1>An OAuth2 Server Library for PHP</h1>
+    
+<h1 id="an-oauth2-server-library-for-php">An OAuth2 Server Library for PHP</h1>
 
 <p>Implement OAuth2.0 cleanly into your PHP application.  <a href="https://github.com/bshaffer/oauth2-server-php">Download the Code</a> from GitHub to get started.</p>
 
-<h2>Requirements</h2>
+<h2 id="requirements">Requirements</h2>
 
 <p><strong>PHP 5.3.9+</strong> is required for this library.  However, there is a <a href="https://github.com/bshaffer/oauth2-server-php/tree/v0.9">stable release</a> and <a href="https://github.com/bshaffer/oauth2-server-php/tree/php5.2-develop">development branch</a> for <strong>PHP 5.2.x-5.3.8</strong> as well.</p>
 
-<h2>Installation</h2>
+<h2 id="installation">Installation</h2>
 
 <p>This library follows the zend <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md">PSR-0</a> standards.  A number of
 autoloaders exist which can autoload this library for that reason, but if you are not using one, you can register the <code>OAuth2\Autoloader</code>:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="predefined">require_once</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/oauth2-server-php/src/OAuth2/Autoloader.php</span><span class="delimiter">'</span></span>);
-<span class="constant">OAuth2</span>\<span class="constant">Autoloader</span>::register();</code></pre></div></div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="predefined">require_once</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/oauth2-server-php/src/OAuth2/Autoloader.php</span><span class="delimiter">'</span></span>);
+<span class="constant">OAuth2</span>\<span class="constant">Autoloader</span>::register();</code></pre></div></div></div></div>
 </div>
-
 <p>Using <a href="http://getcomposer.org">Composer</a>? Add the following to <code>composer.json</code>:</p>
 
 <div class="code-container">
 <div class="langspec">Json</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-json">{
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-json">{
     <span class="key"><span class="delimiter">"</span><span class="content">require</span><span class="delimiter">"</span></span>: {
-        <span class="key"><span class="delimiter">"</span><span class="content">bshaffer/oauth2-server-php</span><span class="delimiter">"</span></span>: <span class="string"><span class="delimiter">"</span><span class="content">v1.3</span><span class="delimiter">"</span></span>,
+        <span class="key"><span class="delimiter">"</span><span class="content">bshaffer/oauth2-server-php</span><span class="delimiter">"</span></span>: <span class="string"><span class="delimiter">"</span><span class="content">v1.6</span><span class="delimiter">"</span></span>,
         <span class="error">.</span><span class="error">.</span><span class="error">.</span>
     },
     <span class="error">.</span><span class="error">.</span><span class="error">.</span>
-}</code></pre></div></div>
+}</code></pre></div></div></div></div>
 </div>
-
 <p>And then run <code>composer.phar install</code></p>
 
-<blockquote><p>It is highly recommended you check out the <a href="https://github.com/bshaffer/oauth2-server-php/tree/v1.2"><code>v1.3</code></a> tag to
-ensure your application doesn't break from backwards-compatibility issues. However, if you'd like to stay on the
-bleeding edge of development, you can set this to <code>dev-develop</code> instead.</p></blockquote>
+<blockquote>
+  <p>It is highly recommended you check out the <a href="https://github.com/bshaffer/oauth2-server-php/tree/v1.6"><code>v1.6</code></a> tag to
+ensure your application doesn’t break from backwards-compatibility issues. However, if you’d like to stay on the
+bleeding edge of development, you can set this to <code>dev-develop</code> instead.</p>
+</blockquote>
 
-<h2>Get Started With This Library</h2>
+<h2 id="get-started-with-this-library">Get Started With This Library</h2>
 
 <p>Looking through the <a href="cookbook">cookbook</a> examples is the best way to get started.  For those who just skim the docs for
 code samples, here is an example of a bare-bones OAuth2 Server implementation:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$storage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Pdo</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">dsn</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$dsn</span>, <span class="string"><span class="delimiter">'</span><span class="content">username</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$username</span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$password</span>));
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$storage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Pdo</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">dsn</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$dsn</span>, <span class="string"><span class="delimiter">'</span><span class="content">username</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$username</span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$password</span>));
 <span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>(<span class="local-variable">$storage</span>);
 <span class="local-variable">$server</span>-&gt;addGrantType(<span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">AuthorizationCode</span>(<span class="local-variable">$storage</span>)); <span class="comment">// or any grant type you like!</span>
-<span class="local-variable">$server</span>-&gt;handleTokenRequest(<span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals())-&gt;send();</code></pre></div></div>
+<span class="local-variable">$server</span>-&gt;handleTokenRequest(<span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals())-&gt;send();</code></pre></div></div></div></div>
 </div>
-
 <p>See <a href="overview/main-concepts">Main Concepts</a> for more information on how this library works.</p>
 
-<h2>
+<h2 id="a-classanchor-namelearning-the-oauth-standard-hreflearning-the-oauth-standardalearning-the-oauth20-standard">
 <a class="anchor" name="learning-the-oauth-standard" href="#learning-the-oauth-standard"></a>Learning the OAuth2.0 Standard</h2>
 
 <ol>
-<li><p>If you are new to OAuth2, I highly recommend the <strong><a href="https://knpuniversity.com/screencast/oauth" onclick="trackOutboundLink(this, 'Outbound Links', this.href)">OAuth in 8 Steps</a></strong> screencast
+  <li>
+    <p>If you are new to OAuth2, I highly recommend the <strong><a href="https://knpuniversity.com/screencast/oauth" onclick="trackOutboundLink(this, 'Outbound Links', this.href)">OAuth in 8 Steps</a></strong> screencast
 from Knp University:
-<img src="https://pbs.twimg.com/media/BemcRQ6CEAA1DxF.png" alt="OAuth in 8 Steps"></p></li>
-<li><p>Additionally, take some time to click around on the <a href="http://brentertainment.com/oauth2"><strong>OAuth2 Demo Application</strong></a>
+<img src="https://pbs.twimg.com/media/BemcRQ6CEAA1DxF.png" alt="OAuth in 8 Steps"></p>
+  </li>
+  <li>
+    <p>Additionally, take some time to click around on the <a href="http://brentertainment.com/oauth2"><strong>OAuth2 Demo Application</strong></a>
 and view the <a href="https://github.com/bshaffer/oauth2-demo-php">source code</a> for examples using a variety of
 <a href="overview/grant-types">grant types</a>.
-<img src="http://brentertainment.com/other/screenshots/demoapp-authorize.png" alt="OAuth Demo Application"></p></li>
-<li><p>Also, <a href="https://auth0.com/">Auth0</a> provides a very nice layer for implementing OAuth2.0 for <a href="https://docs.auth0.com/server-platforms/php">PHP applications</a>.</p></li>
-<li><p>Finally, consult the <a href="http://tools.ietf.org/html/rfc6749">official OAuth2.0 documentation</a> for the down-and-dirty
-technical specifications.</p></li>
+<img src="http://brentertainment.com/other/screenshots/demoapp-authorize.png" alt="OAuth Demo Application"></p>
+  </li>
+  <li>
+    <p>Also, <a href="https://auth0.com/">Auth0</a> provides a very nice layer for implementing OAuth2.0 for <a href="https://docs.auth0.com/server-platforms/php">PHP applications</a>.</p>
+  </li>
+  <li>
+    <p>Finally, consult the <a href="http://tools.ietf.org/html/rfc6749">official OAuth2.0 documentation</a> for the down-and-dirty
+technical specifications.</p>
+  </li>
 </ol>
 
-<h2>Contact</h2>
+<h2 id="contact">Contact</h2>
 
 <p>The best way to get help and ask questions is to <a href="https://github.com/bshaffer/oauth2-server-php/issues/new">file an issue</a>.  This will
 help answer questions for others as well.</p>
 
-<p>If for whatever reason filing an issue does not make sense, contact Brent Shaffer (bshafs <at> gmail <dot> com)
-</dot></at></p>
+<p>If for whatever reason filing an issue does not make sense, contact Brent Shaffer (bshafs <at> gmail <dot> com)</dot></at></p>
 
       </div>
 
@@ -131,7 +138,7 @@ help answer questions for others as well.</p>
               <li><a href="/oauth2-server-php-docs/overview/response/">Request and Response</a></li>
               <li><a href="/oauth2-server-php-docs/overview/scope/">Scope</a></li>
               <li><a href="/oauth2-server-php-docs/overview/userid/">User ID</a></li>
-              <li><a href="/oauth2-server-php-docs/overview/crypto-tokens/">Crypto Tokens</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/jwt-access-tokens/">JWT Access Tokens</a></li>
             </ul>
           </li>
           <li class="js-topic">

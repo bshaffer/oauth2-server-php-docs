@@ -38,7 +38,8 @@
 
     <div id="wrapper">
       <div class="content">
-    <h1>Using Multiple Storages</h1>
+    
+<h1 id="using-multiple-storages">Using Multiple Storages</h1>
 
 <p>Each storage object that comes with this library can be used for almost
 every type of storage. However, you may want to use different kinds of
@@ -48,20 +49,19 @@ in <code>Memory</code>?</p>
 
 <div class="code-container">
 <div class="langspec">Text</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text">  clients       ---&gt;   ||MySQL Database||
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text">  clients       ---&gt;   ||MySQL Database||
 
   access tokens ---&gt;   {{   MongoDB    }}
 
-  scopes        ---&gt;   ((   Memory     ))</code></pre></div></div>
+  scopes        ---&gt;   ((   Memory     ))</code></pre></div></div></div></div>
 </div>
-
 <p>This is no problem! You just need to specify each storage individually
 when you create your OAuth2 server object.  First create your storage
 objects:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// instantiate all your storage objects</span>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// instantiate all your storage objects</span>
 <span class="local-variable">$clientStorage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">PDO</span>(<span class="predefined">array</span>(
     <span class="string"><span class="delimiter">'</span><span class="content">dsn</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">mysql:host=localhost;dbname=test</span><span class="delimiter">'</span></span>,
     <span class="string"><span class="delimiter">'</span><span class="content">username</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$user</span>,
@@ -80,32 +80,29 @@ objects:</p>
         <span class="string"><span class="delimiter">'</span><span class="content">red-scope</span><span class="delimiter">'</span></span>,
         <span class="string"><span class="delimiter">'</span><span class="content">blue-scope</span><span class="delimiter">'</span></span>,
     );
-));</code></pre></div></div>
+));</code></pre></div></div></div></div>
 </div>
-
-<p>Once you've done this, create the OAuth server and pass the
+<p>Once you’ve done this, create the OAuth server and pass the
 storage objects in as an associative array, with their ids as
 the key:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// add your storage objects to the OAuth server</span>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// add your storage objects to the OAuth server</span>
 <span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>(<span class="predefined">array</span>(
     <span class="string"><span class="delimiter">'</span><span class="content">client_credentials</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$clientStorage</span>,
     <span class="string"><span class="delimiter">'</span><span class="content">access_token</span><span class="delimiter">'</span></span>       =&gt; <span class="local-variable">$tokenStorage</span>,
     <span class="string"><span class="delimiter">'</span><span class="content">scope</span><span class="delimiter">'</span></span>              =&gt; <span class="local-variable">$scopeStorage</span>,
-));</code></pre></div></div>
+));</code></pre></div></div></div></div>
 </div>
-
 <p>You can also add them after creation, if you so prefer:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$server</span>-&gt;addStorage(<span class="local-variable">$clientStorage</span>, <span class="string"><span class="delimiter">'</span><span class="content">client_credentials</span><span class="delimiter">'</span></span>);
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$server</span>-&gt;addStorage(<span class="local-variable">$clientStorage</span>, <span class="string"><span class="delimiter">'</span><span class="content">client_credentials</span><span class="delimiter">'</span></span>);
 <span class="local-variable">$server</span>-&gt;addStorage(<span class="local-variable">$tokenStorage</span>, <span class="string"><span class="delimiter">'</span><span class="content">access_token</span><span class="delimiter">'</span></span>);
-<span class="local-variable">$server</span>-&gt;addStorage(<span class="local-variable">$scopeStorage</span>, <span class="string"><span class="delimiter">'</span><span class="content">scope</span><span class="delimiter">'</span></span>);</code></pre></div></div>
+<span class="local-variable">$server</span>-&gt;addStorage(<span class="local-variable">$scopeStorage</span>, <span class="string"><span class="delimiter">'</span><span class="content">scope</span><span class="delimiter">'</span></span>);</code></pre></div></div></div></div>
 </div>
-
 <p>Because you specified the storage ids, the library
 will only use these storages for the functions specified.</p>
 
@@ -128,7 +125,7 @@ on <a href="../custom/">Custom Storage</a>.</p>
               <li><a href="/oauth2-server-php-docs/overview/response/">Request and Response</a></li>
               <li><a href="/oauth2-server-php-docs/overview/scope/">Scope</a></li>
               <li><a href="/oauth2-server-php-docs/overview/userid/">User ID</a></li>
-              <li><a href="/oauth2-server-php-docs/overview/crypto-tokens/">Crypto Tokens</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/jwt-access-tokens/">JWT Access Tokens</a></li>
             </ul>
           </li>
           <li class="js-topic">

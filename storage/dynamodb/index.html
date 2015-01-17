@@ -38,66 +38,68 @@
 
     <div id="wrapper">
       <div class="content">
-    <h1>DynamoDB</h1>
+    
+<h1 id="dynamodb">DynamoDB</h1>
 
-<h2>Overview</h2>
+<h2 id="overview">Overview</h2>
 
 <p>Uses the <a href="http://aws.amazon.com/dynamodb/">DynamoDB</a> NoSQL Database Service for storing and retrieving objects in OAuth.</p>
 
-<h2>Installation</h2>
+<h2 id="installation">Installation</h2>
 
 <p>First, you will need to install the <a href="https://github.com/aws/aws-sdk-php">Amazon Web Services PHP SDK</a></p>
 
 <div class="code-container">
 <div class="langspec">Text</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text">$ composer require aws/aws-sdk-php:dev-master</code></pre></div></div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text">$ composer require aws/aws-sdk-php:dev-master</code></pre></div></div></div></div>
 </div>
+<blockquote>
 
-<h2>Get Started</h2>
+</blockquote>
 
-<p>If you haven't already created an <code>~/.aws/credentials</code> file, this is the easiest way to get up and running with DynamoDB.</p>
+<h2 id="get-started">Get Started</h2>
+
+<p>If you haven’t already created an <code>~/.aws/credentials</code> file, this is the easiest way to get up and running with DynamoDB.</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// @see http://docs.aws.amazon.com/aws-sdk-php/guide/latest/credentials.html#credential-profiles</span>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// @see http://docs.aws.amazon.com/aws-sdk-php/guide/latest/credentials.html#credential-profiles</span>
 <span class="local-variable">$config</span> = <span class="predefined">array</span>(
-    <span class="string"><span class="delimiter">'</span><span class="content">profile</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">default</span><span class="delimiter">'</span></span>,
-    <span class="string"><span class="delimiter">'</span><span class="content">region</span><span class="delimiter">'</span></span>  =&gt;  <span class="constant">Aws</span>\<span class="constant">Common</span>\<span class="constant">Enum</span>\<span class="constant">Region</span>::<span class="constant">US_EAST_1</span>, <span class="comment">// Your region may differ</span>
-);</code></pre></div></div>
+        <span class="string"><span class="delimiter">'</span><span class="content">profile</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">default</span><span class="delimiter">'</span></span>,
+        <span class="string"><span class="delimiter">'</span><span class="content">region</span><span class="delimiter">'</span></span>  =&gt;  <span class="constant">Aws</span>\<span class="constant">Common</span>\<span class="constant">Enum</span>\<span class="constant">Region</span>::<span class="constant">US_EAST_1</span>, <span class="comment">// Your region may differ</span>
+);</code></pre></div></div></div></div>
 </div>
-
 <p>Alternatively, you can configure your client to run directly with your credentials</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// These credentials are found in your AWS management console</span>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// These credentials are found in your AWS management console</span>
 <span class="local-variable">$config</span> = <span class="predefined">array</span>(
-    <span class="string"><span class="delimiter">'</span><span class="content">key</span><span class="delimiter">'</span></span>  =&gt; <span class="string"><span class="delimiter">'</span><span class="content">my-aws-key</span><span class="delimiter">'</span></span>,
-    <span class="string"><span class="delimiter">'</span><span class="content">secret</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">my-aws-secret</span><span class="delimiter">'</span></span>,
-    <span class="string"><span class="delimiter">'</span><span class="content">region</span><span class="delimiter">'</span></span> =&gt; <span class="constant">Aws</span>\<span class="constant">Common</span>\<span class="constant">Enum</span>\<span class="constant">Region</span>::<span class="constant">US_EAST_1</span>, <span class="comment">// Your region may differ</span>
-);</code></pre></div></div>
+        <span class="string"><span class="delimiter">'</span><span class="content">key</span><span class="delimiter">'</span></span>         =&gt; <span class="string"><span class="delimiter">'</span><span class="content">my-aws-key</span><span class="delimiter">'</span></span>,
+        <span class="string"><span class="delimiter">'</span><span class="content">secret</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">my-aws-secret</span><span class="delimiter">'</span></span>,
+        <span class="string"><span class="delimiter">'</span><span class="content">region</span><span class="delimiter">'</span></span> =&gt; <span class="constant">Aws</span>\<span class="constant">Common</span>\<span class="constant">Enum</span>\<span class="constant">Region</span>::<span class="constant">US_EAST_1</span>, <span class="comment">// Your region may differ</span>
+);</code></pre></div></div></div></div>
 </div>
-
 <p>Next, instantiate the AWS client by creating your configuration array and using the <code>factory</code> method:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$dynamo</span> = <span class="constant">Aws</span>\<span class="constant">DynamoDb</span>\<span class="constant">DynamoDbClient</span>::factory(<span class="local-variable">$config</span>);</code></pre></div></div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$dynamo</span> = <span class="constant">Aws</span>\<span class="constant">DynamoDb</span>\<span class="constant">DynamoDbClient</span>::factory(<span class="local-variable">$config</span>);</code></pre></div></div></div></div>
 </div>
-
 <p>Finally, create the storage object using the <code>DynamoDB</code> storage class:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$storage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">DynamoDB</span>(<span class="local-variable">$dynamo</span>);
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$storage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">DynamoDB</span>(<span class="local-variable">$dynamo</span>);
 
 <span class="comment">// now you can perform storage functions, such as the one below</span>
-<span class="local-variable">$storage</span>-&gt;setClientDetails(<span class="local-variable">$client_id</span>, <span class="local-variable">$client_secret</span>, <span class="local-variable">$redirect_uri</span>);</code></pre></div></div>
+<span class="local-variable">$storage</span>-&gt;setClientDetails(<span class="local-variable">$client_id</span>, <span class="local-variable">$client_secret</span>, <span class="local-variable">$redirect_uri</span>);</code></pre></div></div></div></div>
 </div>
+<blockquote>
+  <p>To see an example of the default table structure, check out the <a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/test/lib/OAuth2/Storage/Bootstrap.php#L519"><code>Bootstrap::createDynamoDB</code></a> function in this library, or just create the tables yourself using DynamoDB’s management UI.</p>
+</blockquote>
 
-<blockquote><p>To see an example of the default table structure, check out the <a href="https://github.com/bshaffer/oauth2-server-php/blob/develop/test/lib/OAuth2/Storage/Bootstrap.php#L519"><code>Bootstrap::createDynamoDB</code></a> function in this library, or just create the tables yourself using DynamoDB's management UI.</p></blockquote>
-
-<h2>Usage</h2>
+<h2 id="usage">Usage</h2>
 
 <p>The DynamoDB storage engine implements all the standard Storage Interfaces supported
 in this library.  See <a href="../custom">interfaces</a> for more information.</p>
@@ -118,7 +120,7 @@ in this library.  See <a href="../custom">interfaces</a> for more information.</
               <li><a href="/oauth2-server-php-docs/overview/response/">Request and Response</a></li>
               <li><a href="/oauth2-server-php-docs/overview/scope/">Scope</a></li>
               <li><a href="/oauth2-server-php-docs/overview/userid/">User ID</a></li>
-              <li><a href="/oauth2-server-php-docs/overview/crypto-tokens/">Crypto Tokens</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/jwt-access-tokens/">JWT Access Tokens</a></li>
             </ul>
           </li>
           <li class="js-topic">

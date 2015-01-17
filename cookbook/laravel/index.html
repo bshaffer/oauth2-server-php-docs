@@ -38,32 +38,33 @@
 
     <div id="wrapper">
       <div class="content">
-    <h1>Laravel</h1>
+    
+<h1 id="laravel">Laravel</h1>
 
 <p>See this <a href="https://github.com/julien-c/laravel-oauth2-server">Laravel demo application</a> for implementing this library in Laravel 4.</p>
 
-<h2>Step-By-Step Walkthrough</h2>
+<h2 id="step-by-step-walkthrough">Step-By-Step Walkthrough</h2>
 
 <ol>
-<li>Create your Laravel project (e.g. <code>composer create-project laravel/laravel --prefer-dist</code>)</li>
-<li>Install the OAuth2 server and HTTPFoundation bridge dependencies using Composer: <code>composer require bshaffer/oauth2-server-php</code> and <code>composer require bshaffer/oauth2-server-httpfoundation-bridge</code>
+  <li>Create your Laravel project (e.g. <code>composer create-project laravel/laravel --prefer-dist</code>)</li>
+  <li>Install the OAuth2 server and HTTPFoundation bridge dependencies using Composer: <code>composer require bshaffer/oauth2-server-php</code> and <code>composer require bshaffer/oauth2-server-httpfoundation-bridge</code>
 </li>
-<li>
-<p>Setup your database and run the provided migration (see <a href="https://github.com/julien-c/laravel-oauth2-server/commit/b290d4f699b9758696444e2d62dd82f0eeedcb7d">https://github.com/julien-c/laravel-oauth2-server/commit/b290d4f699b9758696444e2d62dd82f0eeedcb7d</a>):</p>
+  <li>
+    <p>Setup your database and run the provided migration (see <a href="https://github.com/julien-c/laravel-oauth2-server/commit/b290d4f699b9758696444e2d62dd82f0eeedcb7d">https://github.com/julien-c/laravel-oauth2-server/commit/b290d4f699b9758696444e2d62dd82f0eeedcb7d</a>): </p>
 
-<p><code>php artisan db:migrate</code></p>
-</li>
-<li>
-<p>Seed your database using the provided script : <a href="https://github.com/julien-c/laravel-oauth2-server/commit/8895c54cbf8ea8ba78aafab53a5a0409ce2f1ba2">https://github.com/julien-c/laravel-oauth2-server/commit/8895c54cbf8ea8ba78aafab53a5a0409ce2f1ba2</a></p>
+    <p><code>php artisan db:migrate</code></p>
+  </li>
+  <li>
+    <p>Seed your database using the provided script : <a href="https://github.com/julien-c/laravel-oauth2-server/commit/8895c54cbf8ea8ba78aafab53a5a0409ce2f1ba2">https://github.com/julien-c/laravel-oauth2-server/commit/8895c54cbf8ea8ba78aafab53a5a0409ce2f1ba2</a></p>
 
-<p><code>php artisan db:seed</code></p>
-</li>
-<li><p>Setup your OAuth2 server. To be able to access the single instance anywhere in your Laravel app, you can attach it as a singleton:</p></li>
+    <p><code>php artisan db:seed</code></p>
+  </li>
+  <li>Setup your OAuth2 server. To be able to access the single instance anywhere in your Laravel app, you can attach it as a singleton:</li>
 </ol>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="constant">App</span>::singleton(<span class="string"><span class="delimiter">'</span><span class="content">oauth2</span><span class="delimiter">'</span></span>, <span class="keyword">function</span>() {
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="constant">App</span>::singleton(<span class="string"><span class="delimiter">'</span><span class="content">oauth2</span><span class="delimiter">'</span></span>, <span class="keyword">function</span>() {
     
     <span class="local-variable">$storage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Pdo</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">dsn</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">mysql:dbname=oauth2;host=localhost</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">username</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">root</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">root</span><span class="delimiter">'</span></span>));
     <span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>(<span class="local-variable">$storage</span>);
@@ -72,15 +73,14 @@
     <span class="local-variable">$server</span>-&gt;addGrantType(<span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">UserCredentials</span>(<span class="local-variable">$storage</span>));
     
     <span class="keyword">return</span> <span class="local-variable">$server</span>;
-});</code></pre></div></div>
+});</code></pre></div></div></div></div>
 </div>
-
 <ol>
-<li>Implement the actual OAuth2 controllers you wish to implement. For example a token controller and a resource controller: see <a href="https://github.com/julien-c/laravel-oauth2-server/blob/master/app/routes.php"><code>app/routes.php</code></a>
+  <li>Implement the actual OAuth2 controllers you wish to implement. For example a token controller and a resource controller: see <a href="https://github.com/julien-c/laravel-oauth2-server/blob/master/app/routes.php"><code>app/routes.php</code></a>
 </li>
 </ol>
 
-<p>You can even unit test your integration! Here's an example using Guzzle: <a href="https://github.com/julien-c/laravel-oauth2-server/blob/master/app/tests/OAuthTest.php">https://github.com/julien-c/laravel-oauth2-server/blob/master/app/tests/OAuthTest.php</a></p>
+<p>You can even unit test your integration! Here’s an example using Guzzle: <a href="https://github.com/julien-c/laravel-oauth2-server/blob/master/app/tests/OAuthTest.php">https://github.com/julien-c/laravel-oauth2-server/blob/master/app/tests/OAuthTest.php</a></p>
 
       </div>
 
@@ -98,7 +98,7 @@
               <li><a href="/oauth2-server-php-docs/overview/response/">Request and Response</a></li>
               <li><a href="/oauth2-server-php-docs/overview/scope/">Scope</a></li>
               <li><a href="/oauth2-server-php-docs/overview/userid/">User ID</a></li>
-              <li><a href="/oauth2-server-php-docs/overview/crypto-tokens/">Crypto Tokens</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/jwt-access-tokens/">JWT Access Tokens</a></li>
             </ul>
           </li>
           <li class="js-topic">

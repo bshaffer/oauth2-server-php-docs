@@ -38,20 +38,21 @@
 
     <div id="wrapper">
       <div class="content">
-    <h1>Scope</h1>
+    
+<h1 id="scope">Scope</h1>
 
-<h2>Configure your Scope</h2>
+<h2 id="configure-your-scope">Configure your Scope</h2>
 
 <p>The use of Scope in an OAuth2 application is often key to proper permissioning. Scope is used to limit the authorization
-granted to the client by the resource owner. The most popular use of this is Facebook's ability for users to authorize
-a variety of different functions to the client ("access basic information", "post on wall", etc).</p>
+granted to the client by the resource owner. The most popular use of this is Facebook’s ability for users to authorize
+a variety of different functions to the client (“access basic information”, “post on wall”, etc).</p>
 
 <p>In this library, scope is handled by implementing <code>OAuth2\Storage\ScopeInterface</code>. This can be done using your own
 implementation, or by taking advantage of the existing <code>OAuth2\Storage\Memory</code> class:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// configure your available scopes</span>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// configure your available scopes</span>
 <span class="local-variable">$defaultScope</span> = <span class="string"><span class="delimiter">'</span><span class="content">basic</span><span class="delimiter">'</span></span>;
 <span class="local-variable">$supportedScopes</span> = <span class="predefined">array</span>(
   <span class="string"><span class="delimiter">'</span><span class="content">basic</span><span class="delimiter">'</span></span>,
@@ -64,25 +65,23 @@ implementation, or by taking advantage of the existing <code>OAuth2\Storage\Memo
 ));
 <span class="local-variable">$scopeUtil</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Scope</span>(<span class="local-variable">$memory</span>);
 
-<span class="local-variable">$server</span>-&gt;setScopeUtil(<span class="local-variable">$scopeUtil</span>);</code></pre></div></div>
+<span class="local-variable">$server</span>-&gt;setScopeUtil(<span class="local-variable">$scopeUtil</span>);</code></pre></div></div></div></div>
 </div>
-
 <p>This is the simplest way, but scope can by dynamically configured as well:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// configure your available scopes</span>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// configure your available scopes</span>
 <span class="local-variable">$doctrine</span> = <span class="constant">Doctrine_Core</span>::getTable(<span class="string"><span class="delimiter">'</span><span class="content">OAuth2Scope</span><span class="delimiter">'</span></span>);
 <span class="local-variable">$scopeUtil</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Scope</span>(<span class="local-variable">$doctrine</span>);
 
-<span class="local-variable">$server</span>-&gt;setScopeUtil(<span class="local-variable">$scopeUtil</span>);</code></pre></div></div>
+<span class="local-variable">$server</span>-&gt;setScopeUtil(<span class="local-variable">$scopeUtil</span>);</code></pre></div></div></div></div>
 </div>
-
 <p>This example assumes the class being used implements <code>OAuth2\Storage\ScopeInterface</code>:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">class</span> <span class="class">OAuth2ScopeTable</span> <span class="keyword">extends</span> <span class="constant">Doctrine_Table</span> <span class="keyword">implements</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">ScopeInterface</span>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">class</span> <span class="class">OAuth2ScopeTable</span> <span class="keyword">extends</span> <span class="constant">Doctrine_Table</span> <span class="keyword">implements</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">ScopeInterface</span>
 {
     <span class="keyword">public</span> <span class="keyword">function</span> <span class="function">getDefaultScope</span>(<span class="local-variable">$client_id</span> = <span class="predefined-constant">null</span>)
     {
@@ -93,10 +92,13 @@ implementation, or by taking advantage of the existing <code>OAuth2\Storage\Memo
     {
         <span class="comment">//...</span>
     }
-}</code></pre></div></div>
+}</code></pre></div></div></div></div>
 </div>
+<blockquote>
 
-<h2>Validate your scope</h2>
+</blockquote>
+
+<h2 id="validate-your-scope">Validate your scope</h2>
 
 <p>Configuring your scope in the server class will ensure requested scopes by the client are valid.  However, there are two
 steps required to ensure the proper validation of your scope.  First, the requested scope must be exposed to the resource
@@ -106,22 +108,25 @@ access it:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// https://api.example.com/resource-requiring-postonwall-scope</span>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// https://api.example.com/resource-requiring-postonwall-scope</span>
 <span class="local-variable">$request</span> = <span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals();
 <span class="local-variable">$response</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Response</span>();
 <span class="local-variable">$scopeRequired</span> = <span class="string"><span class="delimiter">'</span><span class="content">postonwall</span><span class="delimiter">'</span></span>; <span class="comment">// this resource requires "postonwall" scope</span>
 <span class="keyword">if</span> (!<span class="local-variable">$server</span>-&gt;verifyResourceRequest(<span class="local-variable">$request</span>, <span class="local-variable">$response</span>, <span class="local-variable">$scopeRequired</span>)) {
   <span class="comment">// if the scope required is different from what the token allows, this will send a "401 insufficient_scope" error</span>
   <span class="local-variable">$response</span>-&gt;send();
-}</code></pre></div></div>
+}</code></pre></div></div></div></div>
 </div>
+<blockquote>
 
-<h2>Customizing your scope</h2>
+</blockquote>
 
-<p>As the implementation of "scope" can be significantly different for each application, providing a different class other than
+<h2 id="customizing-your-scope">Customizing your scope</h2>
+
+<p>As the implementation of “scope” can be significantly different for each application, providing a different class other than
 OAuth2\Scope can be beneficial.  Implement <code>OAuth2\ScopeInterface</code> in a custom class to fully customize.</p>
 
-<h2>State</h2>
+<h2 id="state">State</h2>
 
 <p>The <code>state</code> parameter is required by default for authorize redirects.  This is the equivalent of a <code>CSRF</code> token, and provides
 session validation for your Authorize request.  See the <a href="http://tools.ietf.org/html/rfc6749#section-4.1.1">OAuth2.0 Spec</a>
@@ -131,30 +136,34 @@ for more information on state.</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// on creation</span>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// on creation</span>
 <span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>(<span class="local-variable">$storage</span>, <span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">enforce_state</span><span class="delimiter">'</span></span> =&gt; <span class="predefined-constant">false</span>));
 
 <span class="comment">// or after creation</span>
 <span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>();
-<span class="local-variable">$server</span>-&gt;setConfig(<span class="string"><span class="delimiter">'</span><span class="content">enforce_state</span><span class="delimiter">'</span></span>, <span class="predefined-constant">false</span>);</code></pre></div></div>
+<span class="local-variable">$server</span>-&gt;setConfig(<span class="string"><span class="delimiter">'</span><span class="content">enforce_state</span><span class="delimiter">'</span></span>, <span class="predefined-constant">false</span>);</code></pre></div></div></div></div>
 </div>
+<blockquote>
 
-<h2>Using Multiple Scopes</h2>
+</blockquote>
+
+<h2 id="using-multiple-scopes">Using Multiple Scopes</h2>
 
 <p>You can request multiple scopes by supplying a space-delimited (but url-safe) list of scopes in your authorize request.
 It will look like this:</p>
 
 <div class="code-container">
 <div class="langspec">Text</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text">https://mydomain.com/authorize
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text">https://mydomain.com/authorize
    ?client_id=MY_CLIENT
    &amp;response_type=code
-   &amp;scope=onescope%20twoscope%20redscope%20bluescope</code></pre></div></div>
+   &amp;scope=onescope%20twoscope%20redscope%20bluescope</code></pre></div></div></div></div>
 </div>
+<blockquote>
+  <p>Note: Extra linebreaks are for readability only</p>
+</blockquote>
 
-<blockquote><p>Note: Extra linebreaks are for readability only</p></blockquote>
-
-<p>This will create an authorization code with the following four scopes: "onescope", "twoscope", "redscope", and "bluescope"</p>
+<p>This will create an authorization code with the following four scopes: “onescope”, “twoscope”, “redscope”, and “bluescope”</p>
 
 <p>These four scopes will then be validated against the available scopes using the <code>OAuth2\ScopeUtil</code> class to ensure they
 exist. If you receive the error <code>invalid_scope: An unsupported scope was requested</code>, this is because you need to set your
@@ -162,12 +171,11 @@ available scopes on your server object, like so:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$scope</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Scope</span>(<span class="predefined">array</span>(
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$scope</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Scope</span>(<span class="predefined">array</span>(
   <span class="string"><span class="delimiter">'</span><span class="content">supported_scopes</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">onescope</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">twoscope</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">redscope</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">bluescope</span><span class="delimiter">'</span></span>)
 ));
-<span class="local-variable">$server</span>-&gt;setScopeUtil(<span class="local-variable">$scope</span>);</code></pre></div></div>
+<span class="local-variable">$server</span>-&gt;setScopeUtil(<span class="local-variable">$scope</span>);</code></pre></div></div></div></div>
 </div>
-
 
       </div>
 
@@ -185,7 +193,7 @@ available scopes on your server object, like so:</p>
               <li><a href="/oauth2-server-php-docs/overview/response/">Request and Response</a></li>
               <li><a href="/oauth2-server-php-docs/overview/scope/">Scope</a></li>
               <li><a href="/oauth2-server-php-docs/overview/userid/">User ID</a></li>
-              <li><a href="/oauth2-server-php-docs/overview/crypto-tokens/">Crypto Tokens</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/jwt-access-tokens/">JWT Access Tokens</a></li>
             </ul>
           </li>
           <li class="js-topic">

@@ -38,9 +38,10 @@
 
     <div id="wrapper">
       <div class="content">
-    <h1>User Credentials</h1>
+    
+<h1 id="user-credentials">User Credentials</h1>
 
-<h2>Overview</h2>
+<h2 id="overview">Overview</h2>
 
 <p>The <code>User Credentials</code> grant type (a.k.a. Resource Owner Password Credentials)
 is used when the user has a trusted relationship with the client, and so can
@@ -48,22 +49,22 @@ supply credentials directly.</p>
 
 <p><a href="http://tools.ietf.org/html/rfc6749#section-4.3">Read more about user credentials</a></p>
 
-<h2>Use Cases</h2>
+<h2 id="use-cases">Use Cases</h2>
 
 <ul>
-<li>when the client wishes to display a login form</li>
-<li>for applications owned and operated by the resource server (such as a mobile or desktop application)</li>
-<li>for applications migrating away from using direct authentication and stored credentials</li>
+  <li>when the client wishes to display a login form</li>
+  <li>for applications owned and operated by the resource server (such as a mobile or desktop application)</li>
+  <li>for applications migrating away from using direct authentication and stored credentials</li>
 </ul>
 
-<h2>Implementation</h2>
+<h2 id="implementation">Implementation</h2>
 
 <p>Create an instance of <code>OAuth2\GrantType\UserCredentials</code> and add it to
 your server</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// create some users in memory</span>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// create some users in memory</span>
 <span class="local-variable">$users</span> = <span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">bshaffer</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">brent123</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">first_name</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">Brent</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">last_name</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">Shaffer</span><span class="delimiter">'</span></span>));
 
 <span class="comment">// create a storage object</span>
@@ -73,36 +74,34 @@ your server</p>
 <span class="local-variable">$grantType</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">UserCredentials</span>(<span class="local-variable">$storage</span>);
 
 <span class="comment">// add the grant type to your OAuth server</span>
-<span class="local-variable">$server</span>-&gt;addGrantType(<span class="local-variable">$grantType</span>);</code></pre></div></div>
+<span class="local-variable">$server</span>-&gt;addGrantType(<span class="local-variable">$grantType</span>);</code></pre></div></div></div></div>
 </div>
+<blockquote>
+  <p>Note: User storage is highly customized for each application, so it is highly recommended
+you implement your own storage using <code>OAuth2\Storage\UserCredentialsInterface</code></p>
+</blockquote>
 
-<blockquote><p>Note: User storage is highly customized for each application, so it is highly recommended
-you implement your own storage using <code>OAuth2\Storage\UserCredentialsInterface</code></p></blockquote>
-
-<h2>Example Request</h2>
+<h2 id="example-request">Example Request</h2>
 
 <p>Send in the user credentials directly to receive an access token:</p>
 
 <div class="code-container">
 <div class="langspec">Text</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text">$ curl -u TestClient:TestSecret https://api.mysite.com/token -d 'grant_type=password&amp;username=bshaffer&amp;password=brent123'</code></pre></div></div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text">$ curl -u TestClient:TestSecret https://api.mysite.com/token -d 'grant_type=password&amp;username=bshaffer&amp;password=brent123'</code></pre></div></div></div></div>
 </div>
-
 <p>If your client is <code>public</code> (by default, this is true when no secret is associated with the client), you
 can omit the <code>client_secret</code> value in the request:</p>
 
 <div class="code-container">
 <div class="langspec">Text</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text">$ curl https://api.mysite.com/token -d 'grant_type=password&amp;client_id=TestClient&amp;username=bshaffer&amp;password=brent123'</code></pre></div></div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text">$ curl https://api.mysite.com/token -d 'grant_type=password&amp;client_id=TestClient&amp;username=bshaffer&amp;password=brent123'</code></pre></div></div></div></div>
 </div>
-
 <p>A successful token request will return a standard access token in JSON format:</p>
 
 <div class="code-container">
 <div class="langspec">Json</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-json">{<span class="key"><span class="delimiter">"</span><span class="content">access_token</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">03807cb390319329bdf6c777d4dfae9c0d3b3c35</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">expires_in</span><span class="delimiter">"</span></span>:<span class="integer">3600</span>,<span class="key"><span class="delimiter">"</span><span class="content">token_type</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">bearer</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">scope</span><span class="delimiter">"</span></span>:<span class="value">null</span>}</code></pre></div></div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-json">{<span class="key"><span class="delimiter">"</span><span class="content">access_token</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">03807cb390319329bdf6c777d4dfae9c0d3b3c35</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">expires_in</span><span class="delimiter">"</span></span>:<span class="integer">3600</span>,<span class="key"><span class="delimiter">"</span><span class="content">token_type</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">bearer</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">scope</span><span class="delimiter">"</span></span>:<span class="value">null</span>}</code></pre></div></div></div></div>
 </div>
-
 
       </div>
 
@@ -120,7 +119,7 @@ can omit the <code>client_secret</code> value in the request:</p>
               <li><a href="/oauth2-server-php-docs/overview/response/">Request and Response</a></li>
               <li><a href="/oauth2-server-php-docs/overview/scope/">Scope</a></li>
               <li><a href="/oauth2-server-php-docs/overview/userid/">User ID</a></li>
-              <li><a href="/oauth2-server-php-docs/overview/crypto-tokens/">Crypto Tokens</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/jwt-access-tokens/">JWT Access Tokens</a></li>
             </ul>
           </li>
           <li class="js-topic">

@@ -38,15 +38,16 @@
 
     <div id="wrapper">
       <div class="content">
-    <h1>Doctrine</h1>
+    
+<h1 id="doctrine">Doctrine</h1>
 
-<h2>Create Client and Access Token Storage</h2>
+<h2 id="create-client-and-access-token-storage">Create Client and Access Token Storage</h2>
 
-<p>To integrate doctrine into your project, first set up your models.  Let's start with just the Client and Access Token models:</p>
+<p>To integrate doctrine into your project, first set up your models.  Let’s start with just the Client and Access Token models:</p>
 
 <div class="code-container">
 <div class="langspec">Yaml</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-yaml"><span class="key">OAuthClient</span>:
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-yaml"><span class="key">OAuthClient</span>:
   <span class="key">tableName</span>:      <span class="string"><span class="content">oauth_client</span></span>
   <span class="key">columns</span>:
     <span class="key">client_identifier</span>:
@@ -58,7 +59,7 @@
     <span class="key">redirect_uri</span>:
       <span class="key">type</span>:       <span class="string"><span class="content">string(255)</span></span>
       <span class="key">notnull</span>:    <span class="string"><span class="content">true</span></span>
-      <span class="key">default</span>:    <span class="string"><span class="delimiter">"</span><span class="content"></span><span class="delimiter">"</span></span>
+      <span class="key">default</span>:    <span class="string"><span class="delimiter">"</span><span class="delimiter">"</span></span>
 
 <span class="key">OAuthAccessToken</span>:
   <span class="key">tableName</span>:      <span class="string"><span class="content">oauth_access_token</span></span>
@@ -86,17 +87,16 @@
       <span class="key">class</span>:        <span class="string"><span class="content">OAuthClient</span></span>
       <span class="key">foreignAlias</span>: <span class="string"><span class="content">AccessTokens</span></span>
       <span class="key">onDelete</span>:     <span class="string"><span class="content">CASCADE</span></span>
-      <span class="key">onUpdate</span>:     <span class="string"><span class="content">CASCADE</span></span></code></pre></div></div>
+      <span class="key">onUpdate</span>:     <span class="string"><span class="content">CASCADE</span></span></code></pre></div></div></div></div>
 </div>
-
-<p>Once you've generated the models off this schema, you will have an <code>OAuthClient</code> and <code>OAuthCleintTable</code> class
+<p>Once you’ve generated the models off this schema, you will have an <code>OAuthClient</code> and <code>OAuthCleintTable</code> class
 file, as well as an <code>OAuthAccessToken</code> and <code>OAuthAccessTokenTable</code> object.</p>
 
 <p>Implement <code>OAuth2\Storage\ClientCredentialsInterface</code> on the <code>OAuthClientTable</code> class:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">class</span> <span class="class">OAuthClientTable</span> <span class="keyword">extends</span> <span class="constant">Doctrine_Table</span> <span class="keyword">implements</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">ClientCredentialsInterface</span>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">class</span> <span class="class">OAuthClientTable</span> <span class="keyword">extends</span> <span class="constant">Doctrine_Table</span> <span class="keyword">implements</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">ClientCredentialsInterface</span>
 {
     <span class="keyword">public</span> <span class="keyword">function</span> <span class="function">getClientDetails</span>(<span class="local-variable">$client_id</span>)
     {
@@ -122,14 +122,13 @@ file, as well as an <code>OAuthAccessToken</code> and <code>OAuthAccessTokenTabl
         <span class="comment">// we do not support different grant types per client in this example</span>
         <span class="keyword">return</span> <span class="predefined-constant">true</span>;
     }
-}</code></pre></div></div>
+}</code></pre></div></div></div></div>
 </div>
-
 <p>Now implement <code>OAuth2\Storage\AccessTokenInterface</code> on the <code>OAuthAccessTokenTable</code> class:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">class</span> <span class="class">OAuthAccessTokenTable</span> <span class="keyword">extends</span> <span class="constant">Doctrine_Table</span> <span class="keyword">implements</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">AccessTokenInterface</span>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">class</span> <span class="class">OAuthAccessTokenTable</span> <span class="keyword">extends</span> <span class="constant">Doctrine_Table</span> <span class="keyword">implements</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">AccessTokenInterface</span>
 {
     <span class="keyword">public</span> <span class="keyword">function</span> <span class="function">getAccessToken</span>(<span class="local-variable">$oauth_token</span>)
     {
@@ -161,41 +160,39 @@ file, as well as an <code>OAuthAccessToken</code> and <code>OAuthAccessTokenTabl
 
         <span class="local-variable">$token</span>-&gt;save();
     }
-}</code></pre></div></div>
+}</code></pre></div></div></div></div>
 </div>
-
 <p>Good job!  Now, when you create your <code>OAuth\Server</code> object, pass these tables in:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$clientStore</span> = <span class="constant">Doctrine</span>::getTable(<span class="string"><span class="delimiter">'</span><span class="content">OAuthClient</span><span class="delimiter">'</span></span>);
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$clientStore</span> = <span class="constant">Doctrine</span>::getTable(<span class="string"><span class="delimiter">'</span><span class="content">OAuthClient</span><span class="delimiter">'</span></span>);
 <span class="local-variable">$tokenStore</span>  = <span class="constant">Doctrine</span>::getTable(<span class="string"><span class="delimiter">'</span><span class="content">OAuthAccessToken</span><span class="delimiter">'</span></span>);
 
 <span class="comment">// Pass the doctrine storage objects to the OAuth2 server class</span>
-<span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">client_credentials</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$clientStore</span>, <span class="string"><span class="delimiter">'</span><span class="content">access_token</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$tokenStore</span>));</code></pre></div></div>
+<span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">client_credentials</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$clientStore</span>, <span class="string"><span class="delimiter">'</span><span class="content">access_token</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$tokenStore</span>));</code></pre></div></div></div></div>
 </div>
-
-<p>You've done it!  You've integrated your server with Doctrine!  You can go to town using it, but
-since you've only passed it a <code>client_credentials</code> and <code>access_token</code> storage object, you can only
+<p>You’ve done it!  You’ve integrated your server with Doctrine!  You can go to town using it, but
+since you’ve only passed it a <code>client_credentials</code> and <code>access_token</code> storage object, you can only
 use the <code>client_credentials</code> grant type:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// will only be able to handle token requests when "grant_type=client_credentials".</span>
-<span class="local-variable">$server</span>-&gt;addGrantType(<span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">ClientCredentials</span>(<span class="local-variable">$clientStorage</span>));
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// will only be able to handle token requests when "grant_type=client_credentials".</span>
+<span class="local-variable">$server</span>-&gt;addGrantType(<span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">ClientCredentials</span>(<span class="local-variable">$clientStore</span>));
 
 <span class="comment">// handle the request</span>
-<span class="local-variable">$server</span>-&gt;handleTokenRequest(<span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals())-&gt;send();</code></pre></div></div>
+<span class="local-variable">$server</span>-&gt;handleTokenRequest(<span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals())-&gt;send();</code></pre></div></div></div></div>
 </div>
-
-<h2>Add Authorization Code and Refresh Token Storage</h2>
+<p>Add Authorization Code and Refresh Token Storage
+————————————————</p>
 
 <p>So lets make our application a little more exciting.  Add the following to your schema and
 generate the class files:</p>
 
 <div class="code-container">
 <div class="langspec">Yaml</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-yaml"><span class="key">OAuthAuthorizationCode</span>:
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-yaml"><span class="key">OAuthAuthorizationCode</span>:
   <span class="key">tableName</span>:      <span class="string"><span class="content">oauth_authorization_code</span></span>
   <span class="key">columns</span>:
     <span class="key">code</span>:
@@ -252,9 +249,8 @@ generate the class files:</p>
       <span class="key">class</span>:        <span class="string"><span class="content">OAuthClient</span></span>
       <span class="key">foreignAlias</span>: <span class="string"><span class="content">RefreshTokens</span></span>
       <span class="key">onDelete</span>:     <span class="string"><span class="content">CASCADE</span></span>
-      <span class="key">onUpdate</span>:     <span class="string"><span class="content">CASCADE</span></span></code></pre></div></div>
+      <span class="key">onUpdate</span>:     <span class="string"><span class="content">CASCADE</span></span></code></pre></div></div></div></div>
 </div>
-
 <p>Now we can implement two more interfaces, <code>OAuth2\Storage\AuthorizationCodeInterface</code> and
 <code>OAuth2\Storage\RefreshTokenInterface</code>.  This will allow us to use their correspoding grant
 types as well.</p>
@@ -263,7 +259,7 @@ types as well.</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">class</span> <span class="class">OAuthAuthorizationCodeTable</span> <span class="keyword">extends</span> <span class="constant">Doctrine_Table</span> <span class="keyword">implements</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">AuthorizationCodeInterface</span>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">class</span> <span class="class">OAuthAuthorizationCodeTable</span> <span class="keyword">extends</span> <span class="constant">Doctrine_Table</span> <span class="keyword">implements</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">AuthorizationCodeInterface</span>
 {
     <span class="keyword">public</span> <span class="keyword">function</span> <span class="function">getAuthorizationCode</span>(<span class="local-variable">$code</span>)
     {
@@ -306,14 +302,13 @@ types as well.</p>
             -&gt;where(<span class="string"><span class="delimiter">'</span><span class="content">code = ?</span><span class="delimiter">'</span></span>, <span class="local-variable">$code</span>)
             -&gt;execute();
     }
-}</code></pre></div></div>
+}</code></pre></div></div></div></div>
 </div>
-
 <p>Implement <code>OAuth2\Storage\RefreshTokenInterface</code> on the <code>OAuthRefreshTokenTable</code> class:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">class</span> <span class="class">OAuthRefreshTokenTable</span> <span class="keyword">extends</span> <span class="constant">Doctrine_Table</span> <span class="keyword">implements</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">RefreshTokenInterface</span>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">class</span> <span class="class">OAuthRefreshTokenTable</span> <span class="keyword">extends</span> <span class="constant">Doctrine_Table</span> <span class="keyword">implements</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">RefreshTokenInterface</span>
 {
     <span class="keyword">public</span> <span class="keyword">function</span> <span class="function">getRefreshToken</span>(<span class="local-variable">$refresh_token</span>)
     {
@@ -353,14 +348,13 @@ types as well.</p>
             -&gt;where(<span class="string"><span class="delimiter">'</span><span class="content">refresh_token = ?</span><span class="delimiter">'</span></span>, <span class="local-variable">$refresh_token</span>)
             -&gt;execute();
     }
-}</code></pre></div></div>
+}</code></pre></div></div></div></div>
 </div>
-
 <p>Now we can add two more grant types onto our server:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$clientStore</span>  = <span class="constant">Doctrine</span>::getTable(<span class="string"><span class="delimiter">'</span><span class="content">OAuthClient</span><span class="delimiter">'</span></span>);
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$clientStore</span>  = <span class="constant">Doctrine</span>::getTable(<span class="string"><span class="delimiter">'</span><span class="content">OAuthClient</span><span class="delimiter">'</span></span>);
 <span class="local-variable">$tokenStore</span>   = <span class="constant">Doctrine</span>::getTable(<span class="string"><span class="delimiter">'</span><span class="content">OAuthAccessToken</span><span class="delimiter">'</span></span>);
 <span class="local-variable">$codeStore</span>    = <span class="constant">Doctrine</span>::getTable(<span class="string"><span class="delimiter">'</span><span class="content">OAuthAuthorizationCode</span><span class="delimiter">'</span></span>);
 <span class="local-variable">$refreshStore</span> = <span class="constant">Doctrine</span>::getTable(<span class="string"><span class="delimiter">'</span><span class="content">OAuthRefreshToken</span><span class="delimiter">'</span></span>);
@@ -378,12 +372,12 @@ types as well.</p>
 <span class="local-variable">$server</span>-&gt;addGrantType(<span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">RefreshToken</span>(<span class="local-variable">$refreshStorage</span>));
 
 <span class="comment">// handle the request</span>
-<span class="local-variable">$server</span>-&gt;handleTokenRequest(<span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals())-&gt;send();</code></pre></div></div>
+<span class="local-variable">$server</span>-&gt;handleTokenRequest(<span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals())-&gt;send();</code></pre></div></div></div></div>
 </div>
-
-<p>You've done it!!! Well, almost all of it.  The only thing left is to add your
+<p>You’ve done it!!! Well, almost all of it.  The only thing left is to add your
 user!  Well, see the symfony documentation for how to integrate with
 <code>sfGuardUser</code>.</p>
+
 
       </div>
 
@@ -401,7 +395,7 @@ user!  Well, see the symfony documentation for how to integrate with
               <li><a href="/oauth2-server-php-docs/overview/response/">Request and Response</a></li>
               <li><a href="/oauth2-server-php-docs/overview/scope/">Scope</a></li>
               <li><a href="/oauth2-server-php-docs/overview/userid/">User ID</a></li>
-              <li><a href="/oauth2-server-php-docs/overview/crypto-tokens/">Crypto Tokens</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/jwt-access-tokens/">JWT Access Tokens</a></li>
             </ul>
           </li>
           <li class="js-topic">

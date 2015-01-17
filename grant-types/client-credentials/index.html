@@ -38,9 +38,10 @@
 
     <div id="wrapper">
       <div class="content">
-    <h1>Client Credentials</h1>
+    
+<h1 id="client-credentials">Client Credentials</h1>
 
-<h2>Overview</h2>
+<h2 id="overview">Overview</h2>
 
 <p>The <code>Client Credentials</code> grant type is used when the
 client is requesting access to protected resources under its
@@ -48,21 +49,21 @@ control (i.e. there is no third party).</p>
 
 <p><a href="http://tools.ietf.org/html/rfc6749#section-4.4">Read more about client credentials</a></p>
 
-<h2>Use Cases</h2>
+<h2 id="use-cases">Use Cases</h2>
 
 <ul>
-<li>service calls</li>
-<li>calls on behalf of the user who created the client.</li>
+  <li>service calls</li>
+  <li>calls on behalf of the user who created the client.</li>
 </ul>
 
-<h2>Implementation</h2>
+<h2 id="implementation">Implementation</h2>
 
 <p>Create an instance of <code>OAuth2\GrantType\ClientCredentials</code> and add it to
 your server</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// create test clients in memory</span>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// create test clients in memory</span>
 <span class="local-variable">$clients</span> = <span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">TestClient</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">client_secret</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">TestSecret</span><span class="delimiter">'</span></span>));
 
 <span class="comment">// create a storage object</span>
@@ -72,53 +73,56 @@ your server</p>
 <span class="local-variable">$grantType</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">ClientCredentials</span>(<span class="local-variable">$storage</span>);
 
 <span class="comment">// add the grant type to your OAuth server</span>
-<span class="local-variable">$server</span>-&gt;addGrantType(<span class="local-variable">$grantType</span>);</code></pre></div></div>
+<span class="local-variable">$server</span>-&gt;addGrantType(<span class="local-variable">$grantType</span>);</code></pre></div></div></div></div>
 </div>
+<blockquote>
 
-<h2>Configuration</h2>
+</blockquote>
+
+<h2 id="configuration">Configuration</h2>
 
 <p>The Client Credentials grant type has the following configuration:</p>
 
 <ul>
-<li>
+  <li>
 <code>allow_credentials_in_request_body</code>
-
-<ul>
-<li>whether to look for credentials in the POST body in addition to the Authorize HTTP Header</li>
-<li>
+    <ul>
+      <li>whether to look for credentials in the POST body in addition to the Authorize HTTP Header</li>
+      <li>
 <strong>Default</strong>: true</li>
-</ul>
-</li>
+    </ul>
+  </li>
 </ul>
 
 <p>For example:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// this request will only allow authorization via the Authorize HTTP Header (Http Basic)</span>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// this request will only allow authorization via the Authorize HTTP Header (Http Basic)</span>
 <span class="local-variable">$grantType</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">ClientCredentials</span>(<span class="local-variable">$storage</span>, <span class="predefined">array</span>(
     <span class="string"><span class="delimiter">'</span><span class="content">allow_credentials_in_request_body =&gt; false</span><span class="delimiter">'</span></span>
-));</code></pre></div></div>
+));</code></pre></div></div></div></div>
 </div>
+<blockquote>
 
-<h2>Example Request</h2>
+</blockquote>
+
+<h2 id="example-request">Example Request</h2>
 
 <div class="code-container">
 <div class="langspec">Text</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text"># using HTTP Basic Authentication
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text"># using HTTP Basic Authentication
 $ curl -u TestClient:TestSecret https://api.mysite.com/token -d 'grant_type=client_credentials'
 
 # using POST Body
-$ curl https://api.mysite.com/token -d 'grant_type=client_credentials&amp;client_id=TestClient&amp;client_secret=TestSecret'</code></pre></div></div>
+$ curl https://api.mysite.com/token -d 'grant_type=client_credentials&amp;client_id=TestClient&amp;client_secret=TestSecret'</code></pre></div></div></div></div>
 </div>
-
 <p>A successful token request will return a standard access token in JSON format:</p>
 
 <div class="code-container">
 <div class="langspec">Json</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-json">{<span class="key"><span class="delimiter">"</span><span class="content">access_token</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">03807cb390319329bdf6c777d4dfae9c0d3b3c35</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">expires_in</span><span class="delimiter">"</span></span>:<span class="integer">3600</span>,<span class="key"><span class="delimiter">"</span><span class="content">token_type</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">bearer</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">scope</span><span class="delimiter">"</span></span>:<span class="value">null</span>}</code></pre></div></div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-json">{<span class="key"><span class="delimiter">"</span><span class="content">access_token</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">03807cb390319329bdf6c777d4dfae9c0d3b3c35</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">expires_in</span><span class="delimiter">"</span></span>:<span class="integer">3600</span>,<span class="key"><span class="delimiter">"</span><span class="content">token_type</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">bearer</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">scope</span><span class="delimiter">"</span></span>:<span class="value">null</span>}</code></pre></div></div></div></div>
 </div>
-
 
       </div>
 
@@ -136,7 +140,7 @@ $ curl https://api.mysite.com/token -d 'grant_type=client_credentials&amp;client
               <li><a href="/oauth2-server-php-docs/overview/response/">Request and Response</a></li>
               <li><a href="/oauth2-server-php-docs/overview/scope/">Scope</a></li>
               <li><a href="/oauth2-server-php-docs/overview/userid/">User ID</a></li>
-              <li><a href="/oauth2-server-php-docs/overview/crypto-tokens/">Crypto Tokens</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/jwt-access-tokens/">JWT Access Tokens</a></li>
             </ul>
           </li>
           <li class="js-topic">

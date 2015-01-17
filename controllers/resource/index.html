@@ -38,28 +38,28 @@
 
     <div id="wrapper">
       <div class="content">
-    <h1>Resource Controller</h1>
+    
+<h1 id="resource-controller">Resource Controller</h1>
 
-<h2>Overview</h2>
+<h2 id="overview">Overview</h2>
 
 <p>For any resource request (i.e. API Call) requiring oauth2 authentication.  The controller will validate the
 incomming request, and then allow the application to serve back the protected resource.</p>
 
-<h2>Methods</h2>
+<h2 id="methods">Methods</h2>
 
 <p><code>verifyResourceRequest</code></p>
 
 <ul>
-<li>Receives a request object for a resource request, finds the token if it exists, and returns a Boolean for whether
+  <li>Receives a request object for a resource request, finds the token if it exists, and returns a Boolean for whether
 the incomming request is valid</li>
 </ul>
 
 <p><code>getAccessTokenData</code></p>
 
 <ul>
-<li>Takes a token string as an argument and returns the token data if applicable, or null if the token is invalid</li>
+  <li>Takes a request object as an argument and returns the token data if applicable, or null if the token is invalid</li>
 </ul>
-
 
       </div>
 
@@ -77,7 +77,7 @@ the incomming request is valid</li>
               <li><a href="/oauth2-server-php-docs/overview/response/">Request and Response</a></li>
               <li><a href="/oauth2-server-php-docs/overview/scope/">Scope</a></li>
               <li><a href="/oauth2-server-php-docs/overview/userid/">User ID</a></li>
-              <li><a href="/oauth2-server-php-docs/overview/crypto-tokens/">Crypto Tokens</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/jwt-access-tokens/">JWT Access Tokens</a></li>
             </ul>
           </li>
           <li class="js-topic">

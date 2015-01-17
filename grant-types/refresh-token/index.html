@@ -38,157 +38,153 @@
 
     <div id="wrapper">
       <div class="content">
-    <h1>Refresh Token</h1>
+    
+<h1 id="refresh-token">Refresh Token</h1>
 
-<h2>Overview</h2>
+<h2 id="overview">Overview</h2>
 
 <p>The <code>Refresh Token</code> grant type is used to obtain additional access tokens
-in order to prolong the client's authorization of a user's resources.</p>
+in order to prolong the client’s authorization of a user’s resources.</p>
 
 <p><a href="http://tools.ietf.org/html/rfc6749#section-1.5">Read more about refresh tokens</a></p>
 
-<h2>Use Cases</h2>
+<h2 id="use-cases">Use Cases</h2>
 
 <ul>
-<li>to allow clients prolonged access of a user's resources</li>
-<li>to retrieve additional tokens of equal or lesser scope for separate resource calls</li>
+  <li>to allow clients prolonged access of a user’s resources</li>
+  <li>to retrieve additional tokens of equal or lesser scope for separate resource calls</li>
 </ul>
 
-<h2>Implementation</h2>
+<h2 id="implementation">Implementation</h2>
 
 <p>Create an instance of <code>OAuth2\GrantType\RefreshToken</code> and add it to
 your server</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// create a storage object to hold refresh tokens</span>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// create a storage object to hold refresh tokens</span>
 <span class="local-variable">$storage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Pdo</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">dsn</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">sqlite:refreshtokens.sqlite</span><span class="delimiter">'</span></span>));
 
 <span class="comment">// create the grant type</span>
 <span class="local-variable">$grantType</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">RefreshToken</span>(<span class="local-variable">$storage</span>);
 
 <span class="comment">// add the grant type to your OAuth server</span>
-<span class="local-variable">$server</span>-&gt;addGrantType(<span class="local-variable">$grantType</span>);</code></pre></div></div>
+<span class="local-variable">$server</span>-&gt;addGrantType(<span class="local-variable">$grantType</span>);</code></pre></div></div></div></div>
 </div>
+<blockquote>
+  <p>Note: Refresh tokens are only provided when retrieving a token using the
+<code>Authorization Code</code> or <code>User Credentials</code> grant types.</p>
+</blockquote>
 
 <blockquote>
-<p>Note: Refresh tokens are only provided when retrieving a token using the
-<code>Authorization Code</code> or <code>User Credentials</code> grant types.</p>
-
-<p>Note: Refresh tokens will only be returned if a storage implementing
+  <p>Note: Refresh tokens will only be returned if a storage implementing
 <code>OAuth2\Storage\RefreshTokenInterface</code> is provided to your instance
 of <code>OAuth2\Server</code>.</p>
 </blockquote>
 
-<h2>Configuration</h2>
+<h2 id="configuration">Configuration</h2>
 
 <p>The Refresh Token grant type has the following configuration:</p>
 
 <ul>
-<li>
+  <li>
 <code>always_issue_new_refresh_token</code>
-
-<ul>
-<li>whether to issue a new refresh token upon successful token request</li>
-<li>
+    <ul>
+      <li>whether to issue a new refresh token upon successful token request</li>
+      <li>
 <strong>Default</strong>: false</li>
-</ul>
-</li>
+    </ul>
+  </li>
 </ul>
 
 <p>For example:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// the refresh token grant request will have a "refresh_token" field</span>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// the refresh token grant request will have a "refresh_token" field</span>
 <span class="comment">// with a new refresh token on each request</span>
 <span class="local-variable">$grantType</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">RefreshToken</span>(<span class="local-variable">$storage</span>, <span class="predefined">array</span>(
     <span class="string"><span class="delimiter">'</span><span class="content">always_issue_new_refresh_token</span><span class="delimiter">'</span></span> =&gt; <span class="predefined-constant">true</span>
-));</code></pre></div></div>
+));</code></pre></div></div></div></div>
 </div>
-
 <p>The Access Token return type has the following configuration:</p>
 
 <ul>
-<li>
+  <li>
 <code>refresh_token_lifetime</code>
-
-<ul>
-<li>time before refresh token expires</li>
-<li>
+    <ul>
+      <li>time before refresh token expires</li>
+      <li>
 <strong>Default</strong>: 1209600 (14 days)</li>
-</ul>
-</li>
+    </ul>
+  </li>
 </ul>
 
 <p>For example:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// the refresh tokens now last 28 days</span>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// the refresh tokens now last 28 days</span>
 <span class="local-variable">$accessToken</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">ResponseType</span>\<span class="constant">AccessToken</span>(<span class="local-variable">$accessStorage</span>, <span class="local-variable">$refreshStorage</span>, <span class="predefined">array</span>(
     <span class="string"><span class="delimiter">'</span><span class="content">refresh_token_lifetime</span><span class="delimiter">'</span></span> =&gt; <span class="integer">2419200</span>,
 ));
 
-<span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>(<span class="local-variable">$storage</span>, <span class="local-variable">$config</span>, <span class="local-variable">$grantType</span>, <span class="predefined">array</span>(<span class="local-variable">$accessToken</span>));</code></pre></div></div>
+<span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>(<span class="local-variable">$storage</span>, <span class="local-variable">$config</span>, <span class="local-variable">$grantType</span>, <span class="predefined">array</span>(<span class="local-variable">$accessToken</span>));</code></pre></div></div></div></div>
 </div>
-
 <p>However, both of these configuration options can be sent in when the server is created
-using the server's configuration array:</p>
+using the server’s configuration array:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>(<span class="local-variable">$storage</span>, <span class="predefined">array</span>(
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>(<span class="local-variable">$storage</span>, <span class="predefined">array</span>(
     <span class="string"><span class="delimiter">'</span><span class="content">always_issue_new_refresh_token</span><span class="delimiter">'</span></span> =&gt; <span class="predefined-constant">true</span>,
     <span class="string"><span class="delimiter">'</span><span class="content">refresh_token_lifetime</span><span class="delimiter">'</span></span>         =&gt; <span class="integer">2419200</span>,
-));</code></pre></div></div>
+));</code></pre></div></div></div></div>
 </div>
+<blockquote>
 
-<h2>Example Request</h2>
+</blockquote>
+
+<h2 id="example-request">Example Request</h2>
 
 <p>First, a refresh token must be retrieved using the Authorizaton Code or User Credentials grant types:</p>
 
 <div class="code-container">
 <div class="langspec">Text</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text">$ curl -u TestClient:TestSecret https://api.mysite.com/token -d 'grant_type=password&amp;username=bshaffer&amp;password=brent123'</code></pre></div></div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text">$ curl -u TestClient:TestSecret https://api.mysite.com/token -d 'grant_type=password&amp;username=bshaffer&amp;password=brent123'</code></pre></div></div></div></div>
 </div>
-
 <p>The access token will then contain a refresh token:</p>
 
 <div class="code-container">
 <div class="langspec">Json</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-json">{
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-json">{
     <span class="key"><span class="delimiter">"</span><span class="content">access_token</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">2YotnFZFEjr1zCsicMWpAA</span><span class="delimiter">"</span></span>,
     <span class="key"><span class="delimiter">"</span><span class="content">expires_in</span><span class="delimiter">"</span></span>:<span class="integer">3600</span>,
     <span class="key"><span class="delimiter">"</span><span class="content">token_type</span><span class="delimiter">"</span></span>: <span class="string"><span class="delimiter">"</span><span class="content">bearer</span><span class="delimiter">"</span></span>,
     <span class="key"><span class="delimiter">"</span><span class="content">scope</span><span class="delimiter">"</span></span>:<span class="value">null</span>,
     <span class="key"><span class="delimiter">"</span><span class="content">refresh_token</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">tGzv3JOkF0XG5Qx2TlKWIA</span><span class="delimiter">"</span></span>,
-}</code></pre></div></div>
+}</code></pre></div></div></div></div>
 </div>
-
 <p>This refresh token can then be used to generate a new access token of equal or
 lesser scope:</p>
 
 <div class="code-container">
 <div class="langspec">Text</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text">$ curl -u TestClient:TestSecret https://api.mysite.com/token -d 'grant_type=refresh_token&amp;refresh_token=tGzv3JOkF0XG5Qx2TlKWIA'</code></pre></div></div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text">$ curl -u TestClient:TestSecret https://api.mysite.com/token -d 'grant_type=refresh_token&amp;refresh_token=tGzv3JOkF0XG5Qx2TlKWIA'</code></pre></div></div></div></div>
 </div>
-
 <p>A successful token request will return a standard access token in JSON format:</p>
 
 <div class="code-container">
 <div class="langspec">Json</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-json">{<span class="key"><span class="delimiter">"</span><span class="content">access_token</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">03807cb390319329bdf6c777d4dfae9c0d3b3c35</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">expires_in</span><span class="delimiter">"</span></span>:<span class="integer">3600</span>,<span class="key"><span class="delimiter">"</span><span class="content">token_type</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">bearer</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">scope</span><span class="delimiter">"</span></span>:<span class="value">null</span>}</code></pre></div></div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-json">{<span class="key"><span class="delimiter">"</span><span class="content">access_token</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">03807cb390319329bdf6c777d4dfae9c0d3b3c35</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">expires_in</span><span class="delimiter">"</span></span>:<span class="integer">3600</span>,<span class="key"><span class="delimiter">"</span><span class="content">token_type</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">bearer</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">scope</span><span class="delimiter">"</span></span>:<span class="value">null</span>}</code></pre></div></div></div></div>
 </div>
-
 <p>If the server is configured to always issue a new refresh token, then a refresh token
 will be returned with this response as well:</p>
 
 <div class="code-container">
 <div class="langspec">Json</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-json">{<span class="key"><span class="delimiter">"</span><span class="content">access_token</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">03807cb390319329bdf6c777d4dfae9c0d3b3c35</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">expires_in</span><span class="delimiter">"</span></span>:<span class="integer">3600</span>,<span class="key"><span class="delimiter">"</span><span class="content">token_type</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">bearer</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">scope</span><span class="delimiter">"</span></span>:<span class="value">null</span>,<span class="key"><span class="delimiter">"</span><span class="content">refresh_token</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">s6BhdRkqt303807bdf6c78</span><span class="delimiter">"</span></span>}</code></pre></div></div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-json">{<span class="key"><span class="delimiter">"</span><span class="content">access_token</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">03807cb390319329bdf6c777d4dfae9c0d3b3c35</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">expires_in</span><span class="delimiter">"</span></span>:<span class="integer">3600</span>,<span class="key"><span class="delimiter">"</span><span class="content">token_type</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">bearer</span><span class="delimiter">"</span></span>,<span class="key"><span class="delimiter">"</span><span class="content">scope</span><span class="delimiter">"</span></span>:<span class="value">null</span>,<span class="key"><span class="delimiter">"</span><span class="content">refresh_token</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">s6BhdRkqt303807bdf6c78</span><span class="delimiter">"</span></span>}</code></pre></div></div></div></div>
 </div>
-
 
       </div>
 
@@ -206,7 +202,7 @@ will be returned with this response as well:</p>
               <li><a href="/oauth2-server-php-docs/overview/response/">Request and Response</a></li>
               <li><a href="/oauth2-server-php-docs/overview/scope/">Scope</a></li>
               <li><a href="/oauth2-server-php-docs/overview/userid/">User ID</a></li>
-              <li><a href="/oauth2-server-php-docs/overview/crypto-tokens/">Crypto Tokens</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/jwt-access-tokens/">JWT Access Tokens</a></li>
             </ul>
           </li>
           <li class="js-topic">

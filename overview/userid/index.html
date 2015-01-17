@@ -38,35 +38,34 @@
 
     <div id="wrapper">
       <div class="content">
-    <h1>User IDs</h1>
+    
+<h1 id="user-ids">User IDs</h1>
 
-<h2>Associating Local Users With Access Tokens</h2>
+<h2 id="associating-local-users-with-access-tokens">Associating Local Users With Access Tokens</h2>
 
-<p>Once you've authenticated a user and issued an access token (such as with an Authorize Controller),
-you'll probably want to know which user an access token applies to when it is used.</p>
+<p>Once you’ve authenticated a user and issued an access token (such as with an Authorize Controller),
+you’ll probably want to know which user an access token applies to when it is used.</p>
 
 <p>You can do this by using the optional user_id parameter of <code>handleAuthorizeRequest</code>:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$userid</span> = <span class="integer">1234</span>; <span class="comment">// A value on your server that identifies the user</span>
-<span class="local-variable">$server</span>-&gt;handleAuthorizeRequest(<span class="local-variable">$request</span>, <span class="local-variable">$response</span>, <span class="local-variable">$is_authorized</span>, <span class="local-variable">$userid</span>);</code></pre></div></div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$userid</span> = <span class="integer">1234</span>; <span class="comment">// A value on your server that identifies the user</span>
+<span class="local-variable">$server</span>-&gt;handleAuthorizeRequest(<span class="local-variable">$request</span>, <span class="local-variable">$response</span>, <span class="local-variable">$is_authorized</span>, <span class="local-variable">$userid</span>);</code></pre></div></div></div></div>
 </div>
-
 <p>That will save the user ID into the database with the access token. When the token is used by a client, you
 can retrieve the associated ID:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">if</span> (!<span class="local-variable">$server</span>-&gt;verifyResourceRequest(<span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals())) {
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">if</span> (!<span class="local-variable">$server</span>-&gt;verifyResourceRequest(<span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals())) {
     <span class="local-variable">$server</span>-&gt;getResponse()-&gt;send();
     <span class="predefined">die</span>;
 }
 
 <span class="local-variable">$token</span> = <span class="local-variable">$server</span>-&gt;getAccessTokenData(<span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals());
-<span class="predefined">echo</span> <span class="string"><span class="delimiter">"</span><span class="content">User ID associated with this token is </span><span class="inline"><span class="delimiter">{</span><span class="local-variable">$token</span>[<span class="string"><span class="delimiter">'</span><span class="content">user_id</span><span class="delimiter">'</span></span>]<span class="delimiter">}</span></span><span class="delimiter">"</span></span>;</code></pre></div></div>
+<span class="predefined">echo</span> <span class="string"><span class="delimiter">"</span><span class="content">User ID associated with this token is </span><span class="inline"><span class="delimiter">{</span><span class="local-variable">$token</span>[<span class="string"><span class="delimiter">'</span><span class="content">user_id</span><span class="delimiter">'</span></span>]<span class="delimiter">}</span></span><span class="delimiter">"</span></span>;</code></pre></div></div></div></div>
 </div>
-
 
       </div>
 
@@ -84,7 +83,7 @@ can retrieve the associated ID:</p>
               <li><a href="/oauth2-server-php-docs/overview/response/">Request and Response</a></li>
               <li><a href="/oauth2-server-php-docs/overview/scope/">Scope</a></li>
               <li><a href="/oauth2-server-php-docs/overview/userid/">User ID</a></li>
-              <li><a href="/oauth2-server-php-docs/overview/crypto-tokens/">Crypto Tokens</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/jwt-access-tokens/">JWT Access Tokens</a></li>
             </ul>
           </li>
           <li class="js-topic">

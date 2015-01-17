@@ -38,10 +38,13 @@
 
     <div id="wrapper">
       <div class="content">
-    <h1>Main Concepts</h1>
+    
+<h1 id="main-concepts">Main Concepts</h1>
 
-<blockquote><p>To better understand the OAuth specification, please see
-<a href="../../#learning-the-oauth-standard">Learning the OAuth Standard</a>.</p></blockquote>
+<blockquote>
+  <p>To better understand the OAuth specification, please see
+<a href="../../#learning-the-oauth-standard">Learning the OAuth Standard</a>.</p>
+</blockquote>
 
 <p>The library involves several main concepts:</p>
 
@@ -56,11 +59,11 @@ Access Token.</p>
 performs a distinct function in the OAuth process.</p>
 
 <ul>
-<li>
+  <li>
 <a href="../../controllers/authorize/">Authorize Endpoint</a> - The user is redirected here by the client to authorize the request</li>
-<li>
+  <li>
 <a href="../../controllers/token/">Token Endpoint</a> - The client makes a request to this endpoint in order to obtain an Access Token</li>
-<li>
+  <li>
 <a href="../../controllers/resource/">Resource Endpoint(s)</a> - The client requests resources, providing an Access Token for authentication token. This library supports many different grant types, including all of those defined by the official OAuth Specification.</li>
 </ul>
 
@@ -70,22 +73,21 @@ performs a distinct function in the OAuth process.</p>
 The following storage classes come with the library, but interfaces allow for your own customization:</p>
 
 <ul>
-<li><a href="../../storage/pdo/">PDO</a></li>
-<li><a href="../../storage/redis/">Redis</a></li>
-<li><a href="../../storage/mongo/">Mongo</a></li>
-<li><a href="../../storage/cassandra/">Cassandra</a></li>
-<li><a href="../../cookbook/doctrine">Doctrine Storage</a></li>
+  <li><a href="../../storage/pdo/">PDO</a></li>
+  <li><a href="../../storage/redis/">Redis</a></li>
+  <li><a href="../../storage/mongo/">Mongo</a></li>
+  <li><a href="../../storage/cassandra/">Cassandra</a></li>
+  <li><a href="../../cookbook/doctrine">Doctrine Storage</a></li>
 </ul>
 
 <p><code>Other Concepts</code></p>
 
 <ul>
-<li><a href="../response">Response Object</a></li>
-<li><a href="../scope">Scope</a></li>
-<li><a href="../userid">User IDs</a></li>
-<li><a href="../crypto-tokens">Crypto Tokens</a></li>
+  <li><a href="../response">Response Object</a></li>
+  <li><a href="../scope">Scope</a></li>
+  <li><a href="../userid">User IDs</a></li>
+  <li><a href="../jwt-access-tokens">JWT Access Tokens</a></li>
 </ul>
-
 
       </div>
 
@@ -103,7 +105,7 @@ The following storage classes come with the library, but interfaces allow for yo
               <li><a href="/oauth2-server-php-docs/overview/response/">Request and Response</a></li>
               <li><a href="/oauth2-server-php-docs/overview/scope/">Scope</a></li>
               <li><a href="/oauth2-server-php-docs/overview/userid/">User ID</a></li>
-              <li><a href="/oauth2-server-php-docs/overview/crypto-tokens/">Crypto Tokens</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/jwt-access-tokens/">JWT Access Tokens</a></li>
             </ul>
           </li>
           <li class="js-topic">

@@ -38,34 +38,56 @@
 
     <div id="wrapper">
       <div class="content">
-    <h1>Google Playground</h1>
+    
+<h1 id="google-playground">Google Playground</h1>
 
-<h2>Test your server with Google OAuth 2.0 Playground</h2>
+<h2 id="test-your-server-with-google-oauth-20-playground">Test your server with Google OAuth 2.0 Playground</h2>
 
-<p>Once you've set up your server on the wild internet, you'll want to check that it works with an independent client.
+<p>Once you’ve set up your server on the wild internet, you’ll want to check that it works with an independent client.
 One way to do this is using the <a href="https://developers.google.com/oauthplayground/">Google OAuth 2.0 Playground</a>.</p>
 
-<p>Assuming that you've set up an authorize controller, you can test it out as follows:</p>
+<p>Assuming that you’ve set up an authorize controller, you can test it out as follows:</p>
 
 <ol>
-<li><p> Navigate to the Playground using the above link.</p></li>
-<li><p> Click the settings button in the top-right corner.</p></li>
-<li><p> Select "Server-side" for "OAuth flow", and "Custom" for "OAuth endpoints".</p></li>
-<li><p> In the Authorization endpoint, enter the URL of your Authorize Controller (such as https://domain.com/authorize.php).</p></li>
-<li><p> In the Token endpoint, enter the URL of your Token Controller (such as https://domain.com/token.php).</p></li>
-<li><p> Select "Authorization header w/ Bearer prefix" for the Access token location.</p></li>
-<li><p> Enter the client ID and secret (testclient and testpass if using the previous documentation example).</p></li>
-<li><p> Enter "basic" in the text box on the left and click "Authorize APIs". You should be taken to your website where you can authorize the request, after which you should be returned to the Playground.</p></li>
-<li><p> Click "Exchange authorization code for tokens" to receive a token (you'll need to do this within 30 seconds).</p></li>
-<li><p>. The response on the right should show the access token. Enter the URL of your resource page (such as https://domain.com/resource.php).</p></li>
-<li><p>. Add any optional parameters you want, and click "Send the request". If you've used the same code as previously you should see the same response:</p></li>
+  <li>
+    <p>Navigate to the Playground using the above link.</p>
+  </li>
+  <li>
+    <p>Click the settings button in the top-right corner.</p>
+  </li>
+  <li>
+    <p>Select “Server-side” for “OAuth flow”, and “Custom” for “OAuth endpoints”.</p>
+  </li>
+  <li>
+    <p>In the Authorization endpoint, enter the URL of your Authorize Controller (such as https://domain.com/authorize.php).</p>
+  </li>
+  <li>
+    <p>In the Token endpoint, enter the URL of your Token Controller (such as https://domain.com/token.php).</p>
+  </li>
+  <li>
+    <p>Select “Authorization header w/ Bearer prefix” for the Access token location.</p>
+  </li>
+  <li>
+    <p>Enter the client ID and secret (testclient and testpass if using the previous documentation example).</p>
+  </li>
+  <li>
+    <p>Enter “basic” in the text box on the left and click “Authorize APIs”. You should be taken to your website where you can authorize the request, after which you should be returned to the Playground.</p>
+  </li>
+  <li>
+    <p>Click “Exchange authorization code for tokens” to receive a token (you’ll need to do this within 30 seconds).</p>
+  </li>
+  <li>
+    <p>The response on the right should show the access token. Enter the URL of your resource page (such as https://domain.com/resource.php).</p>
+  </li>
+  <li>
+    <p>Add any optional parameters you want, and click “Send the request”. If you’ve used the same code as previously you should see the same response:</p>
+  </li>
 </ol>
 
 <div class="code-container">
 <div class="langspec">Json</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-json">{<span class="key"><span class="delimiter">"</span><span class="content">success</span><span class="delimiter">"</span></span>:<span class="value">true</span>,<span class="key"><span class="delimiter">"</span><span class="content">message</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">You accessed my APIs!</span><span class="delimiter">"</span></span>}</code></pre></div></div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-json">{<span class="key"><span class="delimiter">"</span><span class="content">success</span><span class="delimiter">"</span></span>:<span class="value">true</span>,<span class="key"><span class="delimiter">"</span><span class="content">message</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">You accessed my APIs!</span><span class="delimiter">"</span></span>}</code></pre></div></div></div></div>
 </div>
-
 
       </div>
 
@@ -83,7 +105,7 @@ One way to do this is using the <a href="https://developers.google.com/oauthplay
               <li><a href="/oauth2-server-php-docs/overview/response/">Request and Response</a></li>
               <li><a href="/oauth2-server-php-docs/overview/scope/">Scope</a></li>
               <li><a href="/oauth2-server-php-docs/overview/userid/">User ID</a></li>
-              <li><a href="/oauth2-server-php-docs/overview/crypto-tokens/">Crypto Tokens</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/jwt-access-tokens/">JWT Access Tokens</a></li>
             </ul>
           </li>
           <li class="js-topic">

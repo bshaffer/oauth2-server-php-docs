@@ -38,44 +38,50 @@
 
     <div id="wrapper">
       <div class="content">
-    <h1>Cassandra</h1>
+    
+<h1 id="cassandra">Cassandra</h1>
 
-<h2>Overview</h2>
+<h2 id="overview">Overview</h2>
 
 <p>Uses the <a href="http://cassandra.apache.org/">Cassandra</a> Database Management System
 for storing and retrieving objects in OAuth.</p>
 
-<h2>Installation</h2>
+<h2 id="installation">Installation</h2>
 
 <p>First, install the <a href="https://github.com/thobbs/phpcassa">Cassandra client library</a> for PHP</p>
 
 <div class="code-container">
 <div class="langspec">Text</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text">$ composer require thobbs/phpcassa:dev-master</code></pre></div></div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text">$ composer require thobbs/phpcassa:dev-master</code></pre></div></div></div></div>
 </div>
+<blockquote>
 
-<h2>Get Started</h2>
+</blockquote>
+
+<h2 id="get-started">Get Started</h2>
 
 <p>Once this is done, <a href="http://thobbs.github.io/phpcassa/tutorial.html">instantiate a connection pool</a>
 instance to connect to the cassandra server.</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$servers</span> = <span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">127.0.0.1:9160</span><span class="delimiter">'</span></span>);
-<span class="local-variable">$cassandra</span> = <span class="keyword">new</span> \phpcassa\<span class="constant">Connection</span>\<span class="constant">ConnectionPool</span>(<span class="string"><span class="delimiter">'</span><span class="content">oauth2_server</span><span class="delimiter">'</span></span>, <span class="local-variable">$servers</span>);</code></pre></div></div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$servers</span> = <span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">127.0.0.1:9160</span><span class="delimiter">'</span></span>);
+<span class="local-variable">$cassandra</span> = <span class="keyword">new</span> \phpcassa\<span class="constant">Connection</span>\<span class="constant">ConnectionPool</span>(<span class="string"><span class="delimiter">'</span><span class="content">oauth2_server</span><span class="delimiter">'</span></span>, <span class="local-variable">$servers</span>);</code></pre></div></div></div></div>
 </div>
-
 <p>Then, create the storage object using the <code>Cassandra</code> storage class:</p>
 
 <div class="code-container">
 <div class="langspec">Php</div>
-<div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$storage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Cassandra</span>(<span class="local-variable">$cassandra</span>);
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$storage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Cassandra</span>(<span class="local-variable">$cassandra</span>);
 
 <span class="comment">// now you can perform storage functions, such as the one below</span>
-<span class="local-variable">$storage</span>-&gt;setClientDetails(<span class="local-variable">$client_id</span>, <span class="local-variable">$client_secret</span>, <span class="local-variable">$redirect_uri</span>);</code></pre></div></div>
+<span class="local-variable">$storage</span>-&gt;setClientDetails(<span class="local-variable">$client_id</span>, <span class="local-variable">$client_secret</span>, <span class="local-variable">$redirect_uri</span>);</code></pre></div></div></div></div>
 </div>
+<blockquote>
 
-<h2>Usage</h2>
+</blockquote>
+
+<h2 id="usage">Usage</h2>
 
 <p>The Cassandra storage engine implements all the standard Storage Interfaces supported
 in this library.  See <a href="../custom">interfaces</a> for more information.</p>
@@ -96,7 +102,7 @@ in this library.  See <a href="../custom">interfaces</a> for more information.</
               <li><a href="/oauth2-server-php-docs/overview/response/">Request and Response</a></li>
               <li><a href="/oauth2-server-php-docs/overview/scope/">Scope</a></li>
               <li><a href="/oauth2-server-php-docs/overview/userid/">User ID</a></li>
-              <li><a href="/oauth2-server-php-docs/overview/crypto-tokens/">Crypto Tokens</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/jwt-access-tokens/">JWT Access Tokens</a></li>
             </ul>
           </li>
           <li class="js-topic">
