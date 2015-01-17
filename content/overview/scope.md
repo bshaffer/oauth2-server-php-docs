@@ -57,6 +57,8 @@ class OAuth2ScopeTable extends Doctrine_Table implements OAuth2\Storage\ScopeInt
 }
 ```
 
+>
+
 ## Validate your scope
 
 Configuring your scope in the server class will ensure requested scopes by the client are valid.  However, there are two
@@ -75,6 +77,8 @@ if (!$server->verifyResourceRequest($request, $response, $scopeRequired)) {
   $response->send();
 }
 ```
+
+>
 
 ## Customizing your scope
 
@@ -98,6 +102,8 @@ $server = new OAuth2\Server($storage, array('enforce_state' => false));
 $server = new OAuth2\Server();
 $server->setConfig('enforce_state', false);
 ```
+
+>
 
 ## Using Multiple Scopes
 

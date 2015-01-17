@@ -40,6 +40,8 @@ $storage = new OAuth2\Storage\Pdo($pdo);
 $storage->setClientDetails($client_id, $client_secret, $redirect_uri);
 ```
 
+>
+
 ## Usage
 
 The PDO storage engine implements all the standard Storage Interfaces supported

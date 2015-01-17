@@ -17,6 +17,8 @@ First, install the [Cassandra client library](https://github.com/thobbs/phpcassa
 $ composer require thobbs/phpcassa:dev-master
 ```
 
+>
+
 ## Get Started
 
 Once this is done, [instantiate a connection pool](http://thobbs.github.io/phpcassa/tutorial.html)
@@ -35,6 +37,8 @@ $storage = new OAuth2\Storage\Cassandra($cassandra);
 // now you can perform storage functions, such as the one below
 $storage->setClientDetails($client_id, $client_secret, $redirect_uri);
 ```
+
+>
 
 ## Usage
 

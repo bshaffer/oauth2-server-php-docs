@@ -22,6 +22,8 @@ $ curl -u testclient:testpass "http://localhost/token.php" -d 'grant_type=passwo
 {"access_token":"206c80413b9a96c1312cc346b7d2517b84463edd","expires_in":3600,"token_type":"bearer","scope":null}
 ```
 
+>
+
 ### [Client Credentials](../../grant-types/client-credentials/)
 
 The client uses their credentials to retrieve an access token directly, which allows access to resources under the client's control
@@ -31,6 +33,8 @@ $ curl -u testclient:testpass "http://localhost/token.php" -d 'grant_type=client
 {"access_token":"6f05ad622a3d32a5a81aee5d73a5826adb8cbf63","expires_in":3600,"token_type":"bearer","scope":null}
 ```
 
+>
+
 ### [Refresh Token](../../grant-types/refresh-token/)
 
 The client can submit a refresh token and recieve a new access token if the access token had expired.
@@ -39,6 +43,8 @@ The client can submit a refresh token and recieve a new access token if the acce
 $ curl -u testclient:testpass "http://localhost/token.php" -d 'grant_type=refresh_token&refresh_token=c54adcfdb1d99d10be3be3b77ec32a2e402ef7e3'
 {"access_token":"0e9d02499fe06762ecaafb9cfbb506676631dcfd","expires_in":3600,"token_type":"bearer","scope":null}
 ```
+
+>
 
 ### [Implicit](../../grant-types/implicit/)
 

@@ -18,6 +18,8 @@ cd my-oauth2-walkthrough
 git clone https://github.com/bshaffer/oauth2-server-php.git -b master
 ```
 
+>
+
 ## Define your Schema
 
 Now use the following schema to create the default database:
@@ -32,6 +34,8 @@ CREATE TABLE oauth_users (username VARCHAR(255) NOT NULL, password VARCHAR(2000)
 CREATE TABLE oauth_scopes (scope TEXT, is_default BOOLEAN);
 CREATE TABLE oauth_jwt (client_id VARCHAR(80) NOT NULL, subject VARCHAR(80), public_key VARCHAR(2000), CONSTRAINT jwt_client_id_pk PRIMARY KEY (client_id));
 ```
+
+>
 
 ## Bootstrap your OAuth2 Server
 
@@ -101,6 +105,8 @@ If everything works, you should receive a response like this:
 {"access_token":"03807cb390319329bdf6c777d4dfae9c0d3b3c35","expires_in":3600,"token_type":"bearer","scope":null}
 ```
 
+>
+
 ## Create a Resource Controller
 
 Now that you are creating tokens, you'll want to validate them in your APIs.  Here is an
@@ -131,6 +137,8 @@ If all goes well, you should receive a response like this:
 ```json
 {"success":true,"message":"You accessed my APIs!"}
 ```
+
+>
 
 ## Create an Authorize Controller
 

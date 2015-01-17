@@ -33,6 +33,8 @@ $grantType = new OAuth2\GrantType\AuthorizationCode($storage);
 $server->addGrantType($grantType);
 ```
 
+>
+
 ## Example Request
 
 Authorization Codes are retrieved using the `Authorize Controller`. The client

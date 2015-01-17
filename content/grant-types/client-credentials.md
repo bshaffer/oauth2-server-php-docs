@@ -36,6 +36,8 @@ $grantType = new OAuth2\GrantType\ClientCredentials($storage);
 $server->addGrantType($grantType);
 ```
 
+>
+
 ## Configuration
 
 The Client Credentials grant type has the following configuration:
@@ -52,6 +54,8 @@ $grantType = new OAuth2\GrantType\ClientCredentials($storage, array(
     'allow_credentials_in_request_body => false'
 ));
 ```
+
+>
 
 ## Example Request
 

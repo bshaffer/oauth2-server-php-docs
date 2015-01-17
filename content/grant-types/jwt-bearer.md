@@ -44,6 +44,8 @@ $grantType = new OAuth2\GrantType\JwtBearer($storage, $audience);
 $server->addGrantType($grantType);
 ```
 
+>
+
 ## Example Request
 
 JWT requests require the signing of the JWT assertion using

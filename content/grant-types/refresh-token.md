@@ -85,6 +85,8 @@ $server = new OAuth2\Server($storage, array(
 ));
 ```
 
+>
+
 ## Example Request
 
 First, a refresh token must be retrieved using the Authorizaton Code or User Credentials grant types:

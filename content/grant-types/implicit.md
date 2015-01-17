@@ -59,6 +59,8 @@ A successful token request will be returned in the fragment of the URL:
 https://myredirecturi.com/cb#access_token=2YotnFZFEjr1zCsicMWpAA&state=xyz&token_type=bearer&expires_in=3600
 ```
 
+>
+
 ## Demo
 
 [See the implicit grant type demo](http://brentertainment.com/oauth2/)

@@ -57,13 +57,15 @@ The `PAYLOAD` is a Base64 URL Safe encoding of a json object with the following 
 To get started, you'll need a public/private key pair.  These can be generated
 on any Unix-based operating system with the following commands:
 
-```text
+```bash
 # private key
-openssl genrsa -out privkey.pem 2048
+$ openssl genrsa -out privkey.pem 2048
 
 # public key
-openssl rsa -in privkey.pem -pubout -out pubkey.pem
+$ openssl rsa -in privkey.pem -pubout -out pubkey.pem
 ```
+
+>
 
 ### Basic Usage
 
@@ -100,6 +102,7 @@ for the `ResourceController` only. For a full server configuration, you must sup
 a `Client` storage and some Grant Types.
 
 Here is an example of a full server configuration:
+
 ```php
 // token.php
 
@@ -138,12 +141,14 @@ $server->handleTokenRequest(OAuth2\Request::createFromGlobals())->send();
 
 Now you can call your server and receive a JWT Access Token:
 
-```text
+```bash
 # start the PHP built-in web server
 $ php -S localhost:3000 &
 $ curl -i -v http://localhost:3000/token.php -u 'CLIENT_ID:CLIENT_SECRET' -d "grant_type=client_credentials"
 ```
+
 And the server will return a response containing the JWT Access Token:
+
 ```json
 {
     "access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpZCI6IjYzMjIwNzg0YzUzODA3ZjVmZTc2Yjg4ZjZkNjdlMmExZTIxODlhZTEiLCJjbGllbnRfaWQiOiJUZXN0IENsaWVudCBJRCIsInVzZXJfaWQiOm51bGwsImV4cGlyZXMiOjEzODAwNDQ1NDIsInRva2VuX3R5cGUiOiJiZWFyZXIiLCJzY29wZSI6bnVsbH0.PcC4k8Q_etpU-J4yGFEuBUdeyMJhtpZFkVQ__sXpe78eSi7xTniqOOtgfWa62Y4sj5Npta8xPuDglH8Fueh_APZX4wGCiRE1P4nT4APQCOTbgcuCNXwjmP8znk9F76ID2WxThaMbmpsTTEkuyyUYQKCCdxlIcSbVvcLZUGKZ6-g",
@@ -154,6 +159,8 @@ And the server will return a response containing the JWT Access Token:
 }
 
 ```
+
+>
 
 ### Resource Server Configuration
 
@@ -187,12 +194,14 @@ echo "Success!";
 
 Now you can request this and experiment with sending in the token you generated above!
 
-```text
+```bash
 # start the PHP built-in web server
 $ php -S localhost:3000 &
 $ curl "http://localhost:3000/resource.php?access_token=eyJ0eXAi..."
 Success!
 ```
+
+>
 
 ### Using Secondary Storage
 
@@ -259,6 +268,9 @@ $username = 'root';
 $password = '';
 $pdoStorage = new OAuth2\Storage\Pdo(array('dsn' => $dsn, 'username' => $username, 'password' => $password));
 ```
+
+>
+
 ### Configure a Different Algorithms
 
 The following algorithms are supported for JwtAccessTokens:
@@ -280,6 +292,8 @@ $storage = new OAuth2\Storage\Memory(array('keys' => array(
     'encryption_algorithm'  => 'HS256', // "RS256" is the default
 )));
 ```
+
+>
 
 ## Client Verification
 

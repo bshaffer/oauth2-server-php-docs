@@ -27,6 +27,8 @@ $request = OAuth2\HttpFoundationBridge\Request::createFromRequest($symfony_reque
 $server->handleTokenRequest($request);
 ```
 
+>
+
 ## The Response Object
 
 The response object serves the purpose of making your server OAuth2 compliant.  It will set the appropriate status codes, headers,

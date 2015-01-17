@@ -36,6 +36,8 @@ Next, enable the `mongo.so` extension in your `php.ini` file:
 extension=mongo.so
 ```
 
+>
+
 ## Get Started
 
 Once this is done, [create a mongo client](http://www.php.net/manual/en/class.mongoclient.php)
@@ -53,6 +55,8 @@ $storage = new OAuth2\Storage\Mongo($mongo);
 // now you can perform storage functions, such as the one below
 $storage->setClientDetails($client_id, $client_secret, $redirect_uri);
 ```
+
+>
 
 ## Usage
 

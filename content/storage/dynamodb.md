@@ -16,9 +16,11 @@ First, you will need to install the [Amazon Web Services PHP SDK](https://github
 $ composer require aws/aws-sdk-php:dev-master
 ```
 
+>
+
 ## Get Started
 
-If you haven't already created an `~/.aws/credentials` file, this is the easiest way to get up and running with DynamoDB. 
+If you haven't already created an `~/.aws/credentials` file, this is the easiest way to get up and running with DynamoDB.
 
 
 ```php
