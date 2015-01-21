@@ -23,7 +23,7 @@ See this [Laravel demo application](https://github.com/julien-c/laravel-oauth2-s
 ```php
 App::singleton('oauth2', function() {
     
-    $storage = new OAuth2\Storage\Pdo(array('dsn' => 'mysql:dbname=oauth2;host=localhost', 'username' => 'root', 'password' => 'root'));
+    $storage = new OAuth2\Storage\Pdo(App::make('db')->getPdo());
     $server = new OAuth2\Server($storage);
     
     $server->addGrantType(new OAuth2\GrantType\ClientCredentials($storage));
