@@ -132,3 +132,7 @@ $scope = new OAuth2\Scope(array(
 ));
 $server->setScopeUtil($scope);
 ```
+## Restricting Scopes to Clients
+The scope(s) available to a client are controlled by a combination of the `scope` field in the client storage, and the list of scopes available, as defined in the scope storage.
+
+When the client has a list of scopes configured alongside it, the client is restricted to using only those scopes. When there are no scopes configured, the client is not restricted in what scopes it may use, it is able to use all scopes available within the authorization server.

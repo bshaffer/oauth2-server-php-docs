@@ -81,3 +81,7 @@ $server->addGrantType(new OAuth2\GrantType\UserCredentials($storage));
 $server->addGrantType(new OAuth2\GrantType\RefreshToken($storage));
 $server->addGrantType(new OAuth2\GrantType\AuthorizationCode($storage));
 ```
+## Restricting Grant Types to Clients
+The grant type(s) available to a client are controlled by a combination of the `grant_type` field in the client storage, and the grant types made available within the authorization server.
+
+When the client has a list of grant types configured alongside it, the client is restricted to using only those grant types. When there are no grant types configured, the client is not restricted in what grant types it may use, it is able to use all grant types available within the authorization server.
