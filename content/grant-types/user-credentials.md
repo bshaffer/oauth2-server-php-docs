@@ -48,7 +48,7 @@ Send in the user credentials directly to receive an access token:
 $ curl -u TestClient:TestSecret https://api.mysite.com/token -d 'grant_type=password&username=bshaffer&password=brent123'
 ```
 
-If your client is `public` (by default, this is true when no secret is associated with the client), you
+If your client is `public` (by default, this is true when no secret is associated with the client in storage), you
 can omit the `client_secret` value in the request:
 
 ```text
