@@ -6,7 +6,7 @@ title: Implicit Grant Type | OAuth2 Server PHP
 
 ## Overview
 
-The `Implicit` grant type is similar to the Authoirzation Code
+The `Implicit` grant type is similar to the Authorization Code
 grant type in that it is used to request access to protected
 resources on behalf of another user (i.e. a 3rd party). It is
 optimized for **public** clients, such as those implemented in
