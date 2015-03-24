@@ -5,7 +5,7 @@ set -e # exit with nonzero exit code if anything fails
 
 if [ "$TRAVIS_REPO_SLUG" = "bshaffer/oauth2-server-php-docs" ]; then
     # generate the html
-    nanoc compile
+    bundle exec nanoc compile
 
     # go to the output directory and create a *new* Git repo
     cd output
