@@ -3,7 +3,7 @@ set -e # exit with nonzero exit code if anything fails
 
 # COMPILE SCRIPT
 
-if [ "$TRAVIS_REPO_SLUG" = "bshaffer/oauth2-server-php-docs" ]; then
+if [ "$TRAVIS_REPO_SLUG" = "bshaffer/oauth2-server-php-docs" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
     # generate the html
     bundle exec nanoc compile
 
