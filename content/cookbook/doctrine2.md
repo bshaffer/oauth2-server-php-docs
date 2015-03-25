@@ -10,11 +10,10 @@ Create Client and Access Token Storage
 To integrate doctrine into your project, first set up your entities. Let's start with just the Client, User and Access Token models:
 
 ```yaml
-
-YourNamespace\Entity\OauthClient:
+YourNamespace\Entity\OAuthClient:
   type:             entity
   table:            oauth_clients
-  repositoryClass:  YourNamespace\Repository\OauthClientRepository
+  repositoryClass:  YourNamespace\Repository\OAuthClientRepository
   id:
     id:
       type:   integer
@@ -33,10 +32,10 @@ YourNamespace\Entity\OauthClient:
       max_length: 255
       default:    ""
 
-YourNamespace\Entity\OauthUser:
+YourNamespace\Entity\OAuthUser:
   type: entity
   table: oauth_users
-  repositoryClass:  YourNamespace\Repository\OauthUserRepository
+  repositoryClass:  YourNamespace\Repository\OAuthUserRepository
   id:
     id:
       type:   integer
@@ -52,10 +51,10 @@ YourNamespace\Entity\OauthUser:
     email_index:
       columns: [ email ]
 
-YourNamespace\Entity\OauthAccessToken:
+YourNamespace\Entity\OAuthAccessToken:
   type:             entity
   table:            oauth_access_tokens
-  repositoryClass:  YourNamespace\Repository\OauthAccessTokenRepository
+  repositoryClass:  YourNamespace\Repository\OAuthAccessTokenRepository
   id:
     id:
       type:   integer
@@ -79,18 +78,18 @@ YourNamespace\Entity\OauthAccessToken:
       nullable:   true
   manyToOne:
     client:
-      targetEntity: YourNamespace\Entity\OauthClient
+      targetEntity: YourNamespace\Entity\OAuthClient
       joinColumn:
         name:                 client_id
         referencedColumnName: id
     user:
-      targetEntity: YourNamespace\Entity\OauthUser
+      targetEntity: YourNamespace\Entity\OAuthUser
       joinColumn:
         name:                 user_id
         referencedColumnName: id
 ```
 
-Once you've generated the entities from this schema, you will have an `OauthClient` and `OauthClientRepository`, `OauthUser` and `OauthUserRepository`, as well as an `OauthAccessToken` and `OauthAccessTokenRepository` files.
+Once you've generated the entities from this schema, you will have an `OAuthClient` and `OAuthClientRepository`, `OAuthUser` and `OAuthUserRepository`, as well as an `OAuthAccessToken` and `OAuthAccessTokenRepository` files.
 
 Just for the reference, here's are how the entities should look:
 
@@ -98,10 +97,10 @@ Just for the reference, here's are how the entities should look:
 namespace YourNamespace\Entity;
 
 /**
- * OauthClient
- * @entity(repositoryClass="YourNamespace\Repository\OauthClientRepository")
+ * OAuthClient
+ * @entity(repositoryClass="YourNamespace\Repository\OAuthClientRepository")
  */
-class OauthClient extends EncryptableFieldEntity
+class OAuthClient extends EncryptableFieldEntity
 {
     /**
      * @var integer
@@ -126,7 +125,7 @@ class OauthClient extends EncryptableFieldEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -137,7 +136,7 @@ class OauthClient extends EncryptableFieldEntity
      * Set client_identifier
      *
      * @param string $clientIdentifier
-     * @return OauthClient
+     * @return OAuthClient
      */
     public function setClientIdentifier($clientIdentifier)
     {
@@ -148,7 +147,7 @@ class OauthClient extends EncryptableFieldEntity
     /**
      * Get client_identifier
      *
-     * @return string 
+     * @return string
      */
     public function getClientIdentifier()
     {
@@ -159,7 +158,7 @@ class OauthClient extends EncryptableFieldEntity
      * Set client_secret
      *
      * @param string $clientSecret
-     * @return OauthClient
+     * @return OAuthClient
      */
     public function setClientSecret($clientSecret)
     {
@@ -170,7 +169,7 @@ class OauthClient extends EncryptableFieldEntity
     /**
      * Get client_secret
      *
-     * @return string 
+     * @return string
      */
     public function getClientSecret()
     {
@@ -192,7 +191,7 @@ class OauthClient extends EncryptableFieldEntity
      * Set redirect_uri
      *
      * @param string $redirectUri
-     * @return OauthClient
+     * @return OAuthClient
      */
     public function setRedirectUri($redirectUri)
     {
@@ -203,7 +202,7 @@ class OauthClient extends EncryptableFieldEntity
     /**
      * Get redirect_uri
      *
-     * @return string 
+     * @return string
      */
     public function getRedirectUri()
     {
@@ -225,10 +224,10 @@ class OauthClient extends EncryptableFieldEntity
 namespace YourNamespace\Entity;
 
 /**
- * OauthUser
- * @entity(repositoryClass="YourNamespace\Repository\OauthUserRepository")
+ * OAuthUser
+ * @entity(repositoryClass="YourNamespace\Repository\OAuthUserRepository")
  */
-class OauthUser extends EncryptableFieldEntity
+class OAuthUser extends EncryptableFieldEntity
 {
     /**
      * @var integer
@@ -248,7 +247,7 @@ class OauthUser extends EncryptableFieldEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -270,7 +269,7 @@ class OauthUser extends EncryptableFieldEntity
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -292,7 +291,7 @@ class OauthUser extends EncryptableFieldEntity
     /**
      * Get password
      *
-     * @return string 
+     * @return string
      */
     public function getPassword()
     {
@@ -324,9 +323,9 @@ class OauthUser extends EncryptableFieldEntity
 namespace YourNamespace\Entity;
 
 /**
- * OauthAccessToken
+ * OAuthAccessToken
  */
-class OauthAccessToken
+class OAuthAccessToken
 {
     /**
      * @var integer
@@ -359,19 +358,19 @@ class OauthAccessToken
     private $scope;
 
     /**
-     * @var \YourNamespace\Entity\OauthClient
+     * @var \YourNamespace\Entity\OAuthClient
      */
     private $client;
 
     /**
-     * @var \YourNamespace\Entity\OauthUser
+     * @var \YourNamespace\Entity\OAuthUser
      */
     private $user;
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -382,7 +381,7 @@ class OauthAccessToken
      * Set token
      *
      * @param string $token
-     * @return OauthAccessToken
+     * @return OAuthAccessToken
      */
     public function setToken($token)
     {
@@ -393,7 +392,7 @@ class OauthAccessToken
     /**
      * Get token
      *
-     * @return string 
+     * @return string
      */
     public function getToken()
     {
@@ -404,7 +403,7 @@ class OauthAccessToken
      * Set client_id
      *
      * @param string $clientId
-     * @return OauthAccessToken
+     * @return OAuthAccessToken
      */
     public function setClientId($clientId)
     {
@@ -415,7 +414,7 @@ class OauthAccessToken
     /**
      * Get client_id
      *
-     * @return string 
+     * @return string
      */
     public function getClientId()
     {
@@ -426,7 +425,7 @@ class OauthAccessToken
      * Set user_id
      *
      * @param string $userIdentifier
-     * @return OauthAccessToken
+     * @return OAuthAccessToken
      */
     public function setUserId($userId)
     {
@@ -437,7 +436,7 @@ class OauthAccessToken
     /**
      * Get user_identifier
      *
-     * @return string 
+     * @return string
      */
     public function getUserId()
     {
@@ -448,7 +447,7 @@ class OauthAccessToken
      * Set expires
      *
      * @param \DateTime $expires
-     * @return OauthAccessToken
+     * @return OAuthAccessToken
      */
     public function setExpires($expires)
     {
@@ -459,7 +458,7 @@ class OauthAccessToken
     /**
      * Get expires
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getExpires()
     {
@@ -470,7 +469,7 @@ class OauthAccessToken
      * Set scope
      *
      * @param string $scope
-     * @return OauthAccessToken
+     * @return OAuthAccessToken
      */
     public function setScope($scope)
     {
@@ -481,7 +480,7 @@ class OauthAccessToken
     /**
      * Get scope
      *
-     * @return string 
+     * @return string
      */
     public function getScope()
     {
@@ -491,10 +490,10 @@ class OauthAccessToken
     /**
      * Set client
      *
-     * @param \YourNamespace\Entity\OauthClient $client
-     * @return OauthAccessToken
+     * @param \YourNamespace\Entity\OAuthClient $client
+     * @return OAuthAccessToken
      */
-    public function setClient(\YourNamespace\Entity\OauthClient $client = null)
+    public function setClient(\YourNamespace\Entity\OAuthClient $client = null)
     {
         $this->client = $client;
         return $this;
@@ -503,7 +502,7 @@ class OauthAccessToken
     /**
      * Get client
      *
-     * @return \YourNamespace\Entity\OauthClient 
+     * @return \YourNamespace\Entity\OAuthClient
      */
     public function getClient()
     {
@@ -522,10 +521,10 @@ class OauthAccessToken
     /**
      * Set user
      *
-     * @param \YourNamespace\Entity\OauthUser $user
-     * @return OauthRefreshToken
+     * @param \YourNamespace\Entity\OAuthUser $user
+     * @return OAuthRefreshToken
      */
-    public function setUser(\YourNamespace\Entity\OauthUser $user = null)
+    public function setUser(\YourNamespace\Entity\OAuthUser $user = null)
     {
         $this->user = $user;
         return $this;
@@ -534,7 +533,7 @@ class OauthAccessToken
     /**
      * Get user
      *
-     * @return \YourNamespace\Entity\OauthUser 
+     * @return \YourNamespace\Entity\OAuthUser
      */
     public function getUser()
     {
@@ -584,7 +583,7 @@ namespace YourNamespace\Repository;
 use Doctrine\ORM\EntityRepository;
 use OAuth2\Storage\ClientCredentialsInterface;
 
-class OauthClientRepository extends EntityRepository implements ClientCredentialsInterface
+class OAuthClientRepository extends EntityRepository implements ClientCredentialsInterface
 {
     public function getClientDetails($clientIdentifier)
     {
@@ -622,7 +621,7 @@ class OauthClientRepository extends EntityRepository implements ClientCredential
 }
 ```
 
-Now implement `OAuth2\Storage\UserCredentialsInterface` on the `OauthUser` class:
+Now implement `OAuth2\Storage\UserCredentialsInterface` on the `OAuthUser` class:
 
 ```php
 
@@ -630,7 +629,7 @@ namespace YourNamespace\Repository;
 use Doctrine\ORM\EntityRepository;
 use OAuth2\Storage\UserCredentialsInterface;
 
-class OauthUserRepository extends EntityRepository implements UserCredentialsInterface
+class OAuthUserRepository extends EntityRepository implements UserCredentialsInterface
 {
     public function checkUserCredentials($email, $password)
     {
@@ -664,7 +663,7 @@ class OauthUserRepository extends EntityRepository implements UserCredentialsInt
 }
 ```
 
-Now implement `OAuth2\Storage\AccessTokenInterface` on the `OauthAccessTokenTable` class:
+Now implement `OAuth2\Storage\AccessTokenInterface` on the `OAuthAccessTokenTable` class:
 
 ```php
 namespace YourNamespace\Repository;
@@ -673,7 +672,7 @@ use Doctrine\ORM\EntityRepository;
 use YourNamespace\Entity\OAuthAccessToken;
 use OAuth2\Storage\AccessTokenInterface;
 
-class OauthAccessTokenRepository extends EntityRepository implements AccessTokenInterface
+class OAuthAccessTokenRepository extends EntityRepository implements AccessTokenInterface
 {
     public function getAccessToken($oauthToken)
     {
@@ -687,9 +686,9 @@ class OauthAccessTokenRepository extends EntityRepository implements AccessToken
 
     public function setAccessToken($oauthToken, $clientIdentifier, $userEmail, $expires, $scope = null)
     {
-        $client = $this->_em->getRepository('YourNamespace\Entity\OauthClient')
+        $client = $this->_em->getRepository('YourNamespace\Entity\OAuthClient')
                             ->findOneBy(['client_identifier' => $clientIdentifier]);
-        $user = $this->_em->getRepository('YourNamespace\Entity\OauthUser')
+        $user = $this->_em->getRepository('YourNamespace\Entity\OAuthUser')
                             ->findOneBy(['email' => $userEmail]);
         $token = OAuthAccessToken::fromArray([
             'token'     => $oauthToken,
@@ -707,17 +706,17 @@ class OauthAccessTokenRepository extends EntityRepository implements AccessToken
 Good job!  Now, when you create your `OAuth\Server` object, pass these tables in:
 
 ```php
-$clientStorage  = $entityManager->getRepository('YourNamespace\Entity\OauthClient');
-$userStorage = $entityManager->getRepository('YourNamespace\Entity\OauthUser');
-$accessTokenStorage = $entityManager->getRepository('YourNamespace\Entity\OauthAccessToken');
+$clientStorage  = $entityManager->getRepository('YourNamespace\Entity\OAuthClient');
+$userStorage = $entityManager->getRepository('YourNamespace\Entity\OAuthUser');
+$accessTokenStorage = $entityManager->getRepository('YourNamespace\Entity\OAuthAccessToken');
 
 // Pass the doctrine storage objects to the OAuth2 server class
 $server = new \OAuth2\Server([
-	'client_credentials' => $clientStorage,
-	'user_credentials'   => $userStorage,
+    'client_credentials' => $clientStorage,
+    'user_credentials'   => $userStorage,
     'access_token'       => $accessTokenStorage,
 ], [
-	'auth_code_lifetime' => 30,
+    'auth_code_lifetime' => 30,
     'refresh_token_lifetime' => 30,
 ]);
 ```
@@ -738,6 +737,8 @@ $server->addGrantType(new \OAuth2\GrantType\UserCredentials($userStorage));
 $server->handleTokenRequest(OAuth2\Request::createFromGlobals())->send();
 ```
 
+>
+
 Add Authorization Code and Refresh Token Storage
 ------------------------------------------------
 
@@ -745,10 +746,10 @@ So lets make our application a little more exciting.  Add the following to your 
 generate additional entities:
 
 ```yaml
-YourNamespace\Entity\OauthAuthorizationCode:
+YourNamespace\Entity\OAuthAuthorizationCode:
   type:             entity
   table:            oauth_authorization_codes
-  repositoryClass:  YourNamespace\Repository\OauthAuthorizationCodeRepository
+  repositoryClass:  YourNamespace\Repository\OAuthAuthorizationCodeRepository
   id:
     id:
       type:   integer
@@ -775,20 +776,20 @@ YourNamespace\Entity\OauthAuthorizationCode:
       nullable:   true
   manyToOne:
     client:
-      targetEntity: YourNamespace\Entity\OauthClient
+      targetEntity: YourNamespace\Entity\OAuthClient
       joinColumn:
         name:                 client_id
         referencedColumnName: id
     user:
-      targetEntity: YourNamespace\Entity\OauthUser
+      targetEntity: YourNamespace\Entity\OAuthUser
       joinColumn:
         name:                 user_id
         referencedColumnName: id
 
-YourNamespace\Entity\OauthRefreshToken:
+YourNamespace\Entity\OAuthRefreshToken:
   type:             entity
   table:            oauth_refresh_tokens
-  repositoryClass:  YourNamespace\Repository\OauthRefreshTokenRepository
+  repositoryClass:  YourNamespace\Repository\OAuthRefreshTokenRepository
   id:
     id:
       type:   integer
@@ -812,12 +813,12 @@ YourNamespace\Entity\OauthRefreshToken:
       nullable:   true
   manyToOne:
     client:
-      targetEntity: YourNamespace\Entity\OauthClient
+      targetEntity: YourNamespace\Entity\OAuthClient
       joinColumn:
         name:                 client_id
         referencedColumnName: id
     user:
-      targetEntity: YourNamespace\Entity\OauthUser
+      targetEntity: YourNamespace\Entity\OAuthUser
       joinColumn:
         name:                 user_id
         referencedColumnName: id
@@ -829,9 +830,9 @@ Just for the reference, here's how the entities should look:
 namespace YourNamespace\Entity;
 
 /**
- * OauthAuthorizationCode
+ * OAuthAuthorizationCode
  */
-class OauthAuthorizationCode
+class OAuthAuthorizationCode
 {
     /**
      * @var integer
@@ -869,19 +870,19 @@ class OauthAuthorizationCode
     private $scope;
 
     /**
-     * @var \YourNamespace\Entity\OauthClient
+     * @var \YourNamespace\Entity\OAuthClient
      */
     private $client;
 
     /**
-     * @var \YourNamespace\Entity\OauthUser
+     * @var \YourNamespace\Entity\OAuthUser
      */
     private $user;
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -892,7 +893,7 @@ class OauthAuthorizationCode
      * Set code
      *
      * @param string $code
-     * @return OauthAuthorizationCode
+     * @return OAuthAuthorizationCode
      */
     public function setCode($code)
     {
@@ -904,7 +905,7 @@ class OauthAuthorizationCode
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -915,7 +916,7 @@ class OauthAuthorizationCode
      * Set client_id
      *
      * @param string $clientId
-     * @return OauthAuthorizationCode
+     * @return OAuthAuthorizationCode
      */
     public function setClientId($clientId)
     {
@@ -927,7 +928,7 @@ class OauthAuthorizationCode
     /**
      * Get client_id
      *
-     * @return string 
+     * @return string
      */
     public function getClientId()
     {
@@ -938,7 +939,7 @@ class OauthAuthorizationCode
      * Set user_id
      *
      * @param string $userIdentifier
-     * @return OauthAuthorizationCode
+     * @return OAuthAuthorizationCode
      */
     public function setUserId($userId)
     {
@@ -950,7 +951,7 @@ class OauthAuthorizationCode
     /**
      * Get user_identifier
      *
-     * @return string 
+     * @return string
      */
     public function getUserId()
     {
@@ -961,7 +962,7 @@ class OauthAuthorizationCode
      * Set expires
      *
      * @param \DateTime $expires
-     * @return OauthAuthorizationCode
+     * @return OAuthAuthorizationCode
      */
     public function setExpires($expires)
     {
@@ -973,7 +974,7 @@ class OauthAuthorizationCode
     /**
      * Get expires
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getExpires()
     {
@@ -984,7 +985,7 @@ class OauthAuthorizationCode
      * Set redirect_uri
      *
      * @param string $redirectUri
-     * @return OauthAuthorizationCode
+     * @return OAuthAuthorizationCode
      */
     public function setRedirectUri($redirectUri)
     {
@@ -996,7 +997,7 @@ class OauthAuthorizationCode
     /**
      * Get redirect_uri
      *
-     * @return string 
+     * @return string
      */
     public function getRedirectUri()
     {
@@ -1007,7 +1008,7 @@ class OauthAuthorizationCode
      * Set scope
      *
      * @param string $scope
-     * @return OauthAuthorizationCode
+     * @return OAuthAuthorizationCode
      */
     public function setScope($scope)
     {
@@ -1019,7 +1020,7 @@ class OauthAuthorizationCode
     /**
      * Get scope
      *
-     * @return string 
+     * @return string
      */
     public function getScope()
     {
@@ -1029,10 +1030,10 @@ class OauthAuthorizationCode
     /**
      * Set client
      *
-     * @param \YourNamespace\Entity\OauthClient $client
-     * @return OauthAuthorizationCode
+     * @param \YourNamespace\Entity\OAuthClient $client
+     * @return OAuthAuthorizationCode
      */
-    public function setClient(\YourNamespace\Entity\OauthClient $client = null)
+    public function setClient(\YourNamespace\Entity\OAuthClient $client = null)
     {
         $this->client = $client;
 
@@ -1042,7 +1043,7 @@ class OauthAuthorizationCode
     /**
      * Get client
      *
-     * @return \YourNamespace\Entity\OauthClient 
+     * @return \YourNamespace\Entity\OAuthClient
      */
     public function getClient()
     {
@@ -1052,10 +1053,10 @@ class OauthAuthorizationCode
     /**
      * Set user
      *
-     * @param \YourNamespace\Entity\OauthUser $user
-     * @return OauthRefreshToken
+     * @param \YourNamespace\Entity\OAuthUser $user
+     * @return OAuthRefreshToken
      */
-    public function setUser(\YourNamespace\Entity\OauthUser $user = null)
+    public function setUser(\YourNamespace\Entity\OAuthUser $user = null)
     {
         $this->user = $user;
 
@@ -1065,7 +1066,7 @@ class OauthAuthorizationCode
     /**
      * Get user
      *
-     * @return \YourNamespace\Entity\OauthUser 
+     * @return \YourNamespace\Entity\OAuthUser
      */
     public function getUser()
     {
@@ -1098,10 +1099,10 @@ class OauthAuthorizationCode
 namespace YourNamespace\Entity;
 
 /**
- * OauthRefreshToken
- * @entity(repositoryClass="YourNamespace\Repository\OauthRefreshTokenRepository")
+ * OAuthRefreshToken
+ * @entity(repositoryClass="YourNamespace\Repository\OAuthRefreshTokenRepository")
  */
-class OauthRefreshToken
+class OAuthRefreshToken
 {
     /**
      * @var integer
@@ -1134,19 +1135,19 @@ class OauthRefreshToken
     private $scope;
 
     /**
-     * @var \YourNamespace\Entity\OauthClient
+     * @var \YourNamespace\Entity\OAuthClient
      */
     private $client;
 
     /**
-     * @var \YourNamespace\Entity\OauthUser
+     * @var \YourNamespace\Entity\OAuthUser
      */
     private $user;
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -1157,7 +1158,7 @@ class OauthRefreshToken
      * Set refresh_token
      *
      * @param string $refresh_token
-     * @return OauthRefreshToken
+     * @return OAuthRefreshToken
      */
     public function setRefreshToken($refresh_token)
     {
@@ -1169,7 +1170,7 @@ class OauthRefreshToken
     /**
      * Get refresh_token
      *
-     * @return string 
+     * @return string
      */
     public function getRefreshToken()
     {
@@ -1180,7 +1181,7 @@ class OauthRefreshToken
      * Set client_id
      *
      * @param string $clientId
-     * @return OauthRefreshToken
+     * @return OAuthRefreshToken
      */
     public function setClientId($clientId)
     {
@@ -1192,7 +1193,7 @@ class OauthRefreshToken
     /**
      * Get client_id
      *
-     * @return string 
+     * @return string
      */
     public function getClientId()
     {
@@ -1203,7 +1204,7 @@ class OauthRefreshToken
      * Set user_id
      *
      * @param string $userIdentifier
-     * @return OauthRefreshToken
+     * @return OAuthRefreshToken
      */
     public function setUserId($userId)
     {
@@ -1215,7 +1216,7 @@ class OauthRefreshToken
     /**
      * Get user_identifier
      *
-     * @return string 
+     * @return string
      */
     public function getUserId()
     {
@@ -1226,7 +1227,7 @@ class OauthRefreshToken
      * Set expires
      *
      * @param \DateTime $expires
-     * @return OauthRefreshToken
+     * @return OAuthRefreshToken
      */
     public function setExpires($expires)
     {
@@ -1238,7 +1239,7 @@ class OauthRefreshToken
     /**
      * Get expires
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getExpires()
     {
@@ -1249,7 +1250,7 @@ class OauthRefreshToken
      * Set scope
      *
      * @param string $scope
-     * @return OauthRefreshToken
+     * @return OAuthRefreshToken
      */
     public function setScope($scope)
     {
@@ -1261,7 +1262,7 @@ class OauthRefreshToken
     /**
      * Get scope
      *
-     * @return string 
+     * @return string
      */
     public function getScope()
     {
@@ -1271,10 +1272,10 @@ class OauthRefreshToken
     /**
      * Set client
      *
-     * @param \YourNamespace\Entity\OauthClient $client
-     * @return OauthRefreshToken
+     * @param \YourNamespace\Entity\OAuthClient $client
+     * @return OAuthRefreshToken
      */
-    public function setClient(\YourNamespace\Entity\OauthClient $client = null)
+    public function setClient(\YourNamespace\Entity\OAuthClient $client = null)
     {
         $this->client = $client;
 
@@ -1284,7 +1285,7 @@ class OauthRefreshToken
     /**
      * Get client
      *
-     * @return \YourNamespace\Entity\OauthClient 
+     * @return \YourNamespace\Entity\OAuthClient
      */
     public function getClient()
     {
@@ -1294,10 +1295,10 @@ class OauthRefreshToken
     /**
      * Set user
      *
-     * @param \YourNamespace\Entity\OauthUser $user
-     * @return OauthRefreshToken
+     * @param \YourNamespace\Entity\OAuthUser $user
+     * @return OAuthRefreshToken
      */
-    public function setUser(\YourNamespace\Entity\OauthUser $user = null)
+    public function setUser(\YourNamespace\Entity\OAuthUser $user = null)
     {
         $this->user = $user;
 
@@ -1307,7 +1308,7 @@ class OauthRefreshToken
     /**
      * Get user
      *
-     * @return \YourNamespace\Entity\OauthUser 
+     * @return \YourNamespace\Entity\OAuthUser
      */
     public function getUser()
     {
@@ -1340,7 +1341,7 @@ Now we can implement two more interfaces, `OAuth2\Storage\AuthorizationCodeInter
 `OAuth2\Storage\RefreshTokenInterface`.  This will allow us to use their correspoding grant
 types as well.
 
-Implement `OAuth2\Storage\AuthorizationCodeInterface` on the `OauthAuthorizationCodeRepository` class:
+Implement `OAuth2\Storage\AuthorizationCodeInterface` on the `OAuthAuthorizationCodeRepository` class:
 
 
 ```php
@@ -1350,7 +1351,7 @@ use Doctrine\ORM\EntityRepository;
 use YourNamespace\Entity\OAuthAuthorizationCode;
 use OAuth2\Storage\AuthorizationCodeInterface;
 
-class OauthAuthorizationCodeRepository extends EntityRepository implements AuthorizationCodeInterface
+class OAuthAuthorizationCodeRepository extends EntityRepository implements AuthorizationCodeInterface
 {
     public function getAuthorizationCode($code)
     {
@@ -1364,9 +1365,9 @@ class OauthAuthorizationCodeRepository extends EntityRepository implements Autho
 
     public function setAuthorizationCode($code, $clientIdentifier, $userEmail, $redirectUri, $expires, $scope = null)
     {
-        $client = $this->_em->getRepository('YourNamespace\Entity\OauthClient')
+        $client = $this->_em->getRepository('YourNamespace\Entity\OAuthClient')
                             ->findOneBy(array('client_identifier' => $clientIdentifier));
-        $user = $this->_em->getRepository('YourNamespace\Entity\OauthUser')
+        $user = $this->_em->getRepository('YourNamespace\Entity\OAuthUser')
                             ->findOneBy(['email' => $userEmail]);
         $authCode = OAuthAuthorizationCode::fromArray([
            'code'           => $code,
@@ -1389,7 +1390,7 @@ class OauthAuthorizationCodeRepository extends EntityRepository implements Autho
 }
 ```
 
-Implement `OAuth2\Storage\RefreshTokenInterface` on the `OauthRefreshTokenRepository` class:
+Implement `OAuth2\Storage\RefreshTokenInterface` on the `OAuthRefreshTokenRepository` class:
 
 ```php
 namespace YourNamespace\Repository;
@@ -1398,7 +1399,7 @@ use Doctrine\ORM\EntityRepository;
 use YourNamespace\Entity\OAuthRefreshToken;
 use OAuth2\Storage\RefreshTokenInterface;
 
-class OauthRefreshTokenRepository extends EntityRepository implements RefreshTokenInterface
+class OAuthRefreshTokenRepository extends EntityRepository implements RefreshTokenInterface
 {
     public function getRefreshToken($refreshToken)
     {
@@ -1412,9 +1413,9 @@ class OauthRefreshTokenRepository extends EntityRepository implements RefreshTok
 
     public function setRefreshToken($refreshToken, $clientIdentifier, $userEmail, $expires, $scope = null)
     {
-        $client = $this->_em->getRepository('YourNamespace\Entity\OauthClient')
+        $client = $this->_em->getRepository('YourNamespace\Entity\OAuthClient')
                             ->findOneBy(['client_identifier' => $clientIdentifier]);
-        $user = $this->_em->getRepository('YourNamespace\Entity\OauthUser')
+        $user = $this->_em->getRepository('YourNamespace\Entity\OAuthUser')
                             ->findOneBy(['email' => $userEmail]);
         $refreshToken = OAuthRefreshToken::fromArray([
            'refresh_token'  => $refreshToken,
@@ -1439,21 +1440,21 @@ class OauthRefreshTokenRepository extends EntityRepository implements RefreshTok
 Now we can add two more grant types onto our server:
 
 ```php
-$clientStorage  = $app['db.orm.em']->getRepository('YourNamespace\Entity\OauthClient');
-$userStorage = $app['db.orm.em']->getRepository('YourNamespace\Entity\OauthUser');
-$accessTokenStorage  = $app['db.orm.em']->getRepository('YourNamespace\Entity\OauthAccessToken');
-$authorizationCodeStorage = $app['db.orm.em']->getRepository('YourNamespace\Entity\OauthAuthorizationCode');
-$refreshTokenStorage = $app['db.orm.em']->getRepository('YourNamespace\Entity\OauthRefreshToken');
+$clientStorage  = $app['db.orm.em']->getRepository('YourNamespace\Entity\OAuthClient');
+$userStorage = $app['db.orm.em']->getRepository('YourNamespace\Entity\OAuthUser');
+$accessTokenStorage  = $app['db.orm.em']->getRepository('YourNamespace\Entity\OAuthAccessToken');
+$authorizationCodeStorage = $app['db.orm.em']->getRepository('YourNamespace\Entity\OAuthAuthorizationCode');
+$refreshTokenStorage = $app['db.orm.em']->getRepository('YourNamespace\Entity\OAuthRefreshToken');
 
 // Pass the doctrine storage objects to the OAuth2 server class
 $server = new \OAuth2\Server([
-	'client_credentials' => $clientStorage,
-	'user_credentials'   => $userStorage,
+    'client_credentials' => $clientStorage,
+    'user_credentials'   => $userStorage,
     'access_token'       => $accessTokenStorage,
     'authorization_code' => $authorizationCodeStorage,
     'refresh_token'      => $refreshTokenStorage,
 ], [
-	'auth_code_lifetime' => 30,
+    'auth_code_lifetime' => 30,
     'refresh_token_lifetime' => 30,
 ]);
 
@@ -1463,7 +1464,7 @@ $server->addGrantType(new OAuth2\GrantType\RefreshToken($refreshStorage));
 
 $server->addGrantType(new \OAuth2\GrantType\AuthorizationCode($authorizationCodeStorage));
 $server->addGrantType(new \OAuth2\GrantType\RefreshToken($refreshTokenStorage, [
-	// the refresh token grant request will have a "refresh_token" field
+    // the refresh token grant request will have a "refresh_token" field
     // with a new refresh token on each request
     'always_issue_new_refresh_token' => true,
 ]));
@@ -1476,4 +1477,4 @@ You've done it!!!
 
 Few more things to consider:
 
-- Although I have included the OauthUser entity and the user credentials grant is working, access tokens are not yet linked with users, you will have to implement this relationship based on your app.
+- Although I have included the OAuthUser entity and the user credentials grant is working, access tokens are not yet linked with users, you will have to implement this relationship based on your app.
