@@ -466,6 +466,7 @@ div.sidebar-module ul ul li span {
     Not Footer
 ------------------------------------------------------------------------------*/
 #wrapper {
+  clear: left;
   padding: 20px 25px;
   overflow:hidden;
   height: auto;
