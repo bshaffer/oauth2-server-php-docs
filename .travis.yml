@@ -1,0 +1,10 @@
+before_script:
+  - bundle install
+
+script:
+  - bash ./build.sh
+
+env:
+  global:
+  - GH_REF: github.com/bshaffer/oauth2-server-php-docs.git
+  - secure: RmCrtGWhma7O3Q7rzeVgEskwUA5GKMjkRp4/2qrLbNr1Ug1/bUV/OeDn5gUk+UFijRbDzeNWGxx0LNM4Cv1Cmp3FEpizzosy35bzIwSu3aBQ97sKRbgpQJ09g5PbflqxGVc3nUTPwSPNIeAxNUED9HAlq5kQ0IBCo6qEItHU+R4=
