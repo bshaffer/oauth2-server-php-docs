@@ -39,7 +39,7 @@ The `PAYLOAD` is a Base64 URL Safe encoding of a json object with the following 
     "expires":"1379982305",
     "user_id":"THE_USER_ID",
     "client_id":"THE_CLIENT_ID",
-    "scope": "onescope,twoscope"
+    "scope": "onescope twoscope"
 }
 ```
 
@@ -48,7 +48,7 @@ The `PAYLOAD` is a Base64 URL Safe encoding of a json object with the following 
 * `expires` - UNIX timestamp when the token expires
 * `user_id` - the id of the user for which the token was released
 * `client_id` - the id of the client who requested the token
-* `scope` - comma separated list of scopes for which the token is issued
+* `scope` - space-separated list of scopes for which the token is issued
 
 ## Using JWT Access Tokens With This Library
 
