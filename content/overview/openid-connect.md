@@ -67,13 +67,13 @@ $server->handleAuthorizeRequest($request, $response, true);
 $parts = parse_url($response->getHttpHeader('Location'));
 parse_str($parts['query'], $query);
 
-// pull the code from the database and verify an "id_token" was added
+// pull the code from storage and verify an "id_token" was added
 $code = $server->getStorage('authorization_code')
 	->getAuthorizationCode($query['code']);
 var_export($code);
 ```
 
-If your application is set up correctly accordingly, your output should look
+If your application is configured for OpenID correctly, your output should look
 something like this:
 
 ```php
