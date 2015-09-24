@@ -18,7 +18,7 @@ OAuthClient:
       notnull:    true
     client_secret:
       type:       char(20)
-      notnull:    true
+      notnull:    false
     redirect_uri:
       type:       string(255)
       notnull:    true
