@@ -51,7 +51,7 @@ For example:
 ```php
 // this request will only allow authorization via the Authorize HTTP Header (Http Basic)
 $grantType = new OAuth2\GrantType\ClientCredentials($storage, array(
-    'allow_credentials_in_request_body => false'
+    'allow_credentials_in_request_body' => false
 ));
 ```
 
