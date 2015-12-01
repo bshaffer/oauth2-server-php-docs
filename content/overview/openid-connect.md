@@ -38,7 +38,7 @@ $keyStorage = new OAuth2\Storage\Memory(array('keys' => array(
     'private_key' => $privateKey,
 )));
 
-$server->setKeyStorage($keyStorage);
+$server->addStorage($keyStorage, 'public_key');
 ```
 
 The specifics of creating the public and private key `pem` files are out of the
