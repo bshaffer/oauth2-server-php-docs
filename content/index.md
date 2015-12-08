@@ -20,19 +20,11 @@ require_once('/path/to/oauth2-server-php/src/OAuth2/Autoloader.php');
 OAuth2\Autoloader::register();
 ```
 
-Using [Composer](http://getcomposer.org)? Add the following to `composer.json`:
+Using [Composer](http://getcomposer.org)? Execute the following command:
 
-```json
-{
-    "require": {
-        "bshaffer/oauth2-server-php": "~1.8",
-        ...
-    },
-    ...
-}
-```
+`composer.phar require bshaffer/oauth2-server-php "~1.8"`
 
-And then run `composer.phar install`
+This will add the requirement to the composer.json and install the library.
 
 > It is highly recommended you check out the [`v1.8.0`](https://github.com/bshaffer/oauth2-server-php/tree/v1.8.0) tag to
 > ensure your application doesn't break from backwards-compatibility issues. However, if you'd like to stay on the
