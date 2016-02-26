@@ -192,7 +192,7 @@ The Authorization Code can now be used to receive an access token from your prev
 created `token.php` endpoint.  Just call this endpoint using the returned authorization code:
 
 ```text
-curl -u testclient:testpass http://localhost/token.php -d 'grant_type=authorization_code&code=YOUR_CODE'
+curl http://localhost/token.php -d 'grant_type=authorization_code&client_id=testclient&client_secret=testpass&code=YOUR_CODE'
 ```
 
 And just as before, you will receive an access token:
