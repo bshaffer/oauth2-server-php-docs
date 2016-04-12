@@ -7,9 +7,9 @@ title: OpenID Connect | OAuth2 Server PHP
 ## Examples
 
 You can see an example of OpenID Connect running on
-[the demo site](demo site) (select the `OpenID Connect` tab), and
-[the code used](use_openid_connect) to set this up using the
-`use_openid_connect` configuration option the [key storage](key_storage) object.
+[the demo site][demo site] (select the `OpenID Connect` tab), and
+[the code used][use_openid_connect] to set this up using the
+`use_openid_connect` configuration option the [key storage] object.
 
 ## Overview
 
