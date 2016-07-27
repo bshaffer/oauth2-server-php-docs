@@ -49,7 +49,7 @@ $ curl -u testclient:testpass "http://localhost/token.php" -d 'grant_type=refres
 ### [Implicit](../../grant-types/implicit/)
 
 This is similar to the `Authorization Code` Grant Type above, but rather than an Authorization Code being returned from the authorization
-request, a token is retured to the client.  This is most common for client-side devices (i.e. mobile) where the Client Credentials cannot
+request, a token is returned to the client.  This is most common for client-side devices (i.e. mobile) where the Client Credentials cannot
 be stored securely.
 
 Use the `Implicit` Grant Type by setting the `allow_implicit` option to true for the `authorize` endpoint:
