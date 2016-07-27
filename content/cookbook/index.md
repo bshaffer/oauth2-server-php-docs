@@ -93,7 +93,7 @@ INSERT INTO oauth_clients (client_id, client_secret, redirect_uri) VALUES ("test
 Now run the following from the command line:
 
 ```text
-curl -u testclient:testpass http://localhost/token.php -d 'grant_type=client_credentials'
+curl http://localhost/token.php -d 'grant_type=client_credentials&client_id=testclient&client_secret=testpass'
 ```
 
 > Note: http://localhost/token.php assumes you have the file `token.php` on your local machine, and you have
@@ -192,7 +192,7 @@ The Authorization Code can now be used to receive an access token from your prev
 created `token.php` endpoint.  Just call this endpoint using the returned authorization code:
 
 ```text
-curl -u testclient:testpass http://localhost/token.php -d 'grant_type=authorization_code&code=YOUR_CODE'
+curl http://localhost/token.php -d 'grant_type=authorization_code&client_id=testclient&client_secret=testpass&code=YOUR_CODE'
 ```
 
 And just as before, you will receive an access token:
