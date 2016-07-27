@@ -7,14 +7,14 @@ title: Resource Controller | OAuth2 Server PHP
 ## Overview
 
 For any resource request (i.e. API Call) requiring oauth2 authentication.  The controller will validate the
-incomming request, and then allow the application to serve back the protected resource.
+incoming request, and then allow the application to serve back the protected resource.
 
 ## Methods
 
 `verifyResourceRequest`
 
   * Receives a request object for a resource request, finds the token if it exists, and returns a Boolean for whether
-the incomming request is valid
+the incoming request is valid
 
 `getAccessTokenData`
 
