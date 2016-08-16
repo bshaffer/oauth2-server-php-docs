@@ -16,18 +16,39 @@ You can see an example of OpenID Connect running on
 Using [OpenID Connect](http://openid.net/connect/) consists of two main
 components:
 
-1\. Set the `use_openid_connect` and `issuer` configuration parameters when you
-create your server:
+### 1\. Generate a public and private key
 
-```php
-$config['use_openid_connect'] = true;
-$config['issuer'] = 'brentertainment.com';
-$server = new OAuth2\Server($config);
+The specifics of creating the public and private key `pem` files are out of the
+scope of this documentation, but instructions can be found
+[online](https://www.digicert.com/ssl-support/pem-ssl-creation.htm).
+
+### 2\. Ensure the `id_token` column exists for Authorization Code storage.
+
+If using PDO, for example, run this query:
+
+```sql
+ALTER TABLE oauth_authorization_codes ADD id_token VARCHAR(1000)  NULL  DEFAULT NULL;
 ```
 
 >
 
-2\. Create your key storage and add it to the server:
+### 3\. Set the `use_openid_connect` and `issuer` configuration parameters
+
+```php
+// create storage object
+$storage = new OAuth2\Storage\Pdo(array('dsn' => $dsn, 'username' => $username, 'password' => $password));
+
+// configure the server for OpenID Connect
+$config['use_openid_connect'] = true;
+$config['issuer'] = 'brentertainment.com';
+
+// create the server
+$server = new OAuth2\Server($storage, $config);
+```
+
+>
+
+### 4\. Create your key storage and add it to the server:
 
 ```php
 $publicKey  = file_get_contents('/path/to/pubkey.pem');
@@ -41,9 +62,19 @@ $keyStorage = new OAuth2\Storage\Memory(array('keys' => array(
 $server->addStorage($keyStorage, 'public_key');
 ```
 
-The specifics of creating the public and private key `pem` files are out of the
-scope of this documentation, but instructions can be found
-[online](https://www.digicert.com/ssl-support/pem-ssl-creation.htm).
+> Note: Keys could also be stored in your PDO database by creating the public
+> key table:
+>
+```sql
+CREATE TABLE oauth_public_keys (
+  client_id            VARCHAR(80),
+  public_key           VARCHAR(2000),
+  private_key          VARCHAR(2000),
+  encryption_algorithm VARCHAR(100) DEFAULT 'RS256'
+)
+```
+
+>
 
 ## Verify OpenID Connect
 

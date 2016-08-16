@@ -1,51 +1,38 @@
 #!/usr/bin/env ruby
 
-# A few helpful tips about the Rules file:
-#
-# * The string given to #compile and #route are matching patterns for
-#   identifiers--not for paths. Therefore, you can’t match on extension.
-#
-# * The order of rules is important: for each item, only the first matching
-#   rule is applied.
-#
-# * Item identifiers start and end with a slash (e.g. “/about/” for the file
-#   “content/about.html”). To select all children, grandchildren, … of an
-#   item, use the pattern “/about/*/”; “/about/*” will also select the parent,
-#   because “*” matches zero or more characters.
+compile '/**/*.html' do
+  layout '/default.*'
+end
 
-compile '*' do
-  if item[:extension] == 'md'
-    filter :fenced_code_block                 # the Fenced Code Block filter
-    filter :kramdown, :toc_levels => [2]
-    filter :colorize_syntax,
-      :colorizers => {:javascript => :pygmentsrb}
-    layout 'default'
-  elsif item[:extension] == 'css'
-    # don’t filter stylesheets
-  elsif item[:extension] == 'js'
-    # don’t filter javascript
-  elsif item.binary?
-    # don’t filter binary items
+# This is an example rule that matches Markdown (.md) files, and filters them
+# using the :kramdown filter. It is commented out by default, because kramdown
+# is not bundled with Nanoc or Ruby.
+#
+compile '/**/*.md' do
+  filter :fenced_code_block
+  filter :kramdown, :toc_levels => [2]
+  filter :colorize_syntax,
+    :colorizers => {:javascript => :pygmentsrb}
+  layout '/default.*'
+end
+
+# compile '/**/*.css' do
+# end
+# compile '/**/*.js' do
+# end
+# compile '/**/*.png' do
+# end
+
+route '/**/*.{html,md}' do
+  if item.identifier =~ '/index.*'
+    '/index.html'
   else
-    filter :erb
-    layout 'default'
+    item.identifier.without_ext + '/index.html'
   end
 end
 
-route '*' do
-  if item[:extension] == 'css'
-    # Write item with identifier /foo/ to /foo.css
-    item.identifier.chop + '.css'
-  elsif item[:extension] == 'js'
-    # Write item with identifier /foo/ to /foo.js
-    item.identifier.chop + '.js'
-  elsif item.binary?
-    # Write item with identifier /foo/ to /foo.ext
-    item.identifier.chop + '.' + item[:extension]
-  else
-    # Write item with identifier /foo/ to /foo/index.html
-    item.identifier + 'index.html'
-  end
+compile '/**/*' do
+  write item.identifier.to_s
 end
 
-layout '*', :erb
+layout '/**/*', :erb

@@ -1,8 +1,8 @@
 require 'digest/sha1'
 
-module Nanoc3::DataSources
+module Nanoc::DataSources
 
-  class Static < Nanoc3::DataSource
+  class Static < Nanoc::DataSource
 
     identifier :static
 

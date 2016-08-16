@@ -1,6 +1,6 @@
 require 'htmlentities'
 
-class FencedCodeBlock < Nanoc3::Filter
+class FencedCodeBlock < Nanoc::Filter
   identifier :fenced_code_block
 
   def run(content, params={})
