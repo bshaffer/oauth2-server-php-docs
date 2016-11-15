@@ -55,7 +55,7 @@ and view the [source code](https://github.com/bshaffer/oauth2-demo-php) for exam
 [grant types](overview/grant-types).
 ![OAuth Demo Application](http://brentertainment.com/other/screenshots/demoapp-authorize.png)
 
-3. Also, [Auth0](https://auth0.com/) provides a very nice layer for implementing OAuth2.0 for [PHP applications](https://docs.auth0.com/server-platforms/php).
+3. Also, [Auth0](https://auth0.com/) provides a very nice layer for implementing OAuth2.0 for [PHP applications](https://auth0.com/docs/quickstart/webapp/php).
 
 4. Finally, consult the [official OAuth2.0 documentation](http://tools.ietf.org/html/rfc6749) for the down-and-dirty
 technical specifications.
