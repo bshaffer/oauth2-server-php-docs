@@ -314,7 +314,7 @@ if (2 !== substr_count($jwt_access_token, $separator)) {
 
 list($header, $payload, $signature) = explode($separator, $jwt_access_token);
 
-$decoded_signature = base64_decode($signature);
+$decoded_signature = base64_decode(str_replace(array('-', '_'), array('+', '/'), $signature));
 
 // The header and payload are signed together
 $payload_to_verify = utf8_decode($header . $separator . $payload);
