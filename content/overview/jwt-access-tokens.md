@@ -34,20 +34,26 @@ The `PAYLOAD` is a Base64 URL Safe encoding of a json object with the following 
 
 ```json
 {
-    "id":"b08e1069f585ccc124ec1e694b2a609f1153caf8",
-    "token_type":"bearer",
-    "expires":"1379982305",
-    "user_id":"THE_USER_ID",
-    "client_id":"THE_CLIENT_ID",
-    "scope": "onescope twoscope"
+  "id": "394a71988caa6cc30601e43f5b6569d52cd7f6df",
+  "jti": "394a71988caa6cc30601e43f5b6569d52cd7f6df",
+  "iss": "issuer_id",
+  "aud": "client_id",
+  "sub": "user_id",
+  "exp": 1483711650,
+  "iat": 1483708050,
+  "token_type": "bearer",
+  "scope": "onescope twoscope"
 }
 ```
 
 * `id` - the internal id of the token
-* `token_type` - the kind of token (bearer)
-* `expires` - UNIX timestamp when the token expires
-* `user_id` - the id of the user for which the token was released
-* `client_id` - the id of the client who requested the token
+* `jti` - a unique token identifier for the token (JWT ID)
+* `iss` - the id of the server who issued the token (Issuer)
+* `aud` - the id of the client who requested the token (Audience)
+* `sub` - the id of the user for which the token was released (Subject)
+* `exp` - UNIX timestamp when the token expires (Expiration)
+* `iat` - UNIX timestamp when the token was created (Issued At)
+* `token_type` - the kind of token, will be bearer
 * `scope` - space-separated list of scopes for which the token is issued
 
 ## Using JWT Access Tokens With This Library
