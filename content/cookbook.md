@@ -88,7 +88,6 @@ CREATE TABLE oauth_jwt (
 );
 ```
 
->
 
 ## Bootstrap your OAuth2 Server
 
