@@ -22,13 +22,13 @@ OAuth2\Autoloader::register();
 
 Using [Composer](http://getcomposer.org)? Execute the following command:
 
-`composer.phar require bshaffer/oauth2-server-php "~1.8"`
+`composer.phar require bshaffer/oauth2-server-php "^1.10"`
 
 This will add the requirement to the composer.json and install the library.
 
-> It is highly recommended you check out the [`v1.8.0`](https://github.com/bshaffer/oauth2-server-php/tree/v1.8.0) tag to
+> It is highly recommended you check out the [`v1.10.0`](https://github.com/bshaffer/oauth2-server-php/tree/v1.10.0) tag to
 > ensure your application doesn't break from backwards-compatibility issues. However, if you'd like to stay on the
-> bleeding edge of development, you can set this to `dev-develop` instead.
+> bleeding edge of development, you can set this to `dev-master` instead.
 
 ## Get Started With This Library
 
