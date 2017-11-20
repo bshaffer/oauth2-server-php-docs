@@ -9,7 +9,7 @@ gem 'nokogiri'
 gem 'pygments.rb'
 gem 'rake', '~> 0.9.2'
 gem 'thin'
-gem 'yajl-ruby'
+gem 'yajl-ruby', "~> 1.3.1"
 gem "htmlentities", "~> 4.3.1"
 gem 'rdiscount'
 
