@@ -58,7 +58,7 @@ $storage = new OAuth2\Storage\DynamoDB($dynamo);
 $storage->setClientDetails($client_id, $client_secret, $redirect_uri);
 ```
 
-> To see an example of the default table structure, check out the [`Bootstrap::createDynamoDB`](https://github.com/bshaffer/oauth2-server-php/blob/develop/test/lib/OAuth2/Storage/Bootstrap.php#L519) function in this library, or just create the tables yourself using DynamoDB's management UI.
+> To see an example of the default table structure, check out the [`Bootstrap::createDynamoDB`](https://github.com/bshaffer/oauth2-server-php/blob/master/test/lib/OAuth2/Storage/Bootstrap.php#L519) function in this library, or just create the tables yourself using DynamoDB's management UI.
 
 ## Usage
 
