@@ -56,13 +56,13 @@ they implement **all** the interfaces (yours doesn't have to implement all the s
 interfaces, just the ones you want to customize).
 
 See the list of interfaces below for all possible storage interfaces, and check out the
-[Cassandra Storage](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/Cassandra.php)
+[Cassandra Storage](https://github.com/bshaffer/oauth2-server-php/blob/master/src/OAuth2/Storage/Cassandra.php)
 class for an example of a storage object implemented for a "custom" purpose - to interface
 with the Cassandra storage engine.
 
 ## Interfaces
 
-**[Access Token Interface](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/AccessTokenInterface.php)**
+**[Access Token Interface](https://github.com/bshaffer/oauth2-server-php/blob/master/src/OAuth2/Storage/AccessTokenInterface.php)**
 
 For implementing basic Access Tokens. This is required for the
 [Token Controller](../../controllers/token/), unless
@@ -70,7 +70,7 @@ For implementing basic Access Tokens. This is required for the
 
 *id: "access_token"*
 
-**[Client Interface](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/ClientInterface.php)**
+**[Client Interface](https://github.com/bshaffer/oauth2-server-php/blob/master/src/OAuth2/Storage/ClientInterface.php)**
 
 Required for the [Token Controller](../../controllers/token/)
 and [Authorize Controller](../../controllers/authorize/), and
@@ -78,7 +78,7 @@ is used to gather information about the client making the request.
 
 *id: "client"*
 
-**[Client Credentials Interface](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/ClientCredentialsInterface.php)**
+**[Client Credentials Interface](https://github.com/bshaffer/oauth2-server-php/blob/master/src/OAuth2/Storage/ClientCredentialsInterface.php)**
 
 For validating a client's credentials. This is required for all requests
 to the [Token Controller](../../controllers/token/), in order to validate
@@ -86,43 +86,43 @@ the client making the request.
 
 *id: "client_credentials"*
 
-**[Authorization Code Interface](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/AuthorizationCodeInterface.php)**
+**[Authorization Code Interface](https://github.com/bshaffer/oauth2-server-php/blob/master/src/OAuth2/Storage/AuthorizationCodeInterface.php)**
 
 For implementing the [Authorization Code Grant Type](../../grant-type/authorization-code)
 
 *id: "authorization_code"*
 
-**[Refresh Token Interface](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/RefreshTokenInterface.php)**
+**[Refresh Token Interface](https://github.com/bshaffer/oauth2-server-php/blob/master/src/OAuth2/Storage/RefreshTokenInterface.php)**
 
 For implementing the [Refresh Token Grant Type](../../grant-type/refresh-token/).
 
 *id: "refresh_token"*
 
-**[User Credentials Interface](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/UserCredentialsInterface.php)**
+**[User Credentials Interface](https://github.com/bshaffer/oauth2-server-php/blob/master/src/OAuth2/Storage/UserCredentialsInterface.php)**
 
 For implementing the [User Credentials Grant Type](../../grant-type/user-credentials).
 
 *id: "user_credentials"*
 
-**[JWT Bearer Interface](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/JwtBearerInterface.php)**
+**[JWT Bearer Interface](https://github.com/bshaffer/oauth2-server-php/blob/master/src/OAuth2/Storage/JwtBearerInterface.php)**
 
 Required for the [JWT Bearer Grant Type](../../grant-type/jwt-bearer).
 
 *id: "jwt_bearer"*
 
-**[Scope Interface](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/ScopeInterface.php)**
+**[Scope Interface](https://github.com/bshaffer/oauth2-server-php/blob/master/src/OAuth2/Storage/ScopeInterface.php)**
 
 For implementing scopes using the [Scope Util](../../overview/scope).
 
 *id: "scope"*
 
-**[Public Key Interface](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/PublicKeyInterface.php)**
+**[Public Key Interface](https://github.com/bshaffer/oauth2-server-php/blob/master/src/OAuth2/Storage/PublicKeyInterface.php)**
 
 For implementing [JWT Access Token](../../overview/jwt-access-tokens).
 
 *id: "public_key"*
 
-**[JWT Access Token Interface](https://github.com/bshaffer/oauth2-server-php/blob/develop/src/OAuth2/Storage/JwtAccessTokenInterface.php)**
+**[JWT Access Token Interface](https://github.com/bshaffer/oauth2-server-php/blob/master/src/OAuth2/Storage/JwtAccessTokenInterface.php)**
 
 An interface for using [JWT Access Tokens](../../overview/jwt-access-tokens).
 This requires the Public Key interface (below), and is used for validating
