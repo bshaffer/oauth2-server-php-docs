@@ -76,6 +76,14 @@ CREATE TABLE oauth_public_keys (
 
 >
 
+### 5\. Create OpenID grant type and add it to the server:
+
+```php
+$server->addGrantType ( new OAuth2\OpenID\GrantType\AuthorizationCode ( $storage ) );
+```
+
+>
+
 ## Verify OpenID Connect
 
 If your server is properly configured for OpenID Connect, when you request an
