@@ -72,7 +72,8 @@ CREATE TABLE oauth_users (
   last_name           VARCHAR(80),
   email               VARCHAR(80),
   email_verified      BOOLEAN,
-  scope               VARCHAR(4000)
+  scope               VARCHAR(4000),
+  PRIMARY KEY (username)
 );
 
 CREATE TABLE oauth_scopes (
