@@ -4,7 +4,7 @@ title: OAuth2 Server PHP
 
 # An OAuth2 Server Library for PHP
 
-Implement OAuth2.0 cleanly into your PHP application.  [Download the Code](https://github.com/bshaffer/oauth2-server-php) from GitHub to get started.
+Implement an OAuth 2.0 Server cleanly into your PHP application.  [Download the Code](https://github.com/bshaffer/oauth2-server-php) from GitHub to get started.
 
 ## Requirements
 
