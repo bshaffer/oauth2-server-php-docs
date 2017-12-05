@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Content-Language" content="en-us" />
+  <meta http-equiv="imagetoolbar" content="false" />
+  <meta name="MSSmartTagsPreventParsing" content="true" />
+
+  <title>Scope | OAuth2 Server PHP</title>
+
+  <link rel="alternate" type="application/atom+xml" title="API Changes" href="changes.atom" />
+  <link href="/oauth2-server-php-docs/css/reset.css" rel="stylesheet" type="text/css" />
+  <link href="/oauth2-server-php-docs/css/960.css" rel="stylesheet" type="text/css" />
+  <link href="/oauth2-server-php-docs/css/uv_active4d.css" rel="stylesheet" type="text/css" />
+  <link href="/oauth2-server-php-docs/shared/css/documentation.css" media="screen" rel="stylesheet" type="text/css">
+  <link href="/oauth2-server-php-docs/shared/css/pygments.css" media="screen" rel="stylesheet" type="text/css">
+  <link href="/oauth2-server-php-docs/css/coderay.css" rel="stylesheet" type="text/css" />
+
+  <script src="/oauth2-server-php-docs/shared/js/jquery.js" type="text/javascript"></script>
+  <script src="/oauth2-server-php-docs/shared/js/documentation.js" type="text/javascript"></script>
+</head>
+<body class="api">
+    <div id="header-wrapper">
+      <div id="header">
+        <div>
+          <a class="logo" href="/oauth2-server-php-docs/">
+            <img src="/oauth2-server-php-docs/images/oauth2-banner.png"/>
+          </a>
+          <ul class="nav">
+            <li><a href="https://github.com/bshaffer/oauth2-server-php/blob/master/CHANGELOG.md">Changes</a></li>
+            <!-- <li><a href="/oauth2-server-php-docs/changes.atom">
+              <img src="/oauth2-server-php-docs/images/feed-icon-28x28.png" width="16" height="16" alt="GitHub API Changes Feed" />
+            </a></li> -->
+          </ul>
+        </div>
+      </div><!-- #header -->
+    </div><!-- #header-wrapper -->
+
+    <div id="wrapper">
+      <div class="content">
+    
+<h1 id="scope">Scope</h1>
+
+<h2 id="configure-your-scope">Configure your Scope</h2>
+
+<p>The use of Scope in an OAuth2 application is often key to proper permissioning. Scope is used to limit the authorization
+granted to the client by the resource owner. The most popular use of this is Facebook’s ability for users to authorize
+a variety of different functions to the client (“access basic information”, “post on wall”, etc).</p>
+
+<p>In this library, scope is handled by implementing <code>OAuth2\Storage\ScopeInterface</code>. This can be done using your own
+implementation, or by taking advantage of the existing <code>OAuth2\Storage\Memory</code> class:</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// configure your available scopes</span>
+<span class="local-variable">$defaultScope</span> = <span class="string"><span class="delimiter">'</span><span class="content">basic</span><span class="delimiter">'</span></span>;
+<span class="local-variable">$supportedScopes</span> = <span class="predefined">array</span>(
+  <span class="string"><span class="delimiter">'</span><span class="content">basic</span><span class="delimiter">'</span></span>,
+  <span class="string"><span class="delimiter">'</span><span class="content">postonwall</span><span class="delimiter">'</span></span>,
+  <span class="string"><span class="delimiter">'</span><span class="content">accessphonenumber</span><span class="delimiter">'</span></span>
+);
+<span class="local-variable">$memory</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Memory</span>(<span class="predefined">array</span>(
+  <span class="string"><span class="delimiter">'</span><span class="content">default_scope</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$defaultScope</span>,
+  <span class="string"><span class="delimiter">'</span><span class="content">supported_scopes</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$supportedScopes</span>
+));
+<span class="local-variable">$scopeUtil</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Scope</span>(<span class="local-variable">$memory</span>);
+
+<span class="local-variable">$server</span>-&gt;setScopeUtil(<span class="local-variable">$scopeUtil</span>);</code></pre></div></div></div></div>
+</div>
+<p>This is the simplest way, but scope can be dynamically configured as well:</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// configure your available scopes</span>
+<span class="local-variable">$doctrine</span> = <span class="constant">Doctrine_Core</span>::getTable(<span class="string"><span class="delimiter">'</span><span class="content">OAuth2Scope</span><span class="delimiter">'</span></span>);
+<span class="local-variable">$scopeUtil</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Scope</span>(<span class="local-variable">$doctrine</span>);
+
+<span class="local-variable">$server</span>-&gt;setScopeUtil(<span class="local-variable">$scopeUtil</span>);</code></pre></div></div></div></div>
+</div>
+<p>This example assumes the class being used implements <code>OAuth2\Storage\ScopeInterface</code>:</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">class</span> <span class="class">OAuth2ScopeTable</span> <span class="keyword">extends</span> <span class="constant">Doctrine_Table</span> <span class="keyword">implements</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">ScopeInterface</span>
+{
+    <span class="keyword">public</span> <span class="keyword">function</span> <span class="function">getDefaultScope</span>(<span class="local-variable">$client_id</span> = <span class="predefined-constant">null</span>)
+    {
+        <span class="comment">//...</span>
+    }
+
+    <span class="keyword">public</span> <span class="keyword">function</span> <span class="function">scopeExists</span>(<span class="local-variable">$scope</span>, <span class="local-variable">$client_id</span> = <span class="predefined-constant">null</span>)
+    {
+        <span class="comment">//...</span>
+    }
+}</code></pre></div></div></div></div>
+</div>
+<blockquote>
+
+</blockquote>
+
+<h2 id="validate-your-scope">Validate your scope</h2>
+
+<p>Configuring your scope in the server class will ensure requested scopes by the client are valid.  However, there are two
+steps required to ensure the proper validation of your scope.  First, the requested scope must be exposed to the resource
+owner upon authorization.  In this library, this is left 100% to the implementation.  The UI or whathaveyou must make clear
+the scope of the authorization being granted.  Second, the resource request itself must specify what scope is required to
+access it:</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// https://api.example.com/resource-requiring-postonwall-scope</span>
+<span class="local-variable">$request</span> = <span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals();
+<span class="local-variable">$response</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Response</span>();
+<span class="local-variable">$scopeRequired</span> = <span class="string"><span class="delimiter">'</span><span class="content">postonwall</span><span class="delimiter">'</span></span>; <span class="comment">// this resource requires "postonwall" scope</span>
+<span class="keyword">if</span> (!<span class="local-variable">$server</span>-&gt;verifyResourceRequest(<span class="local-variable">$request</span>, <span class="local-variable">$response</span>, <span class="local-variable">$scopeRequired</span>)) {
+  <span class="comment">// if the scope required is different from what the token allows, this will send a "401 insufficient_scope" error</span>
+  <span class="local-variable">$response</span>-&gt;send();
+}</code></pre></div></div></div></div>
+</div>
+<blockquote>
+
+</blockquote>
+
+<h2 id="customizing-your-scope">Customizing your scope</h2>
+
+<p>As the implementation of “scope” can be significantly different for each application, providing a different class other than
+OAuth2\Scope can be beneficial.  Implement <code>OAuth2\ScopeInterface</code> in a custom class to fully customize.</p>
+
+<h2 id="state">State</h2>
+
+<p>The <code>state</code> parameter is required by default for authorize redirects.  This is the equivalent of a <code>CSRF</code> token, and provides
+session validation for your Authorize request.  See the <a href="http://tools.ietf.org/html/rfc6749#section-4.1.1">OAuth2.0 Spec</a>
+for more information on state.</p>
+
+<p>This is enabled by default for security purposes, but you can remove this requirement when you configure your server:</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// on creation</span>
+<span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>(<span class="local-variable">$storage</span>, <span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">enforce_state</span><span class="delimiter">'</span></span> =&gt; <span class="predefined-constant">false</span>));
+
+<span class="comment">// or after creation</span>
+<span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>();
+<span class="local-variable">$server</span>-&gt;setConfig(<span class="string"><span class="delimiter">'</span><span class="content">enforce_state</span><span class="delimiter">'</span></span>, <span class="predefined-constant">false</span>);</code></pre></div></div></div></div>
+</div>
+<blockquote>
+
+</blockquote>
+
+<h2 id="using-multiple-scopes">Using Multiple Scopes</h2>
+
+<p>You can request multiple scopes by supplying a space-delimited (but url-safe) list of scopes in your authorize request.
+It will look like this:</p>
+
+<div class="code-container">
+<div class="langspec">Text</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text">https://mydomain.com/authorize
+   ?client_id=MY_CLIENT
+   &amp;response_type=code
+   &amp;scope=onescope%20twoscope%20redscope%20bluescope</code></pre></div></div></div></div>
+</div>
+<blockquote>
+  <p>Note: Extra linebreaks are for readability only</p>
+</blockquote>
+
+<p>This will create an authorization code with the following four scopes: “onescope”, “twoscope”, “redscope”, and “bluescope”</p>
+
+<p>These four scopes will then be validated against the available scopes using the <code>OAuth2\ScopeUtil</code> class to ensure they
+exist. If you receive the error <code>invalid_scope: An unsupported scope was requested</code>, this is because you need to set your
+available scopes on your server object, like so:</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$scope</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Scope</span>(<span class="predefined">array</span>(
+  <span class="string"><span class="delimiter">'</span><span class="content">supported_scopes</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">onescope</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">twoscope</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">redscope</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">bluescope</span><span class="delimiter">'</span></span>)
+));
+<span class="local-variable">$server</span>-&gt;setScopeUtil(<span class="local-variable">$scope</span>);</code></pre></div></div></div></div>
+</div>
+<blockquote>
+
+</blockquote>
+
+<h2 id="restricting-scopes-to-clients">Restricting Scopes to Clients</h2>
+<p>The scope(s) available to a client are controlled by a combination of the <code>scope</code> field in the client storage, and the list of scopes available, as defined in the scope storage.</p>
+
+<p>When the client has a list of scopes configured alongside it, the client is restricted to use only those scopes. When there are no scopes configured, the client is not restricted in what scopes it may use, it is able to use all scopes available within the authorization server.</p>
+
+      </div>
+
+    <div id="js-sidebar" class="sidebar-shell">
+      <div class="js-toggle-list sidebar-module expandable">
+        <ul>
+          <li class="js-topic">
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/">Overview</a></h3>
+            <ul class="js-guides">
+              <li><a href="/oauth2-server-php-docs/">Get Started</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/main-concepts/">Main Concepts</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/grant-types/">Grant Types</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/controllers/">Controllers</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/storage/">Storage</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/response/">Request and Response</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/scope/">Scope</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/userid/">User ID</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/openid-connect/">OpenID Connect</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/jwt-access-tokens/">JWT Access Tokens</a></li>
+            </ul>
+          </li>
+          <li class="js-topic">
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/grant-types/authorization-code/">Grant Types</a></h3>
+            <ul class="js-guides">
+              <li><a href="/oauth2-server-php-docs/grant-types/authorization-code/">Authorization Code</a></li>
+              <li><a href="/oauth2-server-php-docs/grant-types/implicit/">Implicit</a></li>
+              <li><a href="/oauth2-server-php-docs/grant-types/user-credentials/">User Credentials</a></li>
+              <li><a href="/oauth2-server-php-docs/grant-types/client-credentials/">Client Credentials</a></li>
+              <li><a href="/oauth2-server-php-docs/grant-types/refresh-token/">Refresh Token</a></li>
+              <li><a href="/oauth2-server-php-docs/grant-types/jwt-bearer/">JWT Bearer</a></li>
+            </ul>
+          </li>
+          <li class="js-topic">
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/controllers/authorize">Controllers</a></h3>
+            <ul class="js-guides">
+              <li><a href="/oauth2-server-php-docs/controllers/authorize/">Authorize</a></li>
+              <li><a href="/oauth2-server-php-docs/controllers/resource/">Resource</a></li>
+              <li><a href="/oauth2-server-php-docs/controllers/token/">Token</a></li>
+            </ul>
+          </li>
+          <li class="js-topic">
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/storage/pdo/">Storage</a></h3>
+            <ul class="js-guides">
+              <li><a href="/oauth2-server-php-docs/storage/pdo/">PDO</a></li>
+              <li><a href="/oauth2-server-php-docs/storage/mongo/">Mongo</a></li>
+              <li><a href="/oauth2-server-php-docs/storage/redis/">Redis</a></li>
+              <li><a href="/oauth2-server-php-docs/storage/cassandra/">Cassandra</a></li>
+              <li><a href="/oauth2-server-php-docs/storage/dynamodb/">DynamoDB</a></li>
+              <li><a href="/oauth2-server-php-docs/storage/custom/">Custom Storage</a></li>
+              <li><a href="/oauth2-server-php-docs/storage/multiple/">Using Multiple Storages</a></li>
+            </ul>
+          </li>
+          <li class="js-topic">
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/cookbook/">Cookbook</a></h3>
+            <ul class="js-guides">
+              <li><a href="/oauth2-server-php-docs/cookbook/">Step-By-Step Walkthrough</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/google-playground/">Google Playground</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/drupal/">Drupal</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/symfony2/">Symfony2</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/silex/">Silex</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/zend-framework/">Zend Framework</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/laravel/">Laravel</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/doctrine/">Doctrine</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/doctrine2/">Doctrine2</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/yii/">Yii</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/cakephp/">CakePHP</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/restler/">Restler</a></li>
+              <!-- <li><a href="/oauth2-server-php-docs/cookbook/doctrine2/">Doctrine2</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/symfony/">Symfony 1.4</a></li> -->
+            </ul>
+          </li>
+        </ul>
+      </div> <!-- /sidebar-module -->
+      <div class="sidebar-module">
+        <p>This project is open source. Please help us by forking the project and adding to it.</p>
+      </div>
+    </div><!-- /sidebar-shell -->
+
+    </div><!-- #wrapper -->
+
+    <div id="footer" >
+      <div class="upper_footer">
+        <div class="footer_inner clearfix">
+
+        </div><!-- /.site -->
+      </div><!-- /.upper_footer -->
+
+      <div class="lower_footer">
+        <div class="footer_inner clearfix">
+            <div id="legal">
+              <p>&copy; <span id="year">year</span> Brent Shaffer. All rights reserved.</p>
+            </div><!-- /#legal or /#legal_ie-->
+        </div><!-- /.site -->
+      </div><!-- /.lower_footer -->
+    </div><!-- /#footer -->
+    <a href="https://github.com/bshaffer/oauth2-server-php-docs"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-11590669-6', 'bshaffer.github.io');
+      ga('send', 'pageview');
+
+      function trackOutboundLink(link, category, action) {
+        try {
+          _gaq.push(['_trackEvent', category , action]);
+        } catch(err){}
+
+        setTimeout(function() {
+          document.location.href = link.href;
+        }, 100);
+      }
+    </script>
+</body>
+</html>

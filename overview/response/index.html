@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Content-Language" content="en-us" />
+  <meta http-equiv="imagetoolbar" content="false" />
+  <meta name="MSSmartTagsPreventParsing" content="true" />
+
+  <title>Request and Response | OAuth2 Server PHP</title>
+
+  <link rel="alternate" type="application/atom+xml" title="API Changes" href="changes.atom" />
+  <link href="/oauth2-server-php-docs/css/reset.css" rel="stylesheet" type="text/css" />
+  <link href="/oauth2-server-php-docs/css/960.css" rel="stylesheet" type="text/css" />
+  <link href="/oauth2-server-php-docs/css/uv_active4d.css" rel="stylesheet" type="text/css" />
+  <link href="/oauth2-server-php-docs/shared/css/documentation.css" media="screen" rel="stylesheet" type="text/css">
+  <link href="/oauth2-server-php-docs/shared/css/pygments.css" media="screen" rel="stylesheet" type="text/css">
+  <link href="/oauth2-server-php-docs/css/coderay.css" rel="stylesheet" type="text/css" />
+
+  <script src="/oauth2-server-php-docs/shared/js/jquery.js" type="text/javascript"></script>
+  <script src="/oauth2-server-php-docs/shared/js/documentation.js" type="text/javascript"></script>
+</head>
+<body class="api">
+    <div id="header-wrapper">
+      <div id="header">
+        <div>
+          <a class="logo" href="/oauth2-server-php-docs/">
+            <img src="/oauth2-server-php-docs/images/oauth2-banner.png"/>
+          </a>
+          <ul class="nav">
+            <li><a href="https://github.com/bshaffer/oauth2-server-php/blob/master/CHANGELOG.md">Changes</a></li>
+            <!-- <li><a href="/oauth2-server-php-docs/changes.atom">
+              <img src="/oauth2-server-php-docs/images/feed-icon-28x28.png" width="16" height="16" alt="GitHub API Changes Feed" />
+            </a></li> -->
+          </ul>
+        </div>
+      </div><!-- #header -->
+    </div><!-- #header-wrapper -->
+
+    <div id="wrapper">
+      <div class="content">
+    
+<h1 id="request-and-response">Request and Response</h1>
+
+<h2 id="the-request-object">The Request Object</h2>
+
+<p>Every server call begins with a request. This library uses its own simple object to
+validate calls to the server. You will almost always create this like so:</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$request</span> = <span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals();
+
+<span class="comment">// call the OAuth server with it</span>
+<span class="local-variable">$server</span>-&gt;handleTokenRequest(<span class="local-variable">$request</span>);</code></pre></div></div></div></div>
+</div>
+<p>Because this uses PHP Interfaces, we can easily extend it for the framework we are using:</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// use HttpFoundation Requests instead, for Symfony / Twig / Laravel 4 / Drupal 8 / etc!</span>
+<span class="local-variable">$symfony_request</span> = <span class="constant">Symfony</span>\<span class="constant">Component</span>\<span class="constant">HttpFoundation</span>\<span class="constant">Request</span>::createFromGlobals();
+<span class="local-variable">$request</span> = <span class="constant">OAuth2</span>\<span class="constant">HttpFoundationBridge</span>\<span class="constant">Request</span>::createFromRequest(<span class="local-variable">$symfony_request</span>)
+
+<span class="comment">// call the OAuth server with it</span>
+<span class="local-variable">$server</span>-&gt;handleTokenRequest(<span class="local-variable">$request</span>);</code></pre></div></div></div></div>
+</div>
+<blockquote>
+
+</blockquote>
+
+<h2 id="the-response-object">The Response Object</h2>
+
+<p>The response object serves the purpose of making your server OAuth2 compliant.  It will set the appropriate status codes, headers,
+and response body for a valid or invalid oauth request.  To use it as it’s simplest level, just send the output and exit:</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$request</span> = <span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals();
+<span class="local-variable">$response</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Response</span>();
+
+<span class="comment">// will set headers, status code, and json response appropriately for success or failure</span>
+<span class="local-variable">$server</span>-&gt;grantAccessToken(<span class="local-variable">$request</span>, <span class="local-variable">$response</span>);
+<span class="local-variable">$response</span>-&gt;send();</code></pre></div></div></div></div>
+</div>
+<p>The response object can also be used to customize output. Below, if the request is NOT valid, the error is sent to the browser:</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">if</span> (!<span class="local-variable">$token</span> = <span class="local-variable">$server</span>-&gt;grantAccessToken(<span class="local-variable">$request</span>, <span class="local-variable">$response</span>)) {
+    <span class="local-variable">$response</span>-&gt;send();
+    <span class="predefined">die</span>();
+}
+<span class="predefined">echo</span> <span class="predefined">sprintf</span>(<span class="string"><span class="delimiter">'</span><span class="content">Your token is %s!!</span><span class="delimiter">'</span></span>, <span class="local-variable">$token</span>);</code></pre></div></div></div></div>
+</div>
+<p>This will populate the appropriate error headers, and return a json error response.  If you do not want to send a JSON response,
+the response object can be used to display the information in any other format:</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="keyword">if</span> (!<span class="local-variable">$token</span> = <span class="local-variable">$server</span>-&gt;grantAccessToken(<span class="local-variable">$request</span>, <span class="local-variable">$response</span>)) {
+    <span class="local-variable">$parameters</span> = <span class="local-variable">$response</span>-&gt;getParameters();
+    <span class="comment">// format as XML</span>
+    <span class="predefined">header</span>(<span class="string"><span class="delimiter">"</span><span class="content">HTTP/1.1 </span><span class="delimiter">"</span></span> . <span class="local-variable">$response</span>-&gt;getStatusCode());
+    <span class="predefined">header</span>(<span class="string"><span class="delimiter">"</span><span class="content">Content-Type: text/xml</span><span class="delimiter">"</span></span>);
+    <span class="predefined">echo</span> <span class="string"><span class="delimiter">"</span><span class="content">&lt;error&gt;&lt;name&gt;</span><span class="delimiter">"</span></span>.<span class="local-variable">$parameters</span>[<span class="string"><span class="delimiter">'</span><span class="content">error</span><span class="delimiter">'</span></span>].<span class="string"><span class="delimiter">"</span><span class="content">&lt;/name&gt;&lt;message&gt;</span><span class="delimiter">"</span></span>.<span class="local-variable">$parameters</span>[<span class="string"><span class="delimiter">'</span><span class="content">error_description</span><span class="delimiter">'</span></span>].<span class="string"><span class="delimiter">"</span><span class="content">&lt;/message&gt;&lt;/error&gt;</span><span class="delimiter">"</span></span>;
+}</code></pre></div></div></div></div>
+</div>
+<p>This is very useful when working in a framework or existing codebase, where this library will not have full control of the response.</p>
+
+<p>See the <a href="https://github.com/bshaffer/oauth2-server-httpfoundation-bridge">HttpFoundation Bridge</a> library for plugging your request/response
+into frameworks using the <a href="https://github.com/symfony/HttpFoundation">HttpFoundation</a> library.</p>
+
+      </div>
+
+    <div id="js-sidebar" class="sidebar-shell">
+      <div class="js-toggle-list sidebar-module expandable">
+        <ul>
+          <li class="js-topic">
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/">Overview</a></h3>
+            <ul class="js-guides">
+              <li><a href="/oauth2-server-php-docs/">Get Started</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/main-concepts/">Main Concepts</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/grant-types/">Grant Types</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/controllers/">Controllers</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/storage/">Storage</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/response/">Request and Response</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/scope/">Scope</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/userid/">User ID</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/openid-connect/">OpenID Connect</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/jwt-access-tokens/">JWT Access Tokens</a></li>
+            </ul>
+          </li>
+          <li class="js-topic">
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/grant-types/authorization-code/">Grant Types</a></h3>
+            <ul class="js-guides">
+              <li><a href="/oauth2-server-php-docs/grant-types/authorization-code/">Authorization Code</a></li>
+              <li><a href="/oauth2-server-php-docs/grant-types/implicit/">Implicit</a></li>
+              <li><a href="/oauth2-server-php-docs/grant-types/user-credentials/">User Credentials</a></li>
+              <li><a href="/oauth2-server-php-docs/grant-types/client-credentials/">Client Credentials</a></li>
+              <li><a href="/oauth2-server-php-docs/grant-types/refresh-token/">Refresh Token</a></li>
+              <li><a href="/oauth2-server-php-docs/grant-types/jwt-bearer/">JWT Bearer</a></li>
+            </ul>
+          </li>
+          <li class="js-topic">
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/controllers/authorize">Controllers</a></h3>
+            <ul class="js-guides">
+              <li><a href="/oauth2-server-php-docs/controllers/authorize/">Authorize</a></li>
+              <li><a href="/oauth2-server-php-docs/controllers/resource/">Resource</a></li>
+              <li><a href="/oauth2-server-php-docs/controllers/token/">Token</a></li>
+            </ul>
+          </li>
+          <li class="js-topic">
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/storage/pdo/">Storage</a></h3>
+            <ul class="js-guides">
+              <li><a href="/oauth2-server-php-docs/storage/pdo/">PDO</a></li>
+              <li><a href="/oauth2-server-php-docs/storage/mongo/">Mongo</a></li>
+              <li><a href="/oauth2-server-php-docs/storage/redis/">Redis</a></li>
+              <li><a href="/oauth2-server-php-docs/storage/cassandra/">Cassandra</a></li>
+              <li><a href="/oauth2-server-php-docs/storage/dynamodb/">DynamoDB</a></li>
+              <li><a href="/oauth2-server-php-docs/storage/custom/">Custom Storage</a></li>
+              <li><a href="/oauth2-server-php-docs/storage/multiple/">Using Multiple Storages</a></li>
+            </ul>
+          </li>
+          <li class="js-topic">
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/cookbook/">Cookbook</a></h3>
+            <ul class="js-guides">
+              <li><a href="/oauth2-server-php-docs/cookbook/">Step-By-Step Walkthrough</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/google-playground/">Google Playground</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/drupal/">Drupal</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/symfony2/">Symfony2</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/silex/">Silex</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/zend-framework/">Zend Framework</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/laravel/">Laravel</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/doctrine/">Doctrine</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/doctrine2/">Doctrine2</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/yii/">Yii</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/cakephp/">CakePHP</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/restler/">Restler</a></li>
+              <!-- <li><a href="/oauth2-server-php-docs/cookbook/doctrine2/">Doctrine2</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/symfony/">Symfony 1.4</a></li> -->
+            </ul>
+          </li>
+        </ul>
+      </div> <!-- /sidebar-module -->
+      <div class="sidebar-module">
+        <p>This project is open source. Please help us by forking the project and adding to it.</p>
+      </div>
+    </div><!-- /sidebar-shell -->
+
+    </div><!-- #wrapper -->
+
+    <div id="footer" >
+      <div class="upper_footer">
+        <div class="footer_inner clearfix">
+
+        </div><!-- /.site -->
+      </div><!-- /.upper_footer -->
+
+      <div class="lower_footer">
+        <div class="footer_inner clearfix">
+            <div id="legal">
+              <p>&copy; <span id="year">year</span> Brent Shaffer. All rights reserved.</p>
+            </div><!-- /#legal or /#legal_ie-->
+        </div><!-- /.site -->
+      </div><!-- /.lower_footer -->
+    </div><!-- /#footer -->
+    <a href="https://github.com/bshaffer/oauth2-server-php-docs"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-11590669-6', 'bshaffer.github.io');
+      ga('send', 'pageview');
+
+      function trackOutboundLink(link, category, action) {
+        try {
+          _gaq.push(['_trackEvent', category , action]);
+        } catch(err){}
+
+        setTimeout(function() {
+          document.location.href = link.href;
+        }, 100);
+      }
+    </script>
+</body>
+</html>

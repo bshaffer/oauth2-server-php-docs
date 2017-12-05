@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Content-Language" content="en-us" />
+  <meta http-equiv="imagetoolbar" content="false" />
+  <meta name="MSSmartTagsPreventParsing" content="true" />
+
+  <title>JWT Access Tokens | OAuth2 Server PHP</title>
+
+  <link rel="alternate" type="application/atom+xml" title="API Changes" href="changes.atom" />
+  <link href="/oauth2-server-php-docs/css/reset.css" rel="stylesheet" type="text/css" />
+  <link href="/oauth2-server-php-docs/css/960.css" rel="stylesheet" type="text/css" />
+  <link href="/oauth2-server-php-docs/css/uv_active4d.css" rel="stylesheet" type="text/css" />
+  <link href="/oauth2-server-php-docs/shared/css/documentation.css" media="screen" rel="stylesheet" type="text/css">
+  <link href="/oauth2-server-php-docs/shared/css/pygments.css" media="screen" rel="stylesheet" type="text/css">
+  <link href="/oauth2-server-php-docs/css/coderay.css" rel="stylesheet" type="text/css" />
+
+  <script src="/oauth2-server-php-docs/shared/js/jquery.js" type="text/javascript"></script>
+  <script src="/oauth2-server-php-docs/shared/js/documentation.js" type="text/javascript"></script>
+</head>
+<body class="api">
+    <div id="header-wrapper">
+      <div id="header">
+        <div>
+          <a class="logo" href="/oauth2-server-php-docs/">
+            <img src="/oauth2-server-php-docs/images/oauth2-banner.png"/>
+          </a>
+          <ul class="nav">
+            <li><a href="https://github.com/bshaffer/oauth2-server-php/blob/master/CHANGELOG.md">Changes</a></li>
+            <!-- <li><a href="/oauth2-server-php-docs/changes.atom">
+              <img src="/oauth2-server-php-docs/images/feed-icon-28x28.png" width="16" height="16" alt="GitHub API Changes Feed" />
+            </a></li> -->
+          </ul>
+        </div>
+      </div><!-- #header -->
+    </div><!-- #header-wrapper -->
+
+    <div id="wrapper">
+      <div class="content">
+    
+<h1 id="jwt-access-tokens">JWT Access Tokens</h1>
+
+<h2 id="overview">Overview</h2>
+
+<p>JWT Access Tokens provide a way to create and validate access tokens without requiring a central
+storage such as a database. This <em>decreases the latency</em> of the OAuth2 service when validating
+Access Tokens.</p>
+
+<p>JWT Access Tokens use <a href="http://tools.ietf.org/html/draft-jones-json-web-signature-04">JSON Web Signatures</a>
+(<a href="http://tools.ietf.org/html/draft-jones-json-web-signature-04#section-6.2">Chapter 6.2</a>) and
+<a href="http://en.wikipedia.org/wiki/Public-key_cryptography">Public Key Cryptography</a>
+to establish their validity.  The OAuth2.0 Server signs the tokens using a <code>private key</code>, and other
+parties can verify the token using the Server’s <code>public key</code>.</p>
+
+<h2 id="format">Format</h2>
+
+<p>A JWT Access Token has the following format:</p>
+
+<div class="code-container">
+<div class="langspec">Text</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-text">HEADER.PAYLOAD.SIGNATURE</code></pre></div></div></div></div>
+</div>
+<p>The <code>HEADER</code> is a Base64 URL Safe encoding of the following JSON:</p>
+
+<div class="code-container">
+<div class="langspec">Json</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-json">{<span class="key"><span class="delimiter">"</span><span class="content">typ</span><span class="delimiter">"</span></span>: <span class="string"><span class="delimiter">"</span><span class="content">JWT</span><span class="delimiter">"</span></span>, <span class="key"><span class="delimiter">"</span><span class="content">alg</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">RS256</span><span class="delimiter">"</span></span>}</code></pre></div></div></div></div>
+</div>
+<p>The <code>PAYLOAD</code> is a Base64 URL Safe encoding of a json object with the following fields:</p>
+
+<div class="code-container">
+<div class="langspec">Json</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-json">{
+  <span class="key"><span class="delimiter">"</span><span class="content">id</span><span class="delimiter">"</span></span>: <span class="string"><span class="delimiter">"</span><span class="content">394a71988caa6cc30601e43f5b6569d52cd7f6df</span><span class="delimiter">"</span></span>,
+  <span class="key"><span class="delimiter">"</span><span class="content">jti</span><span class="delimiter">"</span></span>: <span class="string"><span class="delimiter">"</span><span class="content">394a71988caa6cc30601e43f5b6569d52cd7f6df</span><span class="delimiter">"</span></span>,
+  <span class="key"><span class="delimiter">"</span><span class="content">iss</span><span class="delimiter">"</span></span>: <span class="string"><span class="delimiter">"</span><span class="content">issuer_id</span><span class="delimiter">"</span></span>,
+  <span class="key"><span class="delimiter">"</span><span class="content">aud</span><span class="delimiter">"</span></span>: <span class="string"><span class="delimiter">"</span><span class="content">client_id</span><span class="delimiter">"</span></span>,
+  <span class="key"><span class="delimiter">"</span><span class="content">sub</span><span class="delimiter">"</span></span>: <span class="string"><span class="delimiter">"</span><span class="content">user_id</span><span class="delimiter">"</span></span>,
+  <span class="key"><span class="delimiter">"</span><span class="content">exp</span><span class="delimiter">"</span></span>: <span class="integer">1483711650</span>,
+  <span class="key"><span class="delimiter">"</span><span class="content">iat</span><span class="delimiter">"</span></span>: <span class="integer">1483708050</span>,
+  <span class="key"><span class="delimiter">"</span><span class="content">token_type</span><span class="delimiter">"</span></span>: <span class="string"><span class="delimiter">"</span><span class="content">bearer</span><span class="delimiter">"</span></span>,
+  <span class="key"><span class="delimiter">"</span><span class="content">scope</span><span class="delimiter">"</span></span>: <span class="string"><span class="delimiter">"</span><span class="content">onescope twoscope</span><span class="delimiter">"</span></span>
+}</code></pre></div></div></div></div>
+</div>
+<ul>
+  <li>
+<code>id</code> - the internal id of the token</li>
+  <li>
+<code>jti</code> - a unique token identifier for the token (JWT ID)</li>
+  <li>
+<code>iss</code> - the id of the server who issued the token (Issuer)</li>
+  <li>
+<code>aud</code> - the id of the client who requested the token (Audience)</li>
+  <li>
+<code>sub</code> - the id of the user for which the token was released (Subject)</li>
+  <li>
+<code>exp</code> - UNIX timestamp when the token expires (Expiration)</li>
+  <li>
+<code>iat</code> - UNIX timestamp when the token was created (Issued At)</li>
+  <li>
+<code>token_type</code> - the kind of token, will be bearer</li>
+  <li>
+<code>scope</code> - space-separated list of scopes for which the token is issued</li>
+</ul>
+
+<h2 id="using-jwt-access-tokens-with-this-library">Using JWT Access Tokens With This Library</h2>
+
+<h3 id="creating-a-public-and-private-key-pair">Creating a Public and Private Key Pair</h3>
+
+<p>To get started, you’ll need a public/private key pair.  These can be generated
+on any Unix-based operating system with the following commands:</p>
+
+<div class="code-container">
+<div class="langspec">Bash</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-bash"># private key
+$ openssl genrsa -out privkey.pem 2048
+
+# public key
+$ openssl rsa -in privkey.pem -pubout -out pubkey.pem</code></pre></div></div></div></div>
+</div>
+<blockquote>
+
+</blockquote>
+
+<h3 id="basic-usage">Basic Usage</h3>
+
+<p>The easiest way to configure your server is to supply the <code>use_jwt_access_tokens</code>
+option to your OAuth Server’s configuration:</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>(<span class="local-variable">$storage</span>, <span class="predefined">array</span>(
+    <span class="string"><span class="delimiter">'</span><span class="content">use_jwt_access_tokens</span><span class="delimiter">'</span></span> =&gt; <span class="predefined-constant">true</span>,
+));</code></pre></div></div></div></div>
+</div>
+<p>This will require you to create a <code>PublicKey</code> storage object. You can use the
+built in <code>Memory</code> storage for this:</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// your public key strings can be passed in however you like</span>
+<span class="local-variable">$publicKey</span>  = <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/pubkey.pem</span><span class="delimiter">'</span></span>);
+<span class="local-variable">$privateKey</span> = <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/privkey.pem</span><span class="delimiter">'</span></span>);
+
+<span class="comment">// create storage</span>
+<span class="local-variable">$storage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Memory</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">keys</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(
+    <span class="string"><span class="delimiter">'</span><span class="content">public_key</span><span class="delimiter">'</span></span>  =&gt; <span class="local-variable">$publicKey</span>,
+    <span class="string"><span class="delimiter">'</span><span class="content">private_key</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$privateKey</span>,
+)));
+
+<span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>(<span class="local-variable">$storage</span>, <span class="predefined">array</span>(
+    <span class="string"><span class="delimiter">'</span><span class="content">use_jwt_access_tokens</span><span class="delimiter">'</span></span> =&gt; <span class="predefined-constant">true</span>,
+));</code></pre></div></div></div></div>
+</div>
+<p>This is the minimal configuration when using JWT Access Tokens, and will be valid
+for the <code>ResourceController</code> only. For a full server configuration, you must supply
+a <code>Client</code> storage and some Grant Types.</p>
+
+<p>Here is an example of a full server configuration:</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// token.php</span>
+
+<span class="comment">// error reporting (this is a demo, after all!)</span>
+ini_set(<span class="string"><span class="delimiter">'</span><span class="content">display_errors</span><span class="delimiter">'</span></span>,<span class="integer">1</span>);<span class="predefined">error_reporting</span>(<span class="exception">E_ALL</span>);
+
+<span class="comment">// Autoloading (composer is preferred, but for this example let's just do this)</span>
+<span class="predefined">require_once</span>(<span class="string"><span class="delimiter">'</span><span class="content">oauth2-server-php/src/OAuth2/Autoloader.php</span><span class="delimiter">'</span></span>);
+<span class="constant">OAuth2</span>\<span class="constant">Autoloader</span>::register();
+
+<span class="comment">// your public key strings can be passed in however you like</span>
+<span class="comment">// (there is a public/private key pair for testing already in the oauth library)</span>
+<span class="local-variable">$publicKey</span>  = <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">oauth2-server-php/test/config/keys/id_rsa.pub</span><span class="delimiter">'</span></span>);
+<span class="local-variable">$privateKey</span> = <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">oauth2-server-php/test/config/keys/id_rsa</span><span class="delimiter">'</span></span>);
+
+<span class="comment">// create storage</span>
+<span class="local-variable">$storage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Memory</span>(<span class="predefined">array</span>(
+    <span class="string"><span class="delimiter">'</span><span class="content">keys</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(
+        <span class="string"><span class="delimiter">'</span><span class="content">public_key</span><span class="delimiter">'</span></span>  =&gt; <span class="local-variable">$publicKey</span>,
+        <span class="string"><span class="delimiter">'</span><span class="content">private_key</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$privateKey</span>,
+    ),
+    <span class="comment">// add a Client ID for testing</span>
+    <span class="string"><span class="delimiter">'</span><span class="content">client_credentials</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(
+        <span class="string"><span class="delimiter">'</span><span class="content">CLIENT_ID</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">client_secret</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">CLIENT_SECRET</span><span class="delimiter">'</span></span>)
+    ),
+));
+
+<span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>(<span class="local-variable">$storage</span>, <span class="predefined">array</span>(
+    <span class="string"><span class="delimiter">'</span><span class="content">use_jwt_access_tokens</span><span class="delimiter">'</span></span> =&gt; <span class="predefined-constant">true</span>,
+));
+<span class="local-variable">$server</span>-&gt;addGrantType(<span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">GrantType</span>\<span class="constant">ClientCredentials</span>(<span class="local-variable">$storage</span>)); <span class="comment">// minimum config</span>
+
+<span class="comment">// send the response</span>
+<span class="local-variable">$server</span>-&gt;handleTokenRequest(<span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals())-&gt;send();</code></pre></div></div></div></div>
+</div>
+<p>Now you can call your server and receive a JWT Access Token:</p>
+
+<div class="code-container">
+<div class="langspec">Bash</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-bash"># start the PHP built-in web server
+$ php -S localhost:3000 &amp;
+$ curl -i -v http://localhost:3000/token.php -u 'CLIENT_ID:CLIENT_SECRET' -d "grant_type=client_credentials"</code></pre></div></div></div></div>
+</div>
+<p>And the server will return a response containing the JWT Access Token:</p>
+
+<div class="code-container">
+<div class="langspec">Json</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-json">{
+    <span class="key"><span class="delimiter">"</span><span class="content">access_token</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpZCI6IjYzMjIwNzg0YzUzODA3ZjVmZTc2Yjg4ZjZkNjdlMmExZTIxODlhZTEiLCJjbGllbnRfaWQiOiJUZXN0IENsaWVudCBJRCIsInVzZXJfaWQiOm51bGwsImV4cGlyZXMiOjEzODAwNDQ1NDIsInRva2VuX3R5cGUiOiJiZWFyZXIiLCJzY29wZSI6bnVsbH0.PcC4k8Q_etpU-J4yGFEuBUdeyMJhtpZFkVQ__sXpe78eSi7xTniqOOtgfWa62Y4sj5Npta8xPuDglH8Fueh_APZX4wGCiRE1P4nT4APQCOTbgcuCNXwjmP8znk9F76ID2WxThaMbmpsTTEkuyyUYQKCCdxlIcSbVvcLZUGKZ6-g</span><span class="delimiter">"</span></span>,
+    <span class="key"><span class="delimiter">"</span><span class="content">client_id</span><span class="delimiter">"</span></span>:<span class="string"><span class="delimiter">"</span><span class="content">CLIENT_ID</span><span class="delimiter">"</span></span>,
+    <span class="key"><span class="delimiter">"</span><span class="content">user_id</span><span class="delimiter">"</span></span>:<span class="value">null</span>,
+    <span class="key"><span class="delimiter">"</span><span class="content">expires</span><span class="delimiter">"</span></span>:<span class="integer">1382630473</span>,
+    <span class="key"><span class="delimiter">"</span><span class="content">scope</span><span class="delimiter">"</span></span>:<span class="value">null</span>
+}</code></pre></div></div></div></div>
+</div>
+<blockquote>
+
+</blockquote>
+
+<h3 id="resource-server-configuration">Resource Server Configuration</h3>
+
+<p>If your Resource Server is separate from your Authorization server, you can configure
+your server without the Authorization Server’s private key:</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">/* for a Resource Server (minimum config) */</span>
+<span class="local-variable">$publicKey</span> = <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/pubkey.pem</span><span class="delimiter">'</span></span>);
+
+<span class="comment">// no private key necessary</span>
+<span class="local-variable">$keyStorage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Memory</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">keys</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(
+    <span class="string"><span class="delimiter">'</span><span class="content">public_key</span><span class="delimiter">'</span></span>  =&gt; <span class="local-variable">$publicKey</span>,
+)));
+
+<span class="local-variable">$server</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Server</span>(<span class="local-variable">$keyStorage</span>, <span class="predefined">array</span>(
+    <span class="string"><span class="delimiter">'</span><span class="content">use_jwt_access_tokens</span><span class="delimiter">'</span></span> =&gt; <span class="predefined-constant">true</span>,
+));</code></pre></div></div></div></div>
+</div>
+<p>This allows your server to verify access tokens without making any requests to the
+Authorization Server or any other shared resource.</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="comment">// verify the JWT Access Token in the request</span>
+<span class="keyword">if</span> (!<span class="local-variable">$server</span>-&gt;verifyResourceRequest(<span class="constant">OAuth2</span>\<span class="constant">Request</span>::createFromGlobals())) {
+    <span class="predefined">exit</span>(<span class="string"><span class="delimiter">"</span><span class="content">Failed</span><span class="delimiter">"</span></span>);
+}
+<span class="predefined">echo</span> <span class="string"><span class="delimiter">"</span><span class="content">Success!</span><span class="delimiter">"</span></span>;</code></pre></div></div></div></div>
+</div>
+<p>Now you can request this and experiment with sending in the token you generated above!</p>
+
+<div class="code-container">
+<div class="langspec">Bash</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-bash"># start the PHP built-in web server
+$ php -S localhost:3000 &amp;
+$ curl "http://localhost:3000/resource.php?access_token=eyJ0eXAi..."
+Success!</code></pre></div></div></div></div>
+</div>
+<blockquote>
+
+</blockquote>
+
+<h3 id="using-secondary-storage">Using Secondary Storage</h3>
+
+<p>This library allows you to back up the access tokens to secondary storage.  Just pass
+an object implementing <code>OAuth2\Storage\AccessTokenInterface</code> to the <code>JwtAccessToken</code> object
+to have access tokens stored in an additional location:</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$pdoStorage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Pdo</span>(<span class="local-variable">$pdo</span>); <span class="comment">// access token will also be saved to PDO</span>
+<span class="local-variable">$keyStorage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Memory</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">keys</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(
+    <span class="string"><span class="delimiter">'</span><span class="content">public_key</span><span class="delimiter">'</span></span>  =&gt; <span class="local-variable">$publicKey</span>,
+    <span class="string"><span class="delimiter">'</span><span class="content">private_key</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$privateKey</span>,
+)));</code></pre></div></div></div></div>
+</div>
+<p>This example pulls the public/private keys from <code>Memory</code> storage, and saves the
+granted access tokens to <code>Pdo</code> storage once they are signed.</p>
+
+<h3 id="client-specific-encryption-keys">Client-Specific Encryption Keys</h3>
+
+<p>It is a good idea to make the keys Client-Specific.  That way, if a key pair is
+compromised, only a single client is affected.  Both <code>Memory</code> and <code>Pdo</code> support
+this kind of storage.  Here is an example using <code>Memory</code> storage:</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$keyStorage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Memory</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">keys</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(
+    <span class="string"><span class="delimiter">'</span><span class="content">ClientID_One</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(
+        <span class="string"><span class="delimiter">'</span><span class="content">public_key</span><span class="delimiter">'</span></span>  =&gt; <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/client_1_rsa.pub</span><span class="delimiter">'</span></span>),
+        <span class="string"><span class="delimiter">'</span><span class="content">private_key</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/client_1_rsa</span><span class="delimiter">'</span></span>),
+    ),
+    <span class="string"><span class="delimiter">'</span><span class="content">ClientID_Two</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(
+        <span class="string"><span class="delimiter">'</span><span class="content">public_key</span><span class="delimiter">'</span></span>  =&gt; <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/client_2_rsa.pub</span><span class="delimiter">'</span></span>),
+        <span class="string"><span class="delimiter">'</span><span class="content">private_key</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/client_2_rsa</span><span class="delimiter">'</span></span>),
+    ),
+    <span class="comment">// declare global keys as well</span>
+    <span class="string"><span class="delimiter">'</span><span class="content">public_key</span><span class="delimiter">'</span></span>  =&gt; <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/global_rsa.pub</span><span class="delimiter">'</span></span>),
+    <span class="string"><span class="delimiter">'</span><span class="content">private_key</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/global_rsa</span><span class="delimiter">'</span></span>),
+)));</code></pre></div></div></div></div>
+</div>
+<p>For <code>Pdo</code>, run the following query:</p>
+
+<div class="code-container">
+<div class="langspec">Sql</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-sql"><span class="comment">/* create the database table */</span>
+<span class="class">CREATE</span> <span class="type">TABLE</span> oauth_public_keys (client_id <span class="predefined-type">VARCHAR</span>(<span class="integer">80</span>), public_key <span class="predefined-type">VARCHAR</span>(<span class="integer">8000</span>), private_key <span class="predefined-type">VARCHAR</span>(<span class="integer">8000</span>), encryption_algorithm <span class="predefined-type">VARCHAR</span>(<span class="integer">80</span>) <span class="directive">DEFAULT</span> <span class="string"><span class="delimiter">"</span><span class="content">RS256</span><span class="delimiter">"</span></span>)</code></pre></div></div></div></div>
+</div>
+<p>Insert sample data using something like this:</p>
+
+<div class="code-container">
+<div class="langspec">Sql</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-sql"><span class="comment">/* insert global keys into the database */</span>
+<span class="class">INSERT</span> <span class="class">INTO</span> oauth_public_keys (client_id, public_key, private_key, encryption_algorithm) <span class="keyword">VALUES</span> (<span class="predefined-constant">NULL</span>, <span class="string"><span class="delimiter">"</span><span class="content">...</span><span class="delimiter">"</span></span>, <span class="string"><span class="delimiter">"</span><span class="content">...</span><span class="delimiter">"</span></span>, <span class="string"><span class="delimiter">"</span><span class="content">RS256</span><span class="delimiter">"</span></span>);
+<span class="comment">/* add client-specific key pairs */</span>
+<span class="class">INSERT</span> <span class="class">INTO</span> oauth_public_keys (client_id, public_key, private_key, encryption_algorithm) <span class="keyword">VALUES</span> (<span class="string"><span class="delimiter">"</span><span class="content">ClientID_One</span><span class="delimiter">"</span></span>, <span class="string"><span class="delimiter">"</span><span class="content">...</span><span class="delimiter">"</span></span>, <span class="string"><span class="delimiter">"</span><span class="content">...</span><span class="delimiter">"</span></span>, <span class="string"><span class="delimiter">"</span><span class="content">RS256</span><span class="delimiter">"</span></span>);
+<span class="class">INSERT</span> <span class="class">INTO</span> oauth_public_keys (client_id, public_key, private_key, encryption_algorithm) <span class="keyword">VALUES</span> (<span class="string"><span class="delimiter">"</span><span class="content">ClientID_Two</span><span class="delimiter">"</span></span>, <span class="string"><span class="delimiter">"</span><span class="content">...</span><span class="delimiter">"</span></span>, <span class="string"><span class="delimiter">"</span><span class="content">...</span><span class="delimiter">"</span></span>, <span class="string"><span class="delimiter">"</span><span class="content">RS256</span><span class="delimiter">"</span></span>);</code></pre></div></div></div></div>
+</div>
+<p>And instantiate the PDO Storage object:</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$dsn</span>      = <span class="string"><span class="delimiter">'</span><span class="content">mysql:dbname=my_oauth2_db;host=localhost</span><span class="delimiter">'</span></span>;
+<span class="local-variable">$username</span> = <span class="string"><span class="delimiter">'</span><span class="content">root</span><span class="delimiter">'</span></span>;
+<span class="local-variable">$password</span> = <span class="string"><span class="delimiter">'</span><span class="delimiter">'</span></span>;
+<span class="local-variable">$pdoStorage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Pdo</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">dsn</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$dsn</span>, <span class="string"><span class="delimiter">'</span><span class="content">username</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$username</span>, <span class="string"><span class="delimiter">'</span><span class="content">password</span><span class="delimiter">'</span></span> =&gt; <span class="local-variable">$password</span>));</code></pre></div></div></div></div>
+</div>
+<blockquote>
+
+</blockquote>
+
+<h3 id="configure-a-different-algorithms">Configure a Different Algorithms</h3>
+
+<p>The following algorithms are supported for JwtAccessTokens:</p>
+
+<ul>
+  <li>“HS256” - uses <code>hash_hmac</code> / sha256</li>
+  <li>“HS384” - uses <code>hash_hmac</code> / sha384</li>
+  <li>“HS512” - uses <code>hash_hmac</code> / sha512</li>
+  <li>“RS256” - uses <code>openssl_sign</code> / sha256</li>
+  <li>“RS384” - uses <code>openssl_sign</code> / sha384</li>
+  <li>“RS512” - uses <code>openssl_sign</code> / sha512</li>
+</ul>
+
+<p>Configure this in your <code>OAuth2\Storage\PublicKeyInterface</code> instance.  When using
+the <code>Memory</code> storage, this would look like this:</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$storage</span> = <span class="keyword">new</span> <span class="constant">OAuth2</span>\<span class="constant">Storage</span>\<span class="constant">Memory</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">keys</span><span class="delimiter">'</span></span> =&gt; <span class="predefined">array</span>(
+    <span class="string"><span class="delimiter">'</span><span class="content">public_key</span><span class="delimiter">'</span></span>            =&gt; <span class="local-variable">$publicKey</span>,
+    <span class="string"><span class="delimiter">'</span><span class="content">private_key</span><span class="delimiter">'</span></span>           =&gt; <span class="local-variable">$privateKey</span>,
+    <span class="string"><span class="delimiter">'</span><span class="content">encryption_algorithm</span><span class="delimiter">'</span></span>  =&gt; <span class="string"><span class="delimiter">'</span><span class="content">HS256</span><span class="delimiter">'</span></span>, <span class="comment">// "RS256" is the default</span>
+)));</code></pre></div></div></div></div>
+</div>
+<blockquote>
+
+</blockquote>
+
+<h2 id="client-verification">Client Verification</h2>
+
+<p>The signature can be verified in <em>any</em> programming language.  Use standard
+<code>Public Key</code> encryption methods to validate the access token signatures.  Here
+is an example of this in PHP:</p>
+
+<div class="code-container">
+<div class="langspec">Php</div>
+<div class="CodeRay"><div class="code"><div class="CodeRay"><div class="code"><pre class="highlight"><code class="language-php"><span class="local-variable">$token</span> = json_decode(<span class="local-variable">$curlResponse</span>);
+
+<span class="local-variable">$jwt_access_token</span> = <span class="local-variable">$token</span>[<span class="string"><span class="delimiter">'</span><span class="content">access_token</span><span class="delimiter">'</span></span>];
+
+<span class="local-variable">$separator</span> = <span class="string"><span class="delimiter">'</span><span class="content">.</span><span class="delimiter">'</span></span>;
+
+<span class="keyword">if</span> (<span class="integer">2</span> !== <span class="predefined">substr_count</span>(<span class="local-variable">$jwt_access_token</span>, <span class="local-variable">$separator</span>)) {
+    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="predefined-constant">Exception</span>(<span class="string"><span class="delimiter">"</span><span class="content">Incorrect access token format</span><span class="delimiter">"</span></span>);
+}
+
+<span class="predefined">list</span>(<span class="local-variable">$header</span>, <span class="local-variable">$payload</span>, <span class="local-variable">$signature</span>) = <span class="predefined">explode</span>(<span class="local-variable">$separator</span>, <span class="local-variable">$jwt_access_token</span>);
+
+<span class="local-variable">$decoded_signature</span> = <span class="predefined">base64_decode</span>(<span class="predefined">str_replace</span>(<span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">-</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">_</span><span class="delimiter">'</span></span>), <span class="predefined">array</span>(<span class="string"><span class="delimiter">'</span><span class="content">+</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">/</span><span class="delimiter">'</span></span>), <span class="local-variable">$signature</span>));
+
+<span class="comment">// The header and payload are signed together</span>
+<span class="local-variable">$payload_to_verify</span> = <span class="predefined">utf8_decode</span>(<span class="local-variable">$header</span> . <span class="local-variable">$separator</span> . <span class="local-variable">$payload</span>);
+
+<span class="comment">// however you want to load your public key</span>
+<span class="local-variable">$public_key</span> = <span class="predefined">file_get_contents</span>(<span class="string"><span class="delimiter">'</span><span class="content">/path/to/pubkey.pem</span><span class="delimiter">'</span></span>);
+
+<span class="comment">// default is SHA256</span>
+<span class="local-variable">$verified</span> = openssl_verify(<span class="local-variable">$payload_to_verify</span>, <span class="local-variable">$decoded_signature</span>, <span class="local-variable">$public_key</span>, <span class="constant">OPENSSL_ALGO_SHA256</span>);
+
+<span class="keyword">if</span> (<span class="local-variable">$verified</span> !== <span class="integer">1</span>) {
+    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="predefined-constant">Exception</span>(<span class="string"><span class="delimiter">"</span><span class="content">Cannot verify signature</span><span class="delimiter">"</span></span>);
+}
+
+<span class="comment">// output the JWT Access Token payload</span>
+<span class="predefined">var_dump</span>(<span class="predefined">base64_decode</span>(<span class="local-variable">$payload</span>));</code></pre></div></div></div></div>
+</div>
+
+      </div>
+
+    <div id="js-sidebar" class="sidebar-shell">
+      <div class="js-toggle-list sidebar-module expandable">
+        <ul>
+          <li class="js-topic">
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/">Overview</a></h3>
+            <ul class="js-guides">
+              <li><a href="/oauth2-server-php-docs/">Get Started</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/main-concepts/">Main Concepts</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/grant-types/">Grant Types</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/controllers/">Controllers</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/storage/">Storage</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/response/">Request and Response</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/scope/">Scope</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/userid/">User ID</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/openid-connect/">OpenID Connect</a></li>
+              <li><a href="/oauth2-server-php-docs/overview/jwt-access-tokens/">JWT Access Tokens</a></li>
+            </ul>
+          </li>
+          <li class="js-topic">
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/grant-types/authorization-code/">Grant Types</a></h3>
+            <ul class="js-guides">
+              <li><a href="/oauth2-server-php-docs/grant-types/authorization-code/">Authorization Code</a></li>
+              <li><a href="/oauth2-server-php-docs/grant-types/implicit/">Implicit</a></li>
+              <li><a href="/oauth2-server-php-docs/grant-types/user-credentials/">User Credentials</a></li>
+              <li><a href="/oauth2-server-php-docs/grant-types/client-credentials/">Client Credentials</a></li>
+              <li><a href="/oauth2-server-php-docs/grant-types/refresh-token/">Refresh Token</a></li>
+              <li><a href="/oauth2-server-php-docs/grant-types/jwt-bearer/">JWT Bearer</a></li>
+            </ul>
+          </li>
+          <li class="js-topic">
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/controllers/authorize">Controllers</a></h3>
+            <ul class="js-guides">
+              <li><a href="/oauth2-server-php-docs/controllers/authorize/">Authorize</a></li>
+              <li><a href="/oauth2-server-php-docs/controllers/resource/">Resource</a></li>
+              <li><a href="/oauth2-server-php-docs/controllers/token/">Token</a></li>
+            </ul>
+          </li>
+          <li class="js-topic">
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/storage/pdo/">Storage</a></h3>
+            <ul class="js-guides">
+              <li><a href="/oauth2-server-php-docs/storage/pdo/">PDO</a></li>
+              <li><a href="/oauth2-server-php-docs/storage/mongo/">Mongo</a></li>
+              <li><a href="/oauth2-server-php-docs/storage/redis/">Redis</a></li>
+              <li><a href="/oauth2-server-php-docs/storage/cassandra/">Cassandra</a></li>
+              <li><a href="/oauth2-server-php-docs/storage/dynamodb/">DynamoDB</a></li>
+              <li><a href="/oauth2-server-php-docs/storage/custom/">Custom Storage</a></li>
+              <li><a href="/oauth2-server-php-docs/storage/multiple/">Using Multiple Storages</a></li>
+            </ul>
+          </li>
+          <li class="js-topic">
+            <h3><a href="#" class="js-expand-btn collapsed">&nbsp;</a><a href="/oauth2-server-php-docs/cookbook/">Cookbook</a></h3>
+            <ul class="js-guides">
+              <li><a href="/oauth2-server-php-docs/cookbook/">Step-By-Step Walkthrough</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/google-playground/">Google Playground</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/drupal/">Drupal</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/symfony2/">Symfony2</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/silex/">Silex</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/zend-framework/">Zend Framework</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/laravel/">Laravel</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/doctrine/">Doctrine</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/doctrine2/">Doctrine2</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/yii/">Yii</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/cakephp/">CakePHP</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/restler/">Restler</a></li>
+              <!-- <li><a href="/oauth2-server-php-docs/cookbook/doctrine2/">Doctrine2</a></li>
+              <li><a href="/oauth2-server-php-docs/cookbook/symfony/">Symfony 1.4</a></li> -->
+            </ul>
+          </li>
+        </ul>
+      </div> <!-- /sidebar-module -->
+      <div class="sidebar-module">
+        <p>This project is open source. Please help us by forking the project and adding to it.</p>
+      </div>
+    </div><!-- /sidebar-shell -->
+
+    </div><!-- #wrapper -->
+
+    <div id="footer" >
+      <div class="upper_footer">
+        <div class="footer_inner clearfix">
+
+        </div><!-- /.site -->
+      </div><!-- /.upper_footer -->
+
+      <div class="lower_footer">
+        <div class="footer_inner clearfix">
+            <div id="legal">
+              <p>&copy; <span id="year">year</span> Brent Shaffer. All rights reserved.</p>
+            </div><!-- /#legal or /#legal_ie-->
+        </div><!-- /.site -->
+      </div><!-- /.lower_footer -->
+    </div><!-- /#footer -->
+    <a href="https://github.com/bshaffer/oauth2-server-php-docs"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-11590669-6', 'bshaffer.github.io');
+      ga('send', 'pageview');
+
+      function trackOutboundLink(link, category, action) {
+        try {
+          _gaq.push(['_trackEvent', category , action]);
+        } catch(err){}
+
+        setTimeout(function() {
+          document.location.href = link.href;
+        }, 100);
+      }
+    </script>
+</body>
+</html>
