@@ -30,7 +30,7 @@ GEM
     pygments.rb (0.6.3)
       posix-spawn (~> 0.3.6)
       yajl-ruby (~> 1.2.0)
-    rack (2.0.1)
+    rack (2.0.8)
     rake (0.9.6)
     rdiscount (2.2.0.1)
     ref (2.0.0)
