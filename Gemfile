@@ -7,7 +7,7 @@ gem 'mime-types', '~> 1.16'
 gem 'nanoc'
 gem 'nokogiri'
 gem 'pygments.rb'
-gem 'rake', '~> 0.9.2'
+gem 'rake', '~> 12.3.3'
 gem 'thin'
 gem 'yajl-ruby'
 gem "htmlentities", "~> 4.3.1"
