@@ -24,7 +24,8 @@ GEM
       concurrent-ruby (~> 1.0)
     htmlentities (4.3.4)
     json_schema (0.20.8)
-    kramdown (0.13.8)
+    kramdown (2.3.0)
+      rexml
     mime-types (1.25.1)
     mini_portile2 (2.4.0)
     multi_json (1.14.1)
@@ -73,6 +74,7 @@ GEM
     rake (12.3.3)
     rdiscount (2.2.0.1)
     ref (2.0.0)
+    rexml (3.2.4)
     slow_enumerator_tools (1.1.0)
     thin (1.7.2)
       daemons (~> 1.0, >= 1.0.9)
@@ -96,7 +98,7 @@ DEPENDENCIES
   coderay
   fssm
   htmlentities (~> 4.3.1)
-  kramdown (~> 0.13.2)
+  kramdown (~> 2.3.0)
   mime-types (~> 1.16)
   nanoc
   nokogiri
