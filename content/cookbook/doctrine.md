@@ -53,7 +53,7 @@ OAuthAccessToken:
       onUpdate:     CASCADE
 ```
 
-Once you've generated the models off this schema, you will have an `OAuthClient` and `OAuthCleintTable` class
+Once you've generated the models off this schema, you will have an `OAuthClient` and `OAuthClientTable` class
 file, as well as an `OAuthAccessToken` and `OAuthAccessTokenTable` object.
 
 Implement `OAuth2\Storage\ClientCredentialsInterface` on the `OAuthClientTable` class:
