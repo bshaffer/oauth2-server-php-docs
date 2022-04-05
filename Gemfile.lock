@@ -84,7 +84,7 @@ GEM
       pastel (~> 0.7.0)
     tty-platform (0.3.0)
     tty-which (0.4.2)
-    yajl-ruby (1.4.1)
+    yajl-ruby (1.4.2)
     zeitwerk (2.3.0)
 
 PLATFORMS
