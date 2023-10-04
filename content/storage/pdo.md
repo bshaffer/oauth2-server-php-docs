@@ -29,6 +29,16 @@ $pdo = new PDO('sqlite:/opt/databases/mydb.sq3');
 
 // connection for SQLite in memory
 $pdo = new PDO('sqlite::memory:');
+
+// connection for Oracle. With Oracle, you'll need some extra steps:
+$options = [
+    // without the following option, Oracle may convert some names to UPPERCASE,
+    // which will break SQL code of the OAuth server library (having names written in lowercase)
+    PDO::ATTR_CASE => PDO::CASE_LOWER,
+];
+$pdo = new PDO("oci:dbname=//$host:$port/$sid", $user, $pass, $options);
+// without the following statement, Oracle may not understand the datetime format used by the OAuth server library
+$pdo->exec("alter session set nls_timestamp_format = 'YYYY-MM-DD HH24:MI:SS'");
 ```
 
 Then, create the storage object using the `Pdo` storage class:
